@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+	<fieldset>
+		<field
+				name="id"
+				type="hidden"
+				/>
+		<field
+				name="city"
+				type="text"
+				label="City"
+				description="The town, village or city of the tower"
+				size="40"
+				class="inputbox"
+				default=""
+				/>
+		<field
+				name="designation"
+				type="text"
+				label="Designation"
+				description="The designation of the church"
+				size="40"
+				class="inputbox"
+				default=""
+				/>
+		<field
+				name="bells"
+				type="number"
+				label="Number of Bells"
+				description="The number of bells"
+				size="2"
+				class="inputbox"
+				default=""
+				/>
+	</fieldset>
+</form>

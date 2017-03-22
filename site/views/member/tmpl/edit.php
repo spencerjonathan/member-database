@@ -30,9 +30,6 @@ defined('_JEXEC') or die('Restricted access');
         </fieldset>
     </div>
                 	<div class="btn-wrapper" id="toolbar-save">
-                        	<input type="submit" class="btn btn-small">
-                                	<span class="icon-save"></span>
-                                	Save & Close</button>
                         	<button onclick="Joomla.submitbutton('member.save')" class="btn btn-small">
                                 	<span class="icon-save"></span>
                                 	Save & Close</button>

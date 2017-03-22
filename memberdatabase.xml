@@ -12,7 +12,7 @@
 	<copyright>Copyright Info</copyright>
 	<license>License Info</license>
 	<!--  The version string is recorded in the components table -->
-	<version>0.0.11</version>
+	<version>0.0.29</version>
 	<!-- The description is optional and defaults to the name -->
 	<description>Member Database for Ringing Society</description>
 
@@ -44,6 +44,7 @@
 		<filename>controller.php</filename>
 		<folder>views</folder>
 		<folder>models</folder>
+		<folder>controllers</folder>
 	</files>
 
 	<administration>
@@ -58,13 +59,10 @@
 			<filename>index.html</filename>
 			<filename>memberdatabase.php</filename>
 			<filename>controller.php</filename>
-			<!-- SQL files section -->
+
 			<folder>sql</folder>
-			<!-- tables files section -->
 			<folder>tables</folder>
-			<!-- models files section -->
 			<folder>models</folder>
-			<!-- views files section -->
 			<folder>views</folder>
 			<folder>controllers</folder>
 		</files>

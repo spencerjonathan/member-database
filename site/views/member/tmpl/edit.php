@@ -9,6 +9,20 @@
  
 // No direct access
 defined('_JEXEC') or die('Restricted access');
+
+$document = JFactory::getDocument();
+
+
+$document->addScriptDeclaration('
+	function updateTowerId() {
+		var towername = document.getElementById("tower_name");
+		var towerid = document.getElementById("jform_tower_id");
+		towerid.value = towername.value;
+	};
+
+	
+');
+
  
 ?>
 <legend><?php echo JText::_('Member Database - Member Details'); ?></legend>
@@ -22,7 +36,7 @@ defined('_JEXEC') or die('Restricted access');
 
                 	<div class="control-group">
                             <div class="control-label"> <label class="control-label">Tower</label> </div>
-                            <div class="controls"><select name="tower-name"> 
+                            <div class="controls"><select id="tower_name" name="tower_name" onchange="updateTowerId()"> 
 				<?php foreach ($this->towers as $tower): ?>
 				    <option value=<?php echo $tower->id ?> >
 					<?php echo $tower->city ?>, <?php echo $tower->designation ?> 

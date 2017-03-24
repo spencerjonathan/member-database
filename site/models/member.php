@@ -86,4 +86,22 @@ class MemberDatabaseModelMember extends JModelAdmin
  
 		return $data;
 	}
+
+	public function getTowers()
+	{
+		$db = JFactory::getDbo();
+
+		$query = $db->getQuery(true)
+		->select('id, city, designation')
+		->from('#__md_tower');
+		//->where('user_id = ' . (int) $userId . ' and tower_id = ' . (int) $towerId);
+
+		$db->setQuery($query);
+
+
+		$results = $db->loadObjectList();
+
+		return $results;
+	}
+
 }

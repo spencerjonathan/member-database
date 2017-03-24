@@ -16,6 +16,29 @@ $listOrder     = $this->escape($this->filter_order);
 $listDirn      = $this->escape($this->filter_order_Dir);
 
 ?>
+
+
+<div class="container-fluid">
+	<div class="row-fluid">
+		<div class="span12">
+			<div class="btn-toolbar" id="toolbar" role="btn-toolbar">
+				<div class="btn-group">
+					<button onclick="Joomla.submitbutton('member.add')" class="btn btn-success">
+						<span class="icon-new icon-white"></span>
+					New</button>
+					<button onclick="if (document.adminForm.boxchecked.value==0){alert('Please first make a selection from the list.');}else{ Joomla.submitbutton('member.edit')}" class="btn">
+						<span class="icon-edit"></span>
+					Edit</button>
+					<button onclick="if (document.adminForm.boxchecked.value==0){alert('Please first make a selection from the list.');}else{ Joomla.submitbutton('members.delete')}" class="btn">
+						<span class="icon-delete"></span>
+					Delete</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
 <form action="index.php?option=com_memberdatabase&view=members" method="post" id="adminForm" name="adminForm">
 	<div class="row-fluid">
 		<div class="span6">

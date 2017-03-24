@@ -19,6 +19,18 @@ defined('_JEXEC') or die('Restricted access');
         <fieldset class="adminform">
             <div class="row-fluid">
                 <div class="span6">
+
+                	<div class="control-group">
+                            <div class="control-label"> <label class="control-label">Tower</label> </div>
+                            <div class="controls"><select name="tower-name"> 
+				<?php foreach ($this->towers as $tower): ?>
+				    <option value=<?php echo $tower->id ?> >
+					<?php echo $tower->city ?>, <?php echo $tower->designation ?> 
+				    </option> 
+                    		<?php endforeach; ?>
+			    </select></div>
+			</div>
+
                     <?php foreach ($this->form->getFieldset() as $field): ?>
                         <div class="control-group">
                             <div class="control-label"><?php echo $field->label; ?></div>
@@ -29,16 +41,12 @@ defined('_JEXEC') or die('Restricted access');
             </div>
         </fieldset>
     </div>
-                	<div class="btn-wrapper" id="toolbar-save">
                         	<button onclick="Joomla.submitbutton('member.save')" class="btn btn-small">
                                 	<span class="icon-save"></span>
                                 	Save & Close</button>
-                	</div>
-                	<div class="btn-wrapper" id="toolbar-cancel">
                         	<button onclick="Joomla.submitbutton('member.cancel')" class="btn btn-small">
                                 	<span class="icon-cancel"></span>
                         	Close</button>
-                	</div>
     <input type="hidden" name="task" value="member.edit" />
     <?php echo JHtml::_('form.token'); ?>
 </form>

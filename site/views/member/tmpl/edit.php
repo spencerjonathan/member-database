@@ -38,7 +38,8 @@ $document->addScriptDeclaration('
                             <div class="control-label"> <label class="control-label">Tower</label> </div>
                             <div class="controls"><select id="tower_name" name="tower_name" onchange="updateTowerId()"> 
 				<?php foreach ($this->towers as $tower): ?>
-				    <option value=<?php echo $tower->id ?> >
+				    <option value=<?php echo $tower->id ?> 
+					<?php if ($tower->id == $this->item->tower_id) { echo "selected=\"selected\""; } ?> >
 					<?php echo $tower->city ?>, <?php echo $tower->designation ?> 
 				    </option> 
                     		<?php endforeach; ?>

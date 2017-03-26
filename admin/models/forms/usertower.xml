@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+	<fieldset>
+		<field
+				name="id"
+				type="hidden"
+				/>
+		<field
+				name="tower_id"
+				type="number"
+				label="Tower ID"
+				size="40"
+				class="inputbox"
+				/>
+		<field
+				name="user_id"
+				type="number"
+				label="User ID"
+				size="40"
+				class="inputbox"
+				/>
+	</fieldset>
+</form>

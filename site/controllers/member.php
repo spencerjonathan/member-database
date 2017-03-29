@@ -21,24 +21,59 @@ class MemberDatabaseControllerMember extends JControllerForm
         protected function allowEdit($data = array(), $key = 'id')
         {
 		$userId = JFactory::getUser()->id;
+		$memberId = $data['id'];
 
-				//$db = JFactory::getDbo();
+		error_log("value of \$data in allowEdit:" . json_encode($data), 0);
+		error_log("value of \$user in allowEdit:" . json_encode(JFactory::getUser()), 0);
 
-                                // Build the database query to get the rules for the asset.
-                                //$query = $db->getQuery(true)
-                                        //->select('count(*)')
-                                        //->from('#__md_authorised_towers')
-                                        //->where('user_id = ' . (int) $userId . ' and tower_id = ' . (int) $towerId);
+		$db = JFactory::getDbo();
 
-                                // Execute the query and load the rules from the result.
-                                //$db->setQuery($query);
-                                //$result = $db->loadColumn();
-		return true;
+                // Build the database query to get the rules for the asset.
+                $query = $db->getQuery(true)
+                ->select('count(*)')
+                ->from($db->quoteName('#__md_usertower', 'ut'))
+		->join('INNER', $db->quoteName('#__md_member', 'm') . ' ON (' . $db->quoteName('m.tower_id') . ' = ' . $db->quoteName('ut.tower_id') . ')')
+                ->where('ut.user_id = ' . (int) $userId . ' and m.id = ' . (int) $memberId);
+
+		error_log("value of \$query in allowEdit:" . json_encode($query), 0);
+                // Execute the query and load the rules from the result.
+                $db->setQuery($query);
+                $result = $db->loadResult();
+
+		if ($result == 1) {
+			return true;
+		};
+
+		error_log("User with id " . $userId . " does not have authorisation to modify member with id " . $memberId, 0);
+		return false;
         }
 
         protected function allowSave($data = array(), $key = 'id')
 	{
-		return true;
+		$userId = JFactory::getUser()->id;
+		$towerId = $data['tower_id'];
+
+		error_log("value of \$data in allowSave:" . json_encode($data), 0);
+		error_log("value of \$user in allowSave:" . json_encode(JFactory::getUser()), 0);
+
+		$db = JFactory::getDbo();
+
+                // Build the database query to get the rules for the asset.
+                $query = $db->getQuery(true)
+                ->select('count(*)')
+                ->from($db->quoteName('#__md_usertower', 'ut'))
+                ->where('ut.user_id = ' . (int) $userId . ' and ut.id = ' . (int) $towerId);
+
+                // Execute the query and load the rules from the result.
+                $db->setQuery($query);
+                $result = $db->loadResult();
+
+		if ($result == 1) {
+			return true;
+		};
+
+		error_log("User with id " . $userId . " does not have authorisation to save member with tower_id " . $towerId, 0);
+		return false;
 	}
 
         protected function allowAdd($data = array(), $key = 'id')

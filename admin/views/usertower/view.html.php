@@ -36,6 +36,8 @@ class MemberDatabaseViewUserTower extends JViewLegacy
 		// Get the Data
 		$this->form = $this->get('Form');
 		$this->item = $this->get('Item');
+		$this->towers = $this->get('towers');
+		$this->users = $this->get('users');
  
 		// Check for errors.
 		if (count($errors = $this->get('Errors')))

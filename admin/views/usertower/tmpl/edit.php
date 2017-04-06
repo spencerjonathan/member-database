@@ -40,10 +40,11 @@ $document->addScriptDeclaration('
 			<div class="control-group">
 			    <div class="control-label"> <label class="control-label">Tower</label> </div>
 			    <div class="controls"><select id="tower_name" name="tower_name" onchange="updateTowerId()">
+				<option value=-1>--Select Tower--</option>
 			        <?php foreach ($this->towers as $tower): ?>
 			            <option value=<?php echo $tower->id ?>
 			                <?php if ($tower->id == $this->item->tower_id) { echo "selected=\"selected\""; } ?> >
-			                <?php echo $tower->city ?>, <?php echo $tower->designation ?>
+			                <?php echo $tower->place ?>, <?php echo $tower->designation ?>
 			            </option>
 			        <?php endforeach; ?>
 			    </select></div>
@@ -52,6 +53,7 @@ $document->addScriptDeclaration('
 			<div class="control-group">
 			    <div class="control-label"> <label class="control-label">Username</label> </div>
 			    <div class="controls"><select id="user_name" name="user_name" onchange="updateUserId()">
+				<option value=-1>--Select User--</option>
 			        <?php foreach ($this->users as $user): ?>
 			            <option value=<?php echo $user->id ?>
 			                <?php if ($user->id == $this->item->user_id) { echo "selected=\"selected\""; } ?> >

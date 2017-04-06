@@ -50,6 +50,8 @@ class MemberDatabaseControllerMember extends JControllerForm
 
         protected function allowSave($data = array(), $key = 'id')
 	{
+		return true;
+
 		$userId = JFactory::getUser()->id;
 		$towerId = $data['tower_id'];
 

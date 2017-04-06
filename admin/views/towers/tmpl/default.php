@@ -36,7 +36,7 @@ $listDirn      = $this->escape($this->filter_order_Dir);
 				<?php echo JHtml::_('grid.checkall'); ?>
 			</th>
 			<th width="40%">
-				<?php echo JHtml::_('grid.sort', 'City', 'city', $listDirn, $listOrder) ;?>
+				<?php echo JHtml::_('grid.sort', 'Place', 'place', $listDirn, $listOrder) ;?>
 			</th>
 			<th width="40%">
 				<?php echo JHtml::_('grid.sort', 'Designation', 'designation', $listDirn, $listOrder) ;?>
@@ -71,7 +71,7 @@ $listDirn      = $this->escape($this->filter_order_Dir);
 						</td>
 						<td>
 							<a href="<?php echo $link; ?>" title="<?php echo JText::_('COM_MEMBERDATABASE_EDIT_TOWER'); ?>">
-							<?php echo $row->city; ?>
+							<?php echo $row->place; ?>
 						</td>
 						<td>
 							<?php echo $row->designation; ?>

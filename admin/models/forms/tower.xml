@@ -6,9 +6,13 @@
 				type="hidden"
 				/>
 		<field
-				name="city"
+				name="district_id"
+				type="hidden"
+				/>
+		<field
+				name="place"
 				type="text"
-				label="City"
+				label="Place"
 				description="The town, village or city of the tower"
 				size="40"
 				class="inputbox"
@@ -31,6 +35,298 @@
 				size="2"
 				class="inputbox"
 				default=""
+				/>
+		<field
+				name="tenor"
+				type="text"
+				label="Tenor"
+				description="The weight of the tenor"
+				size="20"
+				class="inputbox"
+				default=""
+				/>
+		<field
+				name="grid_ref"
+				type="text"
+				label="Grid Ref"
+				description="O/S Grid Reference"
+				size="8"
+				class="inputbox"
+				default=""
+				/>
+		<field
+				name="ground_floor"
+				type="radio"
+				label="Ground Floor?"
+				description="Is the ringing chamber on the ground floor?"
+				class="btn-group btn-group-yesno"
+				default="0"
+				filter="integer">
+					<option value="1">JYES</option>
+					<option value="0">JNO</option>
+		</field>
+		<field
+				name="anti_clockwise"
+				type="radio"
+				label="Anti-Clockwise?"
+				description="Is the ringing circle anti-clockwise?"
+				class="btn-group btn-group-yesno"
+				default="0"
+				filter="integer">
+					<option value="1">JYES</option>
+					<option value="0">JNO</option>
+		</field>
+		<field
+				name="unringable"
+				type="radio"
+				label="Unringable?"
+				description="Are the bells currently unringable?"
+				class="btn-group btn-group-yesno"
+				default="0"
+				filter="integer">
+					<option value="1">JYES</option>
+					<option value="0">JNO</option>
+		</field>
+		<field
+				name="email"
+				type="text"
+				label="Email Address"
+				description="Tower correspondance email address"
+				size="100"
+				class="inputbox"
+				validate="email"
+				default=""
+				/>
+		<field
+				name="street"
+				type="text"
+				label="Address - Street"
+				description="Street address and number"
+				size="100"
+				class="inputbox"
+				default=""
+				/>
+		<field
+				name="town"
+				type="text"
+				label="Address - Town"
+				description="Town"
+				size="50"
+				class="inputbox"
+				default=""
+				/>
+		<field
+				name="county"
+				type="text"
+				label="Address - County"
+				description="County"
+				size="50"
+				class="inputbox"
+				default=""
+				/>
+		<field
+				name="post_code"
+				type="text"
+				label="Address - Postcode"
+				description="Postcode"
+				size="10"
+				class="inputbox"
+				default=""
+				/>
+		<field
+				name="country"
+				type="text"
+				label="Address - Country"
+				description="Country"
+				size="2"
+				class="inputbox"
+				default=""
+				/>
+		<field
+				name="longitude"
+				type="number"
+				label="Longitude"
+				description="Degrees Longitude"
+				size="35"
+				class="inputbox"
+				default=""
+				validate="number"
+				/>
+		<field
+				name="latitude"
+				type="number"
+				label="Latitude"
+				description="Degrees Latitude"
+				size="35"
+				class="inputbox"
+				default=""
+				validate="number"
+				/>
+		<field
+				name="website"
+				type="text"
+				label="Tower Website"
+				description="Tower Website"
+				size="200"
+				class="textarea"
+				default=""
+				/>
+		<field
+				name="church_website"
+				type="text"
+				label="Church Website"
+				description="Church Website"
+				size="200"
+				class="textarea"
+				default=""
+				/>
+		<field
+				name="doves_guide"
+				type="text"
+				label="Doves Entry"
+				description="Tower Website"
+				size="200"
+				class="textarea"
+				default=""
+				/>
+		<field
+				name="contact_person"
+				type="text"
+				label="Contact Person"
+				description="Contact Person"
+				size="25"
+				class="inputbox"
+				default=""
+				/>
+		<field
+				name="email2"
+				type="number"
+				label="Email 2"
+				description="Email 2"
+				size="4"
+				class="inputbox"
+				default=""
+				/>
+		<field
+				name="tower_description"
+				type="text"
+				label="Tower Description"
+				description="Tower Description"
+				size="200"
+				class="inputbox"
+				default=""
+				/>
+		<field
+				name="wc"
+				type="radio"
+				label="WC?"
+				description="Does the church have a toilet?"
+				class="btn-group btn-group-yesno"
+				default="0"
+				filter="integer">
+					<option value="1">JYES</option>
+					<option value="0">JNO</option>
+		</field>
+		<field
+				name="sunday_ringing"
+				type="text"
+				label="Sunday Ringing"
+				description="Sunday ringing times"
+				size="100"
+				class="inputbox"
+				default=""
+				/>
+		<field
+				name="active"
+				type="radio"
+				label="Active?"
+				description="Is this record active?"
+				class="btn-group btn-group-yesno"
+				default="0"
+				filter="integer">
+					<option value="1">JYES</option>
+					<option value="0">JNO</option>
+		</field>
+		<field
+				name="web_tower_id"
+				type="number"
+				label="Web Tower ID"
+				description="Web Tower ID"
+				size="3"
+				class="inputbox"
+				default=""
+				validate="number"
+				/>
+		<field
+				name="multi_towers"
+				type="radio"
+				label="Multi Towers?"
+				description="Multi Tosers (better description needed)?"
+				class="btn-group btn-group-yesno"
+				default="0"
+				filter="integer">
+					<option value="1">JYES</option>
+					<option value="0">JNO</option>
+		</field>
+		<field
+				name="practice_night"
+				type="text"
+				label="Practice Night"
+				description="Practice Night"
+				size="17"
+				class="inputbox"
+				default=""
+				/>
+		<field
+				name="practice_details"
+				type="text"
+				label="Practice Details"
+				description="Practice details"
+				size="200"
+				class="inputbox"
+				default=""
+				/>
+		<field
+				name="incl_capt"
+				type="radio"
+				label="Incl Capt?"
+				description="Incl Capt (better description needed)?"
+				class="btn-group btn-group-yesno"
+				default="0"
+				filter="integer">
+					<option value="1">JYES</option>
+					<option value="0">JNO</option>
+		</field>
+		<field
+				name="incl_corresp"
+				type="radio"
+				label="Incl Corresp?"
+				description="Incl Corresp (better description needed)?"
+				class="btn-group btn-group-yesno"
+				default="0"
+				filter="integer">
+					<option value="1">JYES</option>
+					<option value="0">JNO</option>
+		</field>
+		<field
+				name="correspondent_id"
+				type="number"
+				label="Correspondent ID"
+				description="Correspondent ID"
+				size="4"
+				class="inputbox"
+				default=""
+				validate="number"
+				/>
+		<field
+				name="captain_id"
+				type="number"
+				label="Captain ID"
+				description="Captain ID"
+				size="5"
+				class="inputbox"
+				default=""
+				validate="number"
 				/>
 	</fieldset>
 </form>

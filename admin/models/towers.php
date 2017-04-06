@@ -30,7 +30,7 @@ class MemberDatabaseModelTowers extends JModelList
 		{
 			$config['filter_fields'] = array(
 				'id',
-				'city',
+				'place',
 				'designation',
 				'bells'
 			);
@@ -60,11 +60,11 @@ class MemberDatabaseModelTowers extends JModelList
 		if (!empty($search))
 		{
 			$like = $db->quote('%' . $search . '%');
-			$query->where('city LIKE ' . $like);
+			$query->where('place LIKE ' . $like);
 		}
 
 		// Add the list ordering clause.
-		$orderCol	= $this->state->get('list.ordering', 'city');
+		$orderCol	= $this->state->get('list.ordering', 'place');
 		$orderDirn 	= $this->state->get('list.direction', 'asc');
  
 		$query->order($db->escape($orderCol) . ' ' . $db->escape($orderDirn));

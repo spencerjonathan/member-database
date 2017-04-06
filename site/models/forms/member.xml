@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <form>
-	<fieldset>
+	<fieldset addrulepath="components/com_memberdatabase/models/rules">
 		<field
 				name="id"
 				type="hidden"
@@ -8,25 +8,107 @@
 		<field
 				name="tower_id"
 				type="number"
+				class="required"
 				label="Tower ID"
+				validate="towerid"
+				message="Please select a valid tower for the memeber"
+				required="true"
 				/>
 		<field
-				name="name"
+				name="forenames"
 				type="text"
-				label="Name"
-				description="The name of the member"
-				size="40"
-				class="inputbox"
+				label="Forenames"
+				description="The forename(s) of the member"
+				size="50"
+				class="inputbox required"
+				required="true"
 				default=""
 				/>
+		<field
+				name="surname"
+				type="text"
+				label="Surname"
+				description="The Surname of the member"
+				size="50"
+				class="inputbox required"
+				required="true"
+				default=""
+				/>
+		<field
+				name="title"
+				type="list"
+				label="Title"
+				description="The Title of the member"
+				required="true"
+				default="">
+				<option value="">Please Select</option>
+				<option value="Dr">Dr</option>
+				<option value="Father">Father</option>
+				<option value="Master">Master</option>
+				<option value="Miss">Miss</option>
+				<option value="Mr">Mr</option>
+				<option value="Mrs">Mrs</option>
+				<option value="Ms">Ms</option>
+				<option value="Prof">Prof</option>
+				<option value="Rev">Rev</option>
+				<option value="Rev Canon Dr">Rev Canon Dr</option>
+		</field>
 		<field
 				name="email"
 				type="text"
 				label="Email Address"
 				description="Email Address of the member"
 				size="40"
+				class="inputbox required"
+				validate="email"
+				default=""
+				/>
+		<field
+				name="member_type"
+				type="list"
+				label="Member Type"
+				description="The type of member"
+				required="true"
+				default="">
+				<option value="">Please Select</option>
+				<option value="Adult">Adult</option>
+				<option value="Associate">Associate</option>
+				<option value="Honorary Life">Honorary Life</option>
+				<option value="Junior">Junior</option>
+				<option value="Long Service">Long Service</option>
+				<option value="Non-Member">Non-Member</option>
+		</field>
+		<field
+				name="insurance_type"
+				type="list"
+				label="Insurance Type"
+				description="The insurance type for the member"
+				default="">
+				<option value="">Please Select</option>
+				<option value="Under 16">Under 16</option>
+				<option value="16-70">16-70</option>
+				<option value="Over 70">Over 70</option>
+		</field>
+                <field
+                                name="annual_report"
+                                type="radio"
+                                label="Annual Report?"
+                                description="Does the member want to receive an annual report?"
+                                class="btn-group btn-group-yesno"
+                                default="0"
+                                filter="integer">
+                                        <option value="1">JYES</option>
+                                        <option value="0">JNO</option>
+                </field>
+		<field
+				name="telephone"
+				type="text"
+				label="Telephone Number"
+				description="Telephone Number of the member"
+				size="40"
 				class="inputbox"
 				default=""
 				/>
+
 	</fieldset>
 </form>

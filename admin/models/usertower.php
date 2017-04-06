@@ -91,7 +91,7 @@ class MemberDatabaseModelUserTower extends JModelAdmin
                 $db = JFactory::getDbo();
 
                 $query = $db->getQuery(true)
-                ->select('id, city, designation')
+                ->select('id, place, designation')
                 ->from('#__md_tower');
                 //->where('user_id = ' . (int) $userId . ' and tower_id = ' . (int) $towerId);
 

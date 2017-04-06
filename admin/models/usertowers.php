@@ -50,7 +50,7 @@ class MemberDatabaseModelUserTowers extends JModelList
 		$query = $db->getQuery(true);
  
 		// Create the base select statement.
-		$query->select('ut.*, u.name, u.username, concat(t.city, \', \', t.designation) as towername')
+		$query->select('ut.*, u.name, u.username, concat(t.place, \', \', t.designation) as towername')
                 ->from($db->quoteName('#__md_usertower', 'ut'))
 		->join('INNER', $db->quoteName('#__users', 'u') . ' ON (' . $db->quoteName('ut.user_id') . ' = ' . $db->quoteName('u.id') . ')')
 		->join('INNER', $db->quoteName('#__md_tower', 't') . ' ON (' . $db->quoteName('ut.tower_id') . ' = ' . $db->quoteName('t.id') . ')');
@@ -61,11 +61,11 @@ class MemberDatabaseModelUserTowers extends JModelList
 		if (!empty($search))
 		{
 			$like = $db->quote('%' . $search . '%');
-			$query->where('t.city LIKE ' . $like);
+			$query->where('t.place LIKE ' . $like);
 		}
 
 		// Add the list ordering clause.
-		$orderCol	= $this->state->get('list.ordering', 'city');
+		$orderCol	= $this->state->get('list.ordering', 'place');
 		$orderDirn 	= $this->state->get('list.direction', 'asc');
  
 		$query->order($db->escape($orderCol) . ' ' . $db->escape($orderDirn));

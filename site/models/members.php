@@ -30,7 +30,7 @@ class MemberDatabaseModelMembers extends JModelList
 		{
 			$config['filter_fields'] = array(
 				'id',
-				'tower_id',
+				'tower',
 				'name',
 				'email'
 			);
@@ -48,11 +48,15 @@ class MemberDatabaseModelMembers extends JModelList
 	{
 		// Initialize variables.
 		$db    = JFactory::getDbo();
+		$userid = JFactory::getUser()->id;
 		$query = $db->getQuery(true);
  
 		// Create the base select statement.
-		$query->select('*')
-                ->from($db->quoteName('#__md_member'));
+		$query->select('m.*, concat_ws(\', \',place, designation) as tower, concat_ws(\', \',surname, forenames) as name')
+                ->from($db->quoteName('#__md_member', 'm'))
+		->join('INNER', $db->quoteName('#__md_usertower', 'ut') . ' ON (' . $db->quoteName('m.tower_id') . ' = ' . $db->quoteName('ut.tower_id') . ')')
+		->join('LEFT', $db->quoteName('#__md_tower', 't') . ' ON (' . $db->quoteName('m.tower_id') . ' = ' . $db->quoteName('t.id') . ')')
+		->where('ut.user_id = ' . $userid);
 
 		// Filter: like / search
 		$search = $this->getState('filter.search');
@@ -60,11 +64,11 @@ class MemberDatabaseModelMembers extends JModelList
 		if (!empty($search))
 		{
 			$like = $db->quote('%' . $search . '%');
-			$query->where('name LIKE ' . $like);
+			$query->where('concat_ws(\', \',surname, forenames) LIKE ' . $like);
 		}
 
 		// Add the list ordering clause.
-		$orderCol	= $this->state->get('list.ordering', 'name');
+		$orderCol	= $this->state->get('list.ordering', 'surname, forenames');
 		$orderDirn 	= $this->state->get('list.direction', 'asc');
  
 		$query->order($db->escape($orderCol) . ' ' . $db->escape($orderDirn));

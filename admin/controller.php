@@ -25,5 +25,5 @@ class MemberDatabaseController extends JControllerLegacy
 	 * @var string
 	 * @since 12.2
 	 */
-	protected $default_view = 'towers';
+	protected $default_view = 'usertowers';
 }

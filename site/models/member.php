@@ -90,11 +90,14 @@ class MemberDatabaseModelMember extends JModelAdmin
 	public function getTowers()
 	{
 		$db = JFactory::getDbo();
+		$userId = JFactory::getUser()->id;
 
-		$query = $db->getQuery(true)
-		->select('id, city, designation')
-		->from('#__md_tower');
-		//->where('user_id = ' . (int) $userId . ' and tower_id = ' . (int) $towerId);
+		$query = $db->getQuery(true);
+
+		$query->select('t.id, concat_ws(\', \', t.place, t.designation) as tower')
+		->from($db->quoteName('#__md_tower','t'))
+		->join('INNER', $db->quoteName('#__md_usertower', 'ut') . ' ON (t.id = ut.tower_id)')
+		->where('ut.user_id = ' . (int) $userId);
 
 		$db->setQuery($query);
 

@@ -35,7 +35,7 @@ class JFormFieldMemberDatabase extends JFormFieldList
 	{
 		$db    = JFactory::getDBO();
 		$query = $db->getQuery(true);
-		$query->select('id,bells,city,designation');
+		$query->select('id,bells,place,designation');
 		$query->from('#__md_tower');
 		$db->setQuery((string) $query);
 		$messages = $db->loadObjectList();
@@ -45,7 +45,7 @@ class JFormFieldMemberDatabase extends JFormFieldList
 		{
 			foreach ($messages as $message)
 			{
-				$options[] = JHtml::_('select.option', $message->id, $message->bells, $message->city, $message->designation);
+				$options[] = JHtml::_('select.option', $message->id, $message->bells, $message->place, $message->designation);
 			}
 		}
  

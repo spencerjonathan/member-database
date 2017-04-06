@@ -58,10 +58,13 @@ $listDirn      = $this->escape($this->filter_order_Dir);
 			<th width="2%">
 				<?php echo JHtml::_('grid.checkall'); ?>
 			</th>
-			<th width="40%">
+			<th width="30%">
 				<?php echo JHtml::_('grid.sort', 'Name', 'name', $listDirn, $listOrder) ;?>
 			</th>
-			<th width="40%">
+			<th width="30%">
+				<?php echo JHtml::_('grid.sort', 'Tower', 'tower', $listDirn, $listOrder) ;?>
+			</th>
+			<th width="30%">
 				<?php echo JHtml::_('grid.sort', 'Email', 'email', $listDirn, $listOrder) ;?>
 			</th>
 			<th width="7%">
@@ -92,6 +95,9 @@ $listDirn      = $this->escape($this->filter_order_Dir);
 						<td>
 							<a href="<?php echo $link; ?>" title="<?php echo JText::_('Edit Member'); ?>">
 							<?php echo $row->name; ?>
+						</td>
+						<td>
+							<?php echo $row->tower; ?>
 						</td>
 						<td>
 							<?php echo $row->email; ?>

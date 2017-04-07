@@ -109,6 +109,148 @@
 				class="inputbox"
 				default=""
 				/>
+                <field
+                                name="newsletters"
+                                type="radio"
+                                label="Newsletters?"
+                                description="Does the member want to receive newsletters?"
+                                class="btn-group btn-group-yesno"
+                                default="0"
+                                filter="integer">
+                                        <option value="1">JYES</option>
+                                        <option value="0">JNO</option>
+                </field>
+                <field
+                                name="date_elected"
+                                type="calendar"
+                                label="Date Elected"
+                                description="The date that the member was elected"
+                                class="inputbox"
+                                default="" 
+				/>
+                <field
+                                name="address1"
+                                type="text"
+                                label="Address 1"
+				size="100"
+                                description="Address 1"
+				class="inputbox"
+                		/>
+                <field
+                                name="address2"
+                                type="text"
+                                label="Address 2"
+				size="100"
+                                description="Address 2"
+				class="inputbox"
+                		/>
+                <field
+                                name="address3"
+                                type="text"
+                                label="Address 3"
+				size="100"
+                                description="Address 3"
+				class="inputbox"
+                		/>
+                <field
+                                name="town"
+                                type="text"
+                                label="Town"
+				size="50"
+                                description="Town"
+				class="inputbox"
+                		/>
+                <field
+                                name="county"
+                                type="text"
+                                label="County"
+				size="20"
+                                description="County"
+				class="inputbox"
+                		/>
+                <field
+                                name="postcode"
+                                type="text"
+                                label="Postcode"
+				size="9"
+                                description="Postcode"
+				class="inputbox"
+                		/>
+                <field
+                                name="country"
+                                type="text"
+                                label="Country"
+				size="2"
+                                description="Country"
+				class="inputbox"
+                		/>
+                <field
+                                name="country"
+                                type="text"
+                                label="Country"
+				size="2"
+                                description="Country"
+				class="inputbox"
+                		/>
+                <field
+                                name="databaseform"
+                                type="radio"
+                                label="Databaseform?"
+                                description="Databaseform (better description needed)?"
+                                class="btn-group btn-group-yesno"
+                                default="0"
+                                filter="integer">
+                                        <option value="1">JYES</option>
+                                        <option value="0">JNO</option>
+                </field>
+                <field
+                                name="notes"
+                                type="textarea"
+                                label="Notes"
+				size="200"
+                                description="Notes"
+				class="inputbox"
+				cols="60"
+				rows="3"
+                		/>
+                <field
+                                name="crb"
+                                type="radio"
+                                label="CRB Checked?"
+                                description="CRB Checked?"
+                                class="btn-group btn-group-yesno"
+                                default="0"
+                                filter="integer">
+                                        <option value="1">JYES</option>
+                                        <option value="0">JNO</option>
+                </field>
+                <field
+                                name="sub_recd"
+                                type="radio"
+                                label="Subscription Received?"
+                                description="Subscription Received?"
+                                class="btn-group btn-group-yesno"
+                                default="0"
+                                filter="integer">
+                                        <option value="1">JYES</option>
+                                        <option value="0">JNO</option>
+                </field>
+                <field
+                                name="dbs_date"
+                                type="calendar"
+                                label="DBS Date"
+                                description="The date that the member was awarded DBS certificate"
+                                class="inputbox"
+                                default="" 
+				/>
+                <field
+                                name="dbs_update"
+                                type="calendar"
+                                label="DBS Update"
+                                description="DBS Update"
+                                class="inputbox"
+                                default="" 
+				/>
 
 	</fieldset>
 </form>

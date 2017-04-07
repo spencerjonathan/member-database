@@ -38,7 +38,6 @@ class JFormRuleTowerid extends JFormRule
 		$towerId = (int) $value;
 
 		$userId = JFactory::getUser()->id;
-		//$towerId = $data['tower_id'];
 
 		error_log("value of \$user in test:" . json_encode(JFactory::getUser()), 0);
 
@@ -48,24 +47,18 @@ class JFormRuleTowerid extends JFormRule
 		$query = $db->getQuery(true)
 		->select('count(*)')
 		->from($db->quoteName('#__md_usertower', 'ut'))
-		->where('ut.user_id = ' . (int) $userId . ' and ut.id = ' . (int) $towerId);
+		->where('ut.user_id = ' . (int) $userId . ' and ut.tower_id = ' . (int) $towerId);
 
 		// Execute the query and load the rules from the result.
 		$db->setQuery($query);
 		$result = $db->loadResult();
 
-		if ($result == 1) {
+		if ($result > 0) {
 		        return true;
 		};
 
 		error_log("User with id " . $userId . " does not have authorisation to save member with tower_id " . $towerId, 0);
 		return false;
 
-	//	if ($int_value < 1)
-	//	{
-	//		return false;
-	//	}
-
-	//	return true;
 	}
 }

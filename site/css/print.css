@@ -1,0 +1,6 @@
+@media print
+{
+  h1 { page-break-before:always; color: green; }
+  h1.firstdistrict { page-break-before:avoid; color: red; }
+  div.tower { page-break-inside:avoid; page-break-after:auto }
+}

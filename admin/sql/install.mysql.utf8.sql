@@ -197,3 +197,17 @@ CREATE TABLE `#__md_member` (
   PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+
+CREATE TABLE `#__md_district` (
+  `id` int(1) NOT NULL AUTO_INCREMENT,
+  `name` varchar(25) DEFAULT NULL,
+  `include_in_ar` boolean DEFAULT NULL,
+  PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+INSERT INTO `#__md_district` (`id`, `name`, `include_in_ar`) VALUES
+(1, 'Northern District', TRUE),
+(2, 'Southern District', TRUE),
+(3, 'Eastern District', TRUE),
+(4, 'Western District', TRUE),
+(5, 'General Association', FALSE);

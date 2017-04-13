@@ -35,6 +35,11 @@ class JFormRuleTowerid extends JFormRule
 	 */
 	public function test(SimpleXMLElement $element, $value, $group = null, JRegistry $input = null, JForm $form = null)
 	{
+		
+		if (JFactory::getUser ()->authorise ( 'core.manage', 'com_memberdatabase' )) {
+			return true;
+		}
+		
 		$towerId = (int) $value;
 
 		$userId = JFactory::getUser()->id;

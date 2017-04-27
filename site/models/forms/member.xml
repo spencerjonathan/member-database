@@ -79,10 +79,10 @@
 				<option value="Non-Member">Non-Member</option>
 		</field>
 		<field
-				name="insurance_type"
+				name="insurance_group"
 				type="list"
-				label="Insurance Type"
-				description="The insurance type for the member"
+				label="Insurance Group"
+				description="The insurance group for the member"
 				default="">
 				<option value="">Please Select</option>
 				<option value="Under 16">Under 16</option>

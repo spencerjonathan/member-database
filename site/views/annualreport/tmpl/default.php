@@ -24,7 +24,7 @@ defined ( '_JEXEC' ) or die ( 'Restricted Access' );
 			$currentdistrictid = $tower->district_id;
 			?>
 			<h1
-				<?php if ($firstdistrict) { echo 'class="firstdistrict"'; $firstdistrict=0; } ?>
+				<?php if ($firstdistrict) { echo 'class="page-break-before-avoid"'; $firstdistrict=0; } else { echo 'class="page-break-before-always"'; } ?>
 				align="center"><?php echo $this->districts[$tower->district_id] ?></h1>
 			<h2 align="center">TOWER DETAILS AND MEMBERS FOR 2017</h2>
 		<?php endif ?>

@@ -53,4 +53,70 @@ class MemberDatabaseControllerMember extends JControllerForm {
 	protected function allowAdd($data = array(), $key = 'id') {
 		return true;
 	}
+	
+	/**
+	 * Method to verify a member's detail as being correct.
+	 *
+	 * @param   string  $key     The name of the primary key of the URL variable.
+	 * @param   string  $urlVar  The name of the URL variable if different from the primary key (sometimes required to avoid router collisions).
+	 *
+	 * @return  boolean  True if successful, false otherwise.
+	 *
+	 * @since   12.2
+	 */
+	public function verify($key = null, $urlVar = null)
+	{
+		$model = $this->getModel();
+		$table = $model->getTable();
+		$memberId = $this->input->get->get('id');
+		
+		error_log("member.verify function called with id = " . $memberId);
+		
+		// Determine the name of the primary key for the data.
+		if (empty($key))
+		{
+			$key = $table->getKeyName();
+		}
+		
+		// To avoid data collisions the urlVar may be different from the primary key.
+		if (empty($urlVar))
+		{
+			$urlVar = $key;
+		}
+		
+		error_log("member.verify controller has determined that key is " . $key . ".  About to call allowEdit...");
+		
+		$this->setRedirect(
+				JRoute::_(
+						'index.php?option=' . $this->option . '&view=' . $this->view_list
+						. $this->getRedirectToListAppend(), false
+						)
+				);
+		
+		// Access check.
+		if (!$this->allowEdit(array($key => $memberId), $key))
+		{
+			$this->setError(JText::_('JLIB_APPLICATION_ERROR_EDIT_NOT_PERMITTED'));
+			$this->setMessage($this->getError(), 'error');
+			
+			/* $this->setRedirect(
+					JRoute::_(
+							'index.php?option=' . $this->option . '&view=' . $this->view_list
+							. $this->getRedirectToListAppend(), false
+							)
+					);
+		 */	
+			return false;
+		}
+		
+		if ($model->markAsVerified ( $memberId )) {
+			return true;
+		} else {
+			$this->setError(JText::_('Could not verify member with id: ' . $memberId ));
+			$this->setMessage($this->getError(), 'error');
+			
+			return false;
+		}
+		
+	}
 }

@@ -1,8 +1,9 @@
 DROP TABLE IF EXISTS `#__md_tower`;
-DROP TABLE IF EXISTS `#__md_tower_verified`;
+DROP TABLE IF EXISTS `#__md_member_verified`;
 DROP TABLE IF EXISTS `#__md_member`;
 DROP TABLE IF EXISTS `#__md_usertower`;
 DROP TABLE IF EXISTS `#__md_insurance_group`;
+DROP TABLE IF EXISTS `#__md_district`;
 
 --CREATE TABLE #__md_tower ( `id` INT NOT NULL AUTO_INCREMENT , `bells` INT NOT NULL , `city` VARCHAR(50) NOT NULL , `designation` VARCHAR(50) NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
 
@@ -214,10 +215,9 @@ INSERT INTO `#__md_district` (`id`, `name`, `include_in_ar`) VALUES
 (4, 'Western District', TRUE),
 (5, 'General Association', FALSE);
 
-CREATE TABLE `#__md_tower_verified` ( `id` INT NOT NULL AUTO_INCREMENT , `tower_id` INT NOT NULL , `user_id` INT NOT NULL , `verified_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+CREATE TABLE `#__md_member_verified` ( `id` INT NOT NULL AUTO_INCREMENT , `member_id` INT NOT NULL , `user_id` INT NOT NULL , `verified_date` TIMESTAMP NOT NULL /* DEFAULT CURRENT_TIMESTAMP */ , PRIMARY KEY (`id`)) ENGINE = InnoDB;
 
-INSERT INTO `#__md_insurance_group` (`id`, `name`) VALUES
-(1, 'Under 16'),
-(2, '16-70'),
-(3, 'Over 70');
-
+--INSERT INTO `#__md_insurance_group` (`id`, `name`) VALUES
+--(1, 'Under 16'),
+--(2, '16-70'),
+--(3, 'Over 70');

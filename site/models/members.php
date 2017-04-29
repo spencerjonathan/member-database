@@ -32,7 +32,8 @@ class MemberDatabaseModelMembers extends JModelList
 				'id',
 				'tower',
 				'name',
-				'email'
+				/* 'email', */
+				'verified_date'
 			);
 		}
  
@@ -51,11 +52,14 @@ class MemberDatabaseModelMembers extends JModelList
 		$userid = JFactory::getUser()->id;
 		$query = $db->getQuery(true);
  
+		$verifiedSubQuery = '(SELECT member_id, max(verified_date) as `verified_date` FROM `#__md_member_verified` group by member_id) v';
+		
 		// Create the base select statement.
-		$query->select('m.*, concat_ws(\', \',place, designation) as tower, concat_ws(\', \',surname, forenames) as name')
+		$query->select('m.*, concat_ws(\', \',place, designation) as tower, concat_ws(\', \',surname, forenames) as name, v.verified_date')
                 ->from($db->quoteName('#__md_member', 'm'))
 		->join('INNER', $db->quoteName('#__md_usertower', 'ut') . ' ON (' . $db->quoteName('m.tower_id') . ' = ' . $db->quoteName('ut.tower_id') . ')')
 		->join('LEFT', $db->quoteName('#__md_tower', 't') . ' ON (' . $db->quoteName('m.tower_id') . ' = ' . $db->quoteName('t.id') . ')')
+		->join('LEFT', $verifiedSubQuery . ' ON (' . $db->quoteName('m.id') . ' = ' . $db->quoteName('v.member_id') . ')')
 		->where('ut.user_id = ' . $userid);
 
 		// Filter: like / search

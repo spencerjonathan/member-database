@@ -78,6 +78,7 @@ class MemberDatabaseModelMember extends JModelAdmin {
 		
 		return $data;
 	}
+	
 	public function getTowers() {
 		$db = JFactory::getDbo ();
 		$userId = JFactory::getUser ()->id;
@@ -97,4 +98,35 @@ class MemberDatabaseModelMember extends JModelAdmin {
 		
 		return $results;
 	}
+	
+	public function markAsVerified($memberId) {
+		$db = JFactory::getDbo ();
+		$userId = JFactory::getUser()->id;
+		$currentDate = date('Y-m-d H:i:s');
+		
+		// Create a new query object.
+		$query = $db->getQuery(true);
+		
+		// Insert columns.
+		$columns = array('member_id', 'user_id', 'verified_date');
+		
+		// Insert values.
+		$values = array($memberId, $userId, $db->quote($currentDate) );
+		
+		// Prepare the insert query.
+		$query
+		->insert($db->quoteName('#__md_member_verified'))
+		->columns($db->quoteName($columns))
+		->values(implode(',', $values));
+		
+		// Set the query using our newly populated query object and execute it.
+		$db->setQuery($query);
+		$result = $db->execute();
+		
+		error_log("Result from executing query to markAsVerified: " . serialize($result));
+		
+		return $result;
+		
+	}
+	
 }

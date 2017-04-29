@@ -69,21 +69,21 @@ foreach ( $this->members as $member ) :
 	<tr>
 		<td></td>
 		<th>Correspondence (incl Newsletter):</th>
-		<td>Email</td>
-		<td>Post</td>
-		<td>Neither</td>
+		<td>Email = <strong><?php if ($member->newsletters == "Email") { echo 'YES'; } else echo 'NO'; ?></strong></td>
+		<td>Post = <strong><?php if ($member->newsletters == "Post") { echo 'YES'; } else echo 'NO';?></strong></td>
+		<td>Neither = <strong><?php if ($member->newsletters == "Neither") { echo 'YES'; } else echo 'NO';?></strong></td>
 	</tr>
 	<tr>
 		<td></td>
 		<th>Insurance Group:</th>
-		<td>Under 16</td>
-		<td>16-70</td>
-		<td>Over 70</td>
+		<td>Under 16 = <strong><?php if ($member->insurance_group == "Under 16") { echo 'YES'; } else echo 'NO'; ?></strong></td>
+		<td>16-70 = <strong><?php if ($member->insurance_group == "16-70") { echo 'YES'; } else echo 'NO'; ?></strong></td>
+		<td>Over 70 = <strong><?php if ($member->insurance_group == "Over 70") { echo 'YES'; } else echo 'NO'; ?></strong></td>
 	</tr>
 	<tr>
 		<td></td>
-		<th colspan=2>Tick for an annual report (free):</th>
-		<td colspan=2>0</td>
+		<th colspan=2>You would like to recieve an annual report (free):</th>
+		<td colspan=2><strong><?php if ($member->annual_report == true) { echo 'YES'; } else echo 'NO'; ?></strong></td>
 	</tr>
 	<tr>
 		<td></td>

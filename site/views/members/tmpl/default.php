@@ -118,9 +118,10 @@ $listDirn = $this->escape ( $this->filter_order_Dir );
 				<td>
 							<?php echo $row->verified_date; ?>
 						</td>
-				<td><a class="btn btn-success" href="<?php echo $verify; ?>"> <span
-						class="icon-ok"></span> Verify
-				</a></td>
+				<td><button class="btn btn-success"
+						onclick="if (confirm('Are you sure you want to verify that the information held about this member is correct?')) { document.getElementById('v<?php echo $row->id ?>').click(); }">
+						<span class="icon-ok"></span> Verify
+					</button><a id='v<?php echo $row->id ?>' href='<?php echo $verify; ?>' /a></td>
 			</tr>
 				<?php endforeach; ?>
 			<?php endif; ?>

@@ -1,20 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <config>
 	<fieldset
-		name="usertowers"
-		label="COM_MEMBERDATABASE_CONFIG_USERTOWERS_SETTINGS_LABEL"
-		description="COM_MEMBERDATABASE_CONFIG_USERTOWERS_SETTINGS_DESC"
+		name="md_config"
+		label="COM_MEMBERDATABASE_CONFIG_SETTINGS_LABEL"
+		description="COM_MEMBERDATABASE_CONFIG_SETTINGS_DESC"
 	>
 		<field
-			name="show_category"
-			type="radio"
-			label="COM_MEMBERDATABASE_HELLOWORLD_FIELD_SHOW_CATEGORY_LABEL"
-			description="COM_MEMBERDATABASE_HELLOWORLD_FIELD_SHOW_CATEGORY_DESC"
-			default="0"
-		>
-			<option value="0">JHIDE</option>
-			<option value="1">JSHOW</option>
-		</field>
+			name="association_name"
+			type="text"
+			label="COM_MEMBERDATABASE_ASSOCIATION_NAME"
+			description="COM_MEMBERDATABASE_ASSOCIATION_DESC"
+			default="SCACR"
+		/>
+		
 	</fieldset>
 	<fieldset
 		name="permissions"

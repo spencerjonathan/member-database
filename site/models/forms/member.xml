@@ -109,17 +109,19 @@
 				class="inputbox"
 				default=""
 				/>
-                <field
-                                name="newsletters"
-                                type="radio"
-                                label="Newsletters?"
-                                description="Does the member want to receive newsletters?"
-                                class="btn-group btn-group-yesno"
-                                default="0"
-                                filter="integer">
-                                        <option value="1">JYES</option>
-                                        <option value="0">JNO</option>
-                </field>
+		<field
+				name="newsletters"
+				type="list"
+				label="Newsletters"
+				description="How does the member want to receive newsletters?"
+				required="true"
+				default="">
+					<option value="">Please Select</option>
+					<option value="Email">Email</option>
+					<option value="Postal">Postal</option>
+					<option value="Both">Both Email and Postal</option>
+					<option value="Neither">Neither</option>
+		</field>
                 <field
                                 name="date_elected"
                                 type="calendar"
@@ -132,41 +134,41 @@
                                 name="address1"
                                 type="text"
                                 label="Address 1"
-				size="100"
+								size="100"
                                 description="Address 1"
-				class="inputbox"
+								class="inputbox"
                 		/>
                 <field
                                 name="address2"
                                 type="text"
                                 label="Address 2"
-				size="100"
+								size="100"
                                 description="Address 2"
-				class="inputbox"
+								class="inputbox"
                 		/>
                 <field
                                 name="address3"
                                 type="text"
                                 label="Address 3"
-				size="100"
+								size="100"
                                 description="Address 3"
-				class="inputbox"
+								class="inputbox"
                 		/>
                 <field
                                 name="town"
                                 type="text"
                                 label="Town"
-				size="50"
+								size="50"
                                 description="Town"
-				class="inputbox"
+								class="inputbox"
                 		/>
                 <field
                                 name="county"
                                 type="text"
                                 label="County"
-				size="20"
+								size="20"
                                 description="County"
-				class="inputbox"
+								class="inputbox"
                 		/>
                 <field
                                 name="postcode"
@@ -196,7 +198,7 @@
                                 name="databaseform"
                                 type="radio"
                                 label="Databaseform?"
-                                description="Databaseform (better description needed)?"
+                                description="Has a 'Database form' been received for the member?  (redundant field)"
                                 class="btn-group btn-group-yesno"
                                 default="0"
                                 filter="integer">

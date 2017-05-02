@@ -110,6 +110,7 @@ class MemberDatabaseControllerMember extends JControllerForm {
 		}
 		
 		if ($model->markAsVerified ( $memberId )) {
+			$this->setMessage(JText::_('Member successfully verified.'));
 			return true;
 		} else {
 			$this->setError(JText::_('Could not verify member with id: ' . $memberId ));
@@ -118,5 +119,29 @@ class MemberDatabaseControllerMember extends JControllerForm {
 			return false;
 		}
 		
+	}
+	
+	
+	/**
+	 * Method to save and verify a member's detail as being correct.
+	 *
+	 * @param   string  $key     The name of the primary key of the URL variable.
+	 * @param   string  $urlVar  The name of the URL variable if different from the primary key (sometimes required to avoid router collisions).
+	 *
+	 * @return  boolean  True if successful, false otherwise.
+	 *
+	 * @since   12.2
+	 */
+	public function saveandverify($key = null, $urlVar = null) {
+		error_log("In member.saveandverify");
+		if ($this->save($key, $urlVar)) {
+			$return = $this->verify($key, $urlVar);
+			
+			if ($return == true) {
+				$this->setMessage(JText::_('Member successfully saved and verified.'));
+			}
+			return $return;
+			
+		} else return false;
 	}
 }

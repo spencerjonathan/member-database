@@ -16,7 +16,7 @@ if(!class_exists('JToolbarHelper')) {
 
 $document = JFactory::getDocument();
 $document->addScript('./media/system/js/core.js');
-$document->addScript('./components/com_memberdatabase/js/typeahead.bundle.js');
+//$document->addScript('./components/com_memberdatabase/js/typeahead.bundle.js');
 
  
 /**
@@ -94,5 +94,7 @@ class MemberDatabaseViewMember extends JViewLegacy
 			'member.cancel',
 			$isNew ? 'JTOOLBAR_CANCEL' : 'JTOOLBAR_CLOSE'
 		);
+		
+		//echo JToolbar::getInstance()->render();
 	}
 }

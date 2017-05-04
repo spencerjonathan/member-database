@@ -13,7 +13,7 @@ $towers = $this->get ( "TowersAssocArray" );
 foreach ( $this->members as $member ) :
 	echo '<div class="page-break-after-always" style="font-size:20px">';
 	echo $towers [$member->tower_id];
-	echo '<h1 align="center">SCACR Member Details 2017</h1>';
+	echo '<h1 align="center">' . $this->association_name . ' Member Details ' . $this->year . '</h1>';
 	
 	$address = $member->address1;
 	if ($member->address2 != "") {

@@ -31,9 +31,15 @@ class MemberDatabaseViewAnnualreport extends JViewLegacy {
 	 * @return void
 	 */
 	function display($tpl = null) {
+		jimport('joomla.application.component.helper');
+		$verification_required_since = JComponentHelper::getParams('com_memberdatabase')->get('verification_required_since');
+		$date = DateTime::createFromFormat("Y-m-d", $verification_required_since);
+		
 		$this->towers = $this->get ( 'Towers' );
 		$this->members = $this->get ( 'Members' );
 		$this->districts = $this->get ( 'Districts' );
+		$this->association_name = JComponentHelper::getParams('com_memberdatabase')->get('association_name');
+		$this->year = $date->format("Y");
 
 		echo '<div id="md-report">';
 		echo '<button onclick="window.print()" class="btn">

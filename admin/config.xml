@@ -1,33 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <config>
-	<fieldset
-		name="md_config"
-		label="COM_MEMBERDATABASE_CONFIG_SETTINGS_LABEL"
-		description="COM_MEMBERDATABASE_CONFIG_SETTINGS_DESC"
-	>
-		<field
-			name="association_name"
-			type="text"
-			label="COM_MEMBERDATABASE_ASSOCIATION_NAME"
-			description="COM_MEMBERDATABASE_ASSOCIATION_DESC"
-			default="SCACR"
-		/>
-		
+	<fieldset name="md_config" label="Member Database Config Settings"
+		description="Member Database Config Settings">
+
+		<!-- Association name is made configurable so that this component can be used by other associations -->
+		<field name="association_name" type="text"
+			label="Association Name" description="The name of the Association as it is to appear on screens and reports"
+			default="SCACR" />
+
+		<field name="db_locked" type="radio" label="Database Locked?"
+			description="Is the database locked for editing?" class="btn-group btn-group-yesno"
+			default="0" filter="integer">
+			<option value="1">JYES</option>
+			<option value="0">JNO</option>
+		</field>
+
+		<field name="verification_required_since" type="calendar"
+			label="Verification Required Since"
+			description="Members will be flagged as needing re-verification if they've not been verified since this date (usually set to the start of the current year).  This date also determines the year number on the reports"
+			class="inputbox" default="" />
+
 	</fieldset>
-	<fieldset
-		name="permissions"
-		label="JCONFIG_PERMISSIONS_LABEL"
-		description="JCONFIG_PERMISSIONS_DESC"
-	>
-		<field
-			name="rules"
-			type="rules"
-			label="JCONFIG_PERMISSIONS_LABEL"
-			class="inputbox"
-			validate="rules"
-			filter="rules"
-			component="com_memberdatabase"
-			section="tower"
-		/>
+	<fieldset name="permissions" label="JCONFIG_PERMISSIONS_LABEL"
+		description="JCONFIG_PERMISSIONS_DESC">
+		<field name="rules" type="rules" label="JCONFIG_PERMISSIONS_LABEL"
+			class="inputbox" validate="rules" filter="rules" component="com_memberdatabase"
+			section="tower" />
 	</fieldset>
 </config>

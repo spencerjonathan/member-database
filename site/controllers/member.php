@@ -18,6 +18,19 @@ defined ( '_JEXEC' ) or die ( 'Restricted access' );
  */
 class MemberDatabaseControllerMember extends JControllerForm {
 	protected function allowEdit($data = array(), $key = 'id') {
+		
+		jimport('joomla.application.component.helper');
+		
+		$db_locked = JComponentHelper::getParams('com_memberdatabase')->get('db_locked');
+		
+		error_log("member.allowEdit: db_locked is " . $db_locked);
+		
+		if ($db_locked == true) {
+			$this->setError('Editing member details is currently not permitted because the database is currently locked.');
+			$this->setMessage($this->getError(), 'error');
+			return false;
+		}
+		
 		$userId = JFactory::getUser ()->id;
 		$memberId = $data ['id'];
 		
@@ -48,10 +61,32 @@ class MemberDatabaseControllerMember extends JControllerForm {
 	}
 	
 	protected function allowSave($data = array(), $key = 'id') {
+		
+		$db_locked = JComponentHelper::getParams('com_memberdatabase')->get('db_locked');
+		
+		error_log("member.allowSave: db_locked is " . $db_locked);
+		
+		if ($db_locked == true) {
+			$this->setError('Editing member details is currently not permitted because the database is currently locked.');
+			$this->setMessage($this->getError(), 'error');
+			return false;
+		}
+		
 		return true;
 	}
 	protected function allowAdd($data = array(), $key = 'id') {
 		return true;
+		
+		$db_locked = JComponentHelper::getParams('com_memberdatabase')->get('db_locked');
+		
+		error_log("member.allowAdd: db_locked is " . $db_locked);
+		
+		if ($db_locked == true) {
+			$this->setError('Editing member details is currently not permitted because the database is currently locked.');
+			$this->setMessage($this->getError(), 'error');
+			return false;
+		}
+		
 	}
 	
 	/**

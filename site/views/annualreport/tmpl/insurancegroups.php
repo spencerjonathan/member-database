@@ -40,7 +40,7 @@ defined ( '_JEXEC' ) or die ( 'Restricted Access' );
 							<?php if ($firstdistrict) { echo 'class="firstdistrict"'; $firstdistrict=0; } ?>
 							align="center"><?php echo $this->districts[$tower->district_id] ?></h1>
 						
-							<h2 align="center">MEMBERS BY TOWER AND INSURANCE GROUP FOR 2017</h2>
+							<h2 align="center">MEMBERS BY TOWER AND INSURANCE GROUP FOR <?php echo $this->year; ?></h2>
 							
 			<table style="table-layout: fixed;" width="100%" class="table table-striped">
 			<col width="40%" />

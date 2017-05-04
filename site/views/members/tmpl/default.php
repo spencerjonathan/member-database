@@ -97,9 +97,15 @@ $listDirn = $this->escape ( $this->filter_order_Dir );
 			<?php if (!empty($this->items)) : ?>
 				<?php
 				
+				jimport ( 'joomla.application.component.helper' );
+				$verification_required_since = JComponentHelper::getParams ( 'com_memberdatabase' )->get ( 'verification_required_since' );
+				$verification_required_since_time = strtotime($verification_required_since);
+				
 				foreach ( $this->items as $i => $row ) :
 					$link = JRoute::_ ( 'index.php?option=com_memberdatabase&task=member.edit&id=' . $row->id );
 					$verify = JRoute::_ ( 'index.php?option=com_memberdatabase&task=member.verify&id=' . $row->id );
+					
+					$verified_time = strtotime($row->verified_date);
 					?>
 					<tr>
 				<td>
@@ -116,12 +122,25 @@ $listDirn = $this->escape ( $this->filter_order_Dir );
 							<?php echo $row->tower; ?>
 						</td>
 				<td>
-							<?php echo $row->verified_date; ?>
+							<?php
+					
+					if (! $row->verified_date) {
+						echo '<span style="color: red">Unverified!</span>';
+					} else {
+						if ($verified_time < $verification_required_since_time) {
+							echo '<span style="color: red">' . $row->verified_date . '</span>';
+						} else {
+							echo $row->verified_date;
+						}
+					}
+					
+					?>
 						</td>
 				<td><button class="btn btn-success"
 						onclick="if (confirm('Are you sure you want to verify that the information held about this member is correct?')) { document.getElementById('v<?php echo $row->id ?>').click(); }">
 						<span class="icon-ok"></span> Verify
-					</button><a id='v<?php echo $row->id ?>' href='<?php echo $verify; ?>' /a></td>
+					</button>
+					<a id='v<?php echo $row->id ?>' href='<?php echo $verify; ?>' /a></td>
 			</tr>
 				<?php endforeach; ?>
 			<?php endif; ?>

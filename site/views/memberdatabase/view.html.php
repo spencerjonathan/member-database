@@ -26,12 +26,14 @@ class MemberDatabaseViewMemberDatabase extends JViewLegacy
 	 */
 	function display($tpl = null)
 	{
+		jimport('joomla.application.component.helper');
+		$this->verification_required_since = JComponentHelper::getParams('com_memberdatabase')->get('verification_required_since');
+		$date = DateTime::createFromFormat("Y-m-d", $this->verification_required_since);
+		$this->year = $date->format("Y");
+		
 		// Assign data to the view
-		$this->msg = $this->get('Msg');
-
-		$this->msg .= '<br>index.php?option=com_memberdatabase&view=memberdatabase&id=1 or index.php?option=com_memberdatabase&view=memberdatabase&id=2';
- 
-		// Display the view
+		$this->status = $this->get('Status');
+		
 		parent::display($tpl);
 	}
 }

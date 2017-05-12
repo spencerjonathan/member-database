@@ -71,12 +71,12 @@
 				required="true"
 				default="">
 				<option value="">Please Select</option>
-				<option value="Adult">Adult</option>
-				<option value="Associate">Associate</option>
-				<option value="Honorary Life">Honorary Life</option>
-				<option value="Junior">Junior</option>
-				<option value="Long Service">Long Service</option>
-				<option value="Non-Member">Non-Member</option>
+				<option value="1">Adult</option>
+				<option value="6">Associate</option>
+				<option value="3">Honorary Life</option>
+				<option value="5">Junior</option>
+				<option value="2">Long Service</option>
+				<option value="4">Non-Member</option>
 		</field>
 		<field
 				name="insurance_group"

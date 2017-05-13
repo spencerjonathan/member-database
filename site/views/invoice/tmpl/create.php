@@ -18,9 +18,9 @@ $document->addScript('./media/system/js/core.js');
 	<div class="row-fluid">
 		<div class="span12">
 
-<button onclick="Joomla.submitbutton('invoice.save')" id="save_button"
-	class="btn btn-small">
-	<span class="icon-save"></span> Save & Close
+<button onclick="Joomla.submitbutton('invoice.add')" id="add_button"
+	class="btn btn-small btn-success">
+	<span class="icon-add"></span> Add & Close
 </button>
 <button onclick="Joomla.submitbutton('invoice.cancel')"
 	class="btn btn-small">
@@ -64,7 +64,7 @@ $document->addScript('./media/system/js/core.js');
 						<td colspan=4 style="text-align: right"><?php echo number_format((float)$total_fee, 2, '.', ''); ?></td>
 					</tr>
 				</table>
-				<input type="hidden" name="task" value="invoice.save" />
+				<input type="hidden" name="task" value="invoice.add" />
 				<input type="hidden" name="tower-id" value="<?php echo $this->tower->id; ?>" />
 				<input type="hidden" name="year" value="<?php echo $this->year; ?>" />
 			</form>

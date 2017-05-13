@@ -50,7 +50,7 @@ class MemberDatabaseModelMemberDatabase extends JModelItem
 			$query->where ( 'ut.user_id = ' . $userid );
 		}
 		
-		$query->where('ut.user_id = ' . $userid . ' and v.member_id is null');
+		$query->where('v.member_id is null');
 		
 		$db->setQuery ( $query );
 		

@@ -10,6 +10,9 @@
 // No direct access to this file
 defined ( '_JEXEC' ) or die ( 'Restricted access' );
 
+$document = JFactory::getDocument();
+$document->addScript('./media/system/js/core.js');
+
 // JHtmlBootstrap::loadCss();
 
 // $document = JFactory::getDocument ();
@@ -22,6 +25,9 @@ defined ( '_JEXEC' ) or die ( 'Restricted access' );
  * @since 0.0.1
  */
 class MemberDatabaseViewInvoice extends JViewLegacy {
+
+	protected $form = null;
+
 	/**
 	 * Display the Invoice view
 	 *
@@ -40,6 +46,17 @@ class MemberDatabaseViewInvoice extends JViewLegacy {
 		$this->year = $date->format("Y");
 		$this->members = $this->get('Members');
 		$this->tower = $this->get('Tower');
+		
+		$this->form = $this->get('Form');
+		$this->item = $this->get('Item');
+		
+		// Check for errors.
+		if (count($errors = $this->get('Errors')))
+		{
+			JError::raiseError(500, implode('<br />', $errors));
+			
+			return false;
+		}
 		
 		//$this->members = $this->_models[$this->_defaultModel]->getMembers();
 		

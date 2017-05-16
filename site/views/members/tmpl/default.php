@@ -24,8 +24,8 @@ $listDirn = $this->escape ( $this->filter_order_Dir );
 <div class="container-fluid">
 	<div class="row-fluid">
 		<div class="span12">
-			<div class="btn-toolbar" id="toolbar" role="btn-toolbar">
-				<div class="btn-group">
+			<!-- <div class="btn-toolbar" id="toolbar" role="btn-toolbar">
+				<div class="btn-group"> -->
 					<button onclick="Joomla.submitbutton('member.add')"
 						class="btn btn-success">
 						<span class="icon-new icon-white"></span> New
@@ -43,10 +43,10 @@ $listDirn = $this->escape ( $this->filter_order_Dir );
 					<button
 						onclick="if (document.adminForm.boxchecked.value==0){alert('Please first make a selection from the list.');}else{ Joomla.submitbutton('members.verify')}"
 						class="btn btn-success">
-						<span class="icon-ok"></span> Verify
+						<span class="icon-ok icon-white"></span> Verify
 					</button>
-				</div>
-			</div>
+				<!-- </div>
+			</div> -->
 		</div>
 	</div>
 </div>

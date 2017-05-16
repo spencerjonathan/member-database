@@ -33,7 +33,7 @@ class MemberDatabaseViewInvoices extends JViewLegacy
 
 		// Get application
 		$app = JFactory::getApplication();
-		$context = "memberdatabase.list.admin.member";
+		$context = "memberdatabase.list.admin.invoice";
 
 		// Get data from the model
 		$this->items		= $this->get('Items');
@@ -74,7 +74,7 @@ class MemberDatabaseViewInvoices extends JViewLegacy
 		}
 
 		JToolbarHelper::title($title, 'member');
-		JToolbarHelper::addNew('member.add');
+		//JToolbarHelper::addNew('member.add');
 		JToolbarHelper::editList('member.edit');
 		JToolbarHelper::deleteList('', 'members.delete');
 	}

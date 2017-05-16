@@ -1,74 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <form>
 	<fieldset addrulepath="components/com_memberdatabase/models/rules">
-		<field
-				name="id"
-				type="number"
-				label="Invoice Number"
-				message="Please select a valid tower for the memeber"
-				readonly="true"
-				/>
-		<field
-				name="tower_id"
-				type="number"
-				class="required"
-				label="Tower ID"
-				validate="towerid"
-				message="Please select a valid tower for the memeber"
-				required="true"
-				readonly="true"
-				/>
-		<field
-				name="year"
-				type="number"
-				label="Year"
-				description="Which period the invoice is for"
-				size="4"
-				class="inputbox required"
-				required="true"
-				default=""
-				readonly="true"
-				/>
-		<field
-				name="created_by_user_id"
-				type="number"
-				label="Created By User"
-				description="The name of the user who created the invoice"
-				size="3"
-				class="inputbox required"
-				required="true"
-				default=""
-				readonly="true"
-				/>
-                <field
-                                name="created_date"
-                                type="calendar"
-                                label="Created Date"
-                                description="The date that the invoice was created"
-                                class="inputbox"
-                                default="" 
-				readonly="true"
-				/>
-		<field
-				name="payment_method"
-				type="list"
-				label="Payment Method"
-				description="The method of payment used"
-				default="">
-				<option value="">Please Select</option>
-				<option value="Cheque">Cheque</option>
-				<option value="Bank Transfer">Bank Transfer</option>
-				<option value="Cash">Cash</option>
-				<option value="Paypal">Paypal</option>
+		<field name="id" type="number" label="Invoice Number"
+			message="Please select a valid tower for the memeber" readonly="true" />
+			
+		<field name="tower_id" type="number" class="required" label="Tower ID"
+			validate="towerid" message="Please select a valid tower for the memeber"
+			required="true" readonly="true" />
+			
+		<field name="year" type="number" label="Year"
+			description="Which period the invoice is for" size="4"
+			class="inputbox required" required="true" default="" readonly="true" />
+			
+		<field name="created_by_user_id" type="number" label="Created By User"
+			description="The name of the user who created the invoice" size="3"
+			class="inputbox required" required="true" default="" readonly="true" />
+			
+		<field name="created_date" type="calendar" label="Created Date"
+			description="The date that the invoice was created" class="inputbox"
+			default="" readonly="true" />
+			
+		<field name="paid" type="radio" label="Invoice Paid?"
+			description="Has the invoice been paid?" class="btn-group btn-group-yesno"
+			default="0" filter="integer">
+			<option value="1">JYES</option>
+			<option value="0">JNO</option>
 		</field>
-		<field
-				name="payment_reference"
-				type="text"
-				label="Payment Reference"
-				description="Reference information about payment (e.g. cheque number)"
-				size="50"
-				class="inputbox required"
-				default=""
-				/>
+		
+		<field name="paid_date" type="calendar" label="Payment Received Date"
+			description="The date that the payment for the invoice was received" class="inputbox"
+			default=""/>
+
+		<field name="payment_method" type="list" label="Payment Method"
+			description="The method of payment used" default="">
+			<option value="">Please Select</option>
+			<option value="Cheque">Cheque</option>
+			<option value="Bank Transfer">Bank Transfer</option>
+			<option value="Cash">Cash</option>
+			<option value="Paypal">Paypal</option>
+		</field>
+		
+		<field name="payment_reference" type="text" label="Payment Reference"
+			description="Reference information about payment (e.g. cheque number)"
+			size="50" class="inputbox required" default="" />
 	</fieldset>
 </form>

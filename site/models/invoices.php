@@ -40,6 +40,16 @@ class MemberDatabaseModelInvoices extends JModelList
 		parent::__construct($config);
 	}
 
+	
+	public function getInvoices() {
+		$db    = JFactory::getDbo();
+		$query = $this->getListQuery();
+		$db->setQuery ( $query );
+		
+		$results = $db->loadObjectList ();
+		return $results;
+	}
+	
 	/**
 	 * Method to build an SQL query to load the list data.
 	 *
@@ -53,7 +63,7 @@ class MemberDatabaseModelInvoices extends JModelList
 		$query = $db->getQuery(true);
 		
 		// Create the base select statement.
-		$query->select('inv.id, inv.tower_id, inv.year, inv.created_by_user_id, u.name as created_by_user, inv.created_date, inv.payment_method, inv.payment_reference, concat_ws(", ", t.place, t.designation) as tower_name, sum(im.fee) as fee')
+		$query->select('inv.id, inv.tower_id, inv.year, inv.created_by_user_id, u.name as created_by_user, inv.created_date, inv.payment_method, inv.payment_reference, concat_ws(", ", t.place, t.designation) as tower_name, sum(im.fee) as fee, inv.paid, inv.paid_date')
                 ->from($db->quoteName('#__md_invoice', 'inv'))
 		->join('INNER', $db->quoteName('#__users', 'u') . ' ON (' . $db->quoteName('inv.created_by_user_id') . ' = ' . $db->quoteName('u.id') . ')')
 		->join('INNER', $db->quoteName('#__md_invoicemember', 'im') . ' ON (' . $db->quoteName('inv.id') . ' = ' . $db->quoteName('im.invoice_id') . ')')

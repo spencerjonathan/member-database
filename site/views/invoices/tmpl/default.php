@@ -24,12 +24,8 @@ $listDirn = $this->escape ( $this->filter_order_Dir );
 <div class="container-fluid">
 	<div class="row-fluid">
 		<div class="span12">
-			<div class="btn-toolbar" id="toolbar" role="btn-toolbar">
-				<div class="btn-group">
-					<button onclick="Joomla.submitbutton('invoice.add')"
-						class="btn btn-success">
-						<span class="icon-new icon-white"></span> New
-					</button>
+			<!-- <div class="btn-toolbar" id="toolbar" role="btn-toolbar">
+				<div class="btn-group"> -->
 					<button
 						onclick="if (document.adminForm.boxchecked.value==0){alert('Please first make a selection from the list.');}else{ Joomla.submitbutton('invoice.edit')}"
 						class="btn">
@@ -40,13 +36,8 @@ $listDirn = $this->escape ( $this->filter_order_Dir );
 						class="btn">
 						<span class="icon-delete"></span> Delete
 					</button>
-					<button
-						onclick="if (document.adminForm.boxchecked.value==0){alert('Please first make a selection from the list.');}else{ Joomla.submitbutton('invoices.verify')}"
-						class="btn btn-success">
-						<span class="icon-ok"></span> Verify
-					</button>
-				</div>
-			</div>
+				<!-- </div>
+			</div> -->
 		</div>
 	</div>
 </div>
@@ -56,7 +47,7 @@ $listDirn = $this->escape ( $this->filter_order_Dir );
 	method="post" id="adminForm" name="adminForm">
 	<div class="row-fluid">
 		<div class="span6">
-			<?php echo JText::_('Members Filter'); ?>
+			<?php echo JText::_('Invoices Filter'); ?>
 			<?php
 			echo JLayoutHelper::render ( 'joomla.searchtools.default', array (
 					'view' => $this 

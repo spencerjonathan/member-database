@@ -20,7 +20,7 @@ $document->addScript('./media/system/js/core.js');
 
 <button onclick="Joomla.submitbutton('invoice.add')" id="add_button"
 	class="btn btn-small btn-success">
-	<span class="icon-add"></span> Add & Close
+	<span class="icon-new icon-white"></span> Add & Close
 </button>
 <button onclick="Joomla.submitbutton('invoice.cancel')"
 	class="btn btn-small">

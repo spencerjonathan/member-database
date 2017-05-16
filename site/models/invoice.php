@@ -20,17 +20,19 @@ class MemberDatabaseModelInvoice extends JModelAdmin {
 	/**
 	 * Method to get a table object, load it if necessary.
 	 *
-	 * @param   string  $type    The table name. Optional.
-	 * @param   string  $prefix  The class prefix. Optional.
-	 * @param   array   $config  Configuration array for model. Optional.
-	 *
-	 * @return  JTable  A JTable object
-	 *
-	 * @since   1.6
+	 * @param string $type
+	 *        	The table name. Optional.
+	 * @param string $prefix
+	 *        	The class prefix. Optional.
+	 * @param array $config
+	 *        	Configuration array for model. Optional.
+	 *        	
+	 * @return JTable A JTable object
+	 *        
+	 * @since 1.6
 	 */
-	public function getTable($type = 'Invoice', $prefix = 'MemberDatabaseTable', $config = array())
-	{
-		return JTable::getInstance($type, $prefix, $config);
+	public function getTable($type = 'Invoice', $prefix = 'MemberDatabaseTable', $config = array()) {
+		return JTable::getInstance ( $type, $prefix, $config );
 	}
 	
 	/**
@@ -44,15 +46,13 @@ class MemberDatabaseModelInvoice extends JModelAdmin {
 	 */
 	public function __construct($config = array()) {
 		parent::__construct ( $config );
-		
-
 	}
 	
 	/**
 	 * Method to get the data that should be injected in the form.
 	 *
 	 * @return mixed The data for the form.
-	 *
+	 *        
 	 * @since 1.6
 	 */
 	protected function loadFormData() {
@@ -73,16 +73,16 @@ class MemberDatabaseModelInvoice extends JModelAdmin {
 	 *        	Data for the form.
 	 * @param boolean $loadData
 	 *        	True if the form is to load its own data (default case), false if not.
-	 *
+	 *        	
 	 * @return mixed A JForm object on success, false on failure
-	 *
+	 *        
 	 * @since 1.6
 	 */
 	public function getForm($data = array(), $loadData = true) {
 		// Get the form.
 		$form = $this->loadForm ( 'com_memberdatabase.invoice', 'invoice', array (
 				'control' => 'jform',
-				'load_data' => $loadData
+				'load_data' => $loadData 
 		) );
 		
 		if (empty ( $form )) {
@@ -91,10 +91,7 @@ class MemberDatabaseModelInvoice extends JModelAdmin {
 		
 		return $form;
 	}
-	
-	
 	public function getTower() {
-
 		$jinput = JFactory::getApplication ()->input;
 		$this->towerId = $jinput->get ( 'towerId', 1, 'INT' );
 		
@@ -133,6 +130,16 @@ class MemberDatabaseModelInvoice extends JModelAdmin {
 	 */
 	public function getMembers() {
 		// Initialize variables.
+		
+		jimport('joomla.application.component.helper');
+		$verification_required_since = JComponentHelper::getParams('com_memberdatabase')->get('verification_required_since');
+		if (! $verification_required_since) {
+			error_log ( "verification_required_since global configuration option is not set for the MemberDatabase." );
+		}
+		
+		$date = DateTime::createFromFormat ( "Y-m-d", $verification_required_since );
+		$year = $date->format ( "Y" );
+		
 		$db = JFactory::getDbo ();
 		$userid = JFactory::getUser ()->id;
 		$query = $db->getQuery ( true );
@@ -140,6 +147,7 @@ class MemberDatabaseModelInvoice extends JModelAdmin {
 		// Create the base select statement.
 		$query->select ( 'm.id, mt.name as member_type, concat_ws(\', \',m.surname, m.forenames) as name, mt.fee' )->from ( $db->quoteName ( '#__md_member', 'm' ) );
 		$query->join ( 'INNER', $db->quoteName ( '#__md_member_type', 'mt' ) . ' ON (' . $db->quoteName ( 'm.member_type_id' ) . ' = ' . $db->quoteName ( 'mt.id' ) . ')' );
+		$query->join ( 'LEFT', '(select imsub.id, member_id, year from c1jr0_md_invoicemember imsub INNER JOIN c1jr0_md_invoice AS i ON (imsub.invoice_id = i.id) where year = ' . $year . ') as im on m.id = im.member_id' );
 		
 		if (! JFactory::getUser ()->authorise ( 'core.manage', 'com_memberdatabase' )) {
 			$query->join ( 'INNER', $db->quoteName ( '#__md_usertower', 'ut' ) . ' ON (' . $db->quoteName ( 'm.tower_id' ) . ' = ' . $db->quoteName ( 'ut.tower_id' ) . ')' );
@@ -147,6 +155,7 @@ class MemberDatabaseModelInvoice extends JModelAdmin {
 		}
 		
 		$query->where ( 'm.tower_id = ' . $this->towerId );
+		$query->where ( 'im.id is null' );
 		
 		$query->order ( 'surname, forenames asc' );
 		
@@ -156,7 +165,6 @@ class MemberDatabaseModelInvoice extends JModelAdmin {
 		
 		return $results;
 	}
-	
 	public function addInvoice($towerId, $year, $userId, $members) {
 		$db = JFactory::getDbo ();
 		$userId = JFactory::getUser ()->id;
@@ -200,7 +208,7 @@ class MemberDatabaseModelInvoice extends JModelAdmin {
 		$db->setQuery ( $query );
 		$invoiceId = $db->loadResult ();
 		
-		error_log ( "Result from getting last insert id: " . $invoiceId);
+		error_log ( "Result from getting last insert id: " . $invoiceId );
 		
 		foreach ( $members as $member ) {
 			if (! $this->addMemberToInvoice ( $invoiceId, $member )) {
@@ -210,9 +218,8 @@ class MemberDatabaseModelInvoice extends JModelAdmin {
 		
 		return $invoiceId;
 	}
-	
 	protected function addMemberToInvoice($invoiceId, $memberId) {
-		error_log("in addMemberToInvoice(" . $invoiceId . ", " . $memberId . ")");
+		error_log ( "in addMemberToInvoice(" . $invoiceId . ", " . $memberId . ")" );
 		$db = JFactory::getDbo ();
 		
 		// Create a new query object.
@@ -226,7 +233,7 @@ class MemberDatabaseModelInvoice extends JModelAdmin {
 		INNER JOIN #__md_member_type mt on m.member_type_id = mt.id 
 		where m.id = ' . $memberId;
 		
-		$query->insert($dml);
+		$query->insert ( $dml );
 		
 		// Set the query using our newly populated query object and execute it.
 		$db->setQuery ( $query );

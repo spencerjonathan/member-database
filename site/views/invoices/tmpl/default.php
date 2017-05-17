@@ -64,7 +64,8 @@ $listDirn = $this->escape ( $this->filter_order_Dir );
 				<th width="15%"> <?php echo JHtml::_('grid.sort', 'Tower', 'tower', $listDirn, $listOrder) ;?> </th>
 				<th width="15%"> <?php echo JHtml::_('grid.sort', 'Created User', 'created_by_user', $listDirn, $listOrder) ;?> </th>
 				<th width="15%"> <?php echo JHtml::_('grid.sort', 'Created Date', 'created_date', $listDirn, $listOrder) ;?> </th>
-				<th width="15%"> <?php echo JHtml::_('grid.sort', 'Amount £', 'fee', $listDirn, $listOrder) ;?> </th>
+				<th width="15%" style="text-align: right"> <?php echo JHtml::_('grid.sort', 'Amount £', 'fee', $listDirn, $listOrder) ;?> </th>
+				<th width="15%" >Action</th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -87,9 +88,10 @@ $listDirn = $this->escape ( $this->filter_order_Dir );
 				
 				foreach ( $this->items as $i => $row ) :
 					$link = JRoute::_ ( 'index.php?option=com_memberdatabase&task=invoice.edit&id=' . $row->id );
+					$view = JRoute::_ ( 'index.php?option=com_memberdatabase&view=invoice&layout=view&id=' . $row->id );
 					$verify = JRoute::_ ( 'index.php?option=com_memberdatabase&task=invoice.verify&id=' . $row->id );
 					
-					$created_time = strtotime ( $row->created_date );
+					//$created_time = strtotime ( $row->created_date );
 					?>
 					<tr>
 				<td> <?php echo $this->pagination->getRowOffset($i); ?> </td>
@@ -99,8 +101,11 @@ $listDirn = $this->escape ( $this->filter_order_Dir );
 						</td>
 				<td> <?php echo $row->tower_name; ?> </td>
 				<td> <?php echo $row->created_by_user; ?> </td>
-				<td> <?php echo $created_time; ?> </td>
-				<td> <?php echo $row->fee; ?> </td>
+				<td> <?php echo $row->created_date; ?> </td>
+				<td style="text-align: right">£<?php echo number_format((float)$row->fee, 2, '.', ''); ?></td>
+				
+				<td><a class="btn" description="View the Invoice" href="<?php echo $view; ?>"><span class="icon-eye-open"></span></a>
+				<a class="btn" description="Edit the Invoice" href="<?php echo $link; ?>"><span class="icon-edit"></span></a></td>
 			</tr>
 				<?php endforeach; ?>
 			<?php endif; ?>

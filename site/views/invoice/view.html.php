@@ -13,12 +13,6 @@ defined ( '_JEXEC' ) or die ( 'Restricted access' );
 $document = JFactory::getDocument();
 $document->addScript('./media/system/js/core.js');
 
-// JHtmlBootstrap::loadCss();
-
-// $document = JFactory::getDocument ();
-//$document->addStyleSheet ( './media/jui/css/bootstrap.min.css' );
-//$document->addStyleSheet ( './components/com_memberdatabase/css/print.css' );
-
 /**
  * MembersDatabase View
  *
@@ -44,8 +38,7 @@ class MemberDatabaseViewInvoice extends JViewLegacy {
 		$date = DateTime::createFromFormat("Y-m-d", $verification_required_since);
 		
 		$this->year = $date->format("Y");
-		$this->members = $this->get('Members');
-		$this->tower = $this->get('Tower');
+		
 		
 		$this->form = $this->get('Form');
 		$this->item = $this->get('Item');
@@ -57,15 +50,6 @@ class MemberDatabaseViewInvoice extends JViewLegacy {
 			
 			return false;
 		}
-		
-		//$this->members = $this->_models[$this->_defaultModel]->getMembers();
-		
-		
-		/* $this->towers = $this->get ( 'Towers' );
-		$this->members = $this->get ( 'Members' );
-		$this->districts = $this->get ( 'Districts' );
-		$this->association_name = JComponentHelper::getParams('com_memberdatabase')->get('association_name'); */
-		//$this->year = $date->format("Y");
 		
 		// Display the template
 		parent::display ( $tpl );

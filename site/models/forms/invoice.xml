@@ -27,7 +27,7 @@
 			<option value="0">JNO</option>
 		</field>
 		
-		<field name="paid_date" type="calendar" label="Payment Received Date"
+		<field name="paid_date" type="text" label="Payment Received Date"
 			description="The date that the payment for the invoice was received" class="inputbox"
 			default=""/>
 

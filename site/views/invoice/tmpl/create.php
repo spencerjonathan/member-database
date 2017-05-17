@@ -8,8 +8,8 @@
 // No direct access to this file
 defined ( '_JEXEC' ) or die ( 'Restricted Access' );
 
-$document = JFactory::getDocument();
-$document->addScript('./media/system/js/core.js');
+$this->members = $this->get('Members');
+$this->tower = $this->get('Tower');
 
 ?>
 

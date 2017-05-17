@@ -48,6 +48,62 @@ class MemberDatabaseModelInvoice extends JModelAdmin {
 		parent::__construct ( $config );
 	}
 	
+	public function getInvoiceData() {
+		
+		$jinput = JFactory::getApplication ()->input;
+		$invoiceId = $jinput->get ( 'invoiceId', 1, 'INT' );
+		
+		if (!isset($invoiceId)) {
+			$this->setError("Must specific an invoice number when viewing an invoice");
+			return 0;
+		}
+		
+		$data = $this->getItem();
+		
+		$data->members = $this->getInvoiceMembers($invoiceId);
+		
+		$data->tower_name = $this->getTowerById($data->tower_id)->name;
+		
+		return $data;
+	}
+	
+	public function getInvoiceMembers($invoiceId) {
+		
+		if (!isset($invoiceId)) {
+			return array();
+		}
+		
+		$db = JFactory::getDbo ();
+		$userid = JFactory::getUser ()->id;
+		$query = $db->getQuery ( true );
+		
+		// Create the base select statement.
+		$query->select ( 'concat_ws(", ", m.surname, m.forenames) as name, mt.name as member_type, im.fee' )->from ( $db->quoteName ( '#__md_invoicemember', 'im' ) );
+		$query->join ( 'INNER', $db->quoteName ( '#__md_member', 'm' ) . ' ON (' . $db->quoteName ( 'm.id' ) . ' = ' . $db->quoteName ( 'im.member_id' ) . ')' );
+		$query->join ( 'INNER', $db->quoteName ( '#__md_member_type', 'mt' ) . ' ON (' . $db->quoteName ( 'im.member_type_id' ) . ' = ' . $db->quoteName ( 'mt.id' ) . ')' );
+		
+		
+		if (! JFactory::getUser ()->authorise ( 'core.manage', 'com_memberdatabase' )) {
+			$query->join ( 'INNER', $db->quoteName ( '#__md_usertower', 'ut' ) . ' ON (' . $db->quoteName ( 'i.tower_id' ) . ' = ' . $db->quoteName ( 'ut.tower_id' ) . ')' );
+			$query->where ( 'ut.user_id = ' . $userid );
+		}
+		
+		$query->where ( 'im.invoice_id = ' . $invoiceId );
+		
+		$query->order ( 'm.surname, m.forenames asc' );
+		
+		$db->setQuery ( $query );
+		
+		$results = $db->loadObjectList ();
+		
+		if (count ( $results ) < 1) {
+			$this->setError ( 'Could not load invoice members for invoice with id = ' . $invoiceId );
+			return;
+		}
+		
+		return $results;
+	}
+	
 	/**
 	 * Method to get the data that should be injected in the form.
 	 *
@@ -91,9 +147,15 @@ class MemberDatabaseModelInvoice extends JModelAdmin {
 		
 		return $form;
 	}
+	
 	public function getTower() {
 		$jinput = JFactory::getApplication ()->input;
-		$this->towerId = $jinput->get ( 'towerId', 1, 'INT' );
+		$towerId = $jinput->get ( 'towerId', 1, 'INT' );
+		
+		return $this->getTowerById($towerId);
+	}
+	
+	public function getTowerById($towerId) {
 		
 		$db = JFactory::getDbo ();
 		$userid = JFactory::getUser ()->id;
@@ -107,7 +169,7 @@ class MemberDatabaseModelInvoice extends JModelAdmin {
 			$query->where ( 'ut.user_id = ' . $userid );
 		}
 		
-		$query->where ( 't.id = ' . $this->towerId );
+		$query->where ( 't.id = ' . $towerId );
 		
 		$query->order ( 'place, designation asc' );
 		

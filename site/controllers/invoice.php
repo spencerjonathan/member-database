@@ -69,7 +69,7 @@ class MemberDatabaseControllerInvoice extends JControllerForm {
 		
 		error_log ( json_encode ( $members ) );
 		
-		$this->setRedirect ( JRoute::_ ( 'index.php?option=' . $this->option . '&view=' . $this->view_list . $this->getRedirectToListAppend (), false ) );
+		$this->setRedirect ( JRoute::_ ( 'index.php?option=' . $this->option . '&view=memberdatabase', false ) );
 		
 		if (! $model->addInvoice ( $towerId, $year, $userid, $members )) {
 			$this->setError ( "Could not save invoice!" );
@@ -81,6 +81,8 @@ class MemberDatabaseControllerInvoice extends JControllerForm {
 		
 		return 1;
 	}
+	
+	
 	
 	protected function allowEdit($data = array(), $key = 'id') {
 			
@@ -97,5 +99,7 @@ class MemberDatabaseControllerInvoice extends JControllerForm {
 		error_log ( "User with id " . $userId . " does not have authorisation to modify invoice with id " . $invoiceId, 0 );
 		return false;
 	}
+	
+	
 	
 }

@@ -58,14 +58,15 @@ $listDirn = $this->escape ( $this->filter_order_Dir );
 	<table class="table table-striped table-hover">
 		<thead>
 			<tr>
-				<th width="1%"><?php echo JText::_('Record Number'); ?></th>
+				<th width="1%"><?php echo JText::_('#'); ?></th>
 				<th width="2%"> <?php echo JHtml::_('grid.checkall'); ?> </th>
-				<th width="15%"> <?php echo JHtml::_('grid.sort', 'invoice', 'id', $listDirn, $listOrder) ;?> </th>
-				<th width="15%"> <?php echo JHtml::_('grid.sort', 'Tower', 'tower', $listDirn, $listOrder) ;?> </th>
-				<th width="15%"> <?php echo JHtml::_('grid.sort', 'Created User', 'created_by_user', $listDirn, $listOrder) ;?> </th>
-				<th width="15%"> <?php echo JHtml::_('grid.sort', 'Created Date', 'created_date', $listDirn, $listOrder) ;?> </th>
-				<th width="15%" style="text-align: right"> <?php echo JHtml::_('grid.sort', 'Amount £', 'fee', $listDirn, $listOrder) ;?> </th>
-				<th width="15%" >Action</th>
+				<th width="10%"> <?php echo JHtml::_('grid.sort', 'invoice', 'id', $listDirn, $listOrder) ;?> </th>
+				<th width="10%"> <?php echo JHtml::_('grid.sort', 'Tower', 'tower', $listDirn, $listOrder) ;?> </th>
+				<th width="10%"> <?php echo JHtml::_('grid.sort', 'Created User', 'created_by_user', $listDirn, $listOrder) ;?> </th>
+				<th width="10%"> <?php echo JHtml::_('grid.sort', 'Created Date', 'created_date', $listDirn, $listOrder) ;?> </th>
+				<th width="10%" style="text-align: right"> <?php echo JHtml::_('grid.sort', 'Amount £', 'fee', $listDirn, $listOrder) ;?> </th>
+				<th width="10%">Paid?</th>
+				<th width="10%" >Action</th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -103,7 +104,7 @@ $listDirn = $this->escape ( $this->filter_order_Dir );
 				<td> <?php echo $row->created_by_user; ?> </td>
 				<td> <?php echo $row->created_date; ?> </td>
 				<td style="text-align: right">£<?php echo number_format((float)$row->fee, 2, '.', ''); ?></td>
-				
+				<td><?php if ($row->paid) { echo '<span class="icon-new"></span>'; } ?></td>
 				<td><a class="btn" description="View the Invoice" href="<?php echo $view; ?>"><span class="icon-eye-open"></span></a>
 				<a class="btn" description="Edit the Invoice" href="<?php echo $link; ?>"><span class="icon-edit"></span></a></td>
 			</tr>

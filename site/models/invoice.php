@@ -178,7 +178,7 @@ class MemberDatabaseModelInvoice extends JModelAdmin {
 		$results = $db->loadObjectList ();
 		
 		if (count ( $results ) == 0) {
-			$this->setError ( 'Could not load tower details for tower with id = ' . $this->towerId );
+			$this->setError ( 'Could not load tower details for tower with id = ' . $towerId );
 			return;
 		}
 		
@@ -192,6 +192,9 @@ class MemberDatabaseModelInvoice extends JModelAdmin {
 	 */
 	public function getMembers() {
 		// Initialize variables.
+		
+		$jinput = JFactory::getApplication ()->input;
+		$towerId = $jinput->get ( 'towerId', 0, 'INT' );
 		
 		jimport('joomla.application.component.helper');
 		$verification_required_since = JComponentHelper::getParams('com_memberdatabase')->get('verification_required_since');
@@ -216,7 +219,7 @@ class MemberDatabaseModelInvoice extends JModelAdmin {
 			$query->where ( 'ut.user_id = ' . $userid );
 		}
 		
-		$query->where ( 'm.tower_id = ' . $this->towerId );
+		$query->where ( 'm.tower_id = ' . $towerId );
 		$query->where ( 'im.id is null' );
 		
 		$query->order ( 'surname, forenames asc' );
@@ -227,6 +230,7 @@ class MemberDatabaseModelInvoice extends JModelAdmin {
 		
 		return $results;
 	}
+	
 	public function addInvoice($towerId, $year, $userId, $members) {
 		$db = JFactory::getDbo ();
 		$userId = JFactory::getUser ()->id;
@@ -308,5 +312,32 @@ class MemberDatabaseModelInvoice extends JModelAdmin {
 		}
 		
 		return $result;
+	}
+	
+	public function delete($invoiceId) {
+		
+		error_log("In invoice.delete: invoiceId = " . $invoiceId);
+		
+		// Initialize variables.
+		$db    = JFactory::getDbo();
+		$userid = JFactory::getUser()->id;
+		$query = $db->getQuery(true);
+		
+		$query->delete($db->quoteName('#__md_invoicemember'));
+		$query->where ( 'invoice_id = ' . $invoiceId );
+		
+		$db->setQuery($query);
+		$db->execute();
+		
+		$query = $db->getQuery(true);
+		
+		$query->delete($db->quoteName('#__md_invoice'));
+		$query->where ( 'id = ' . $invoiceId );
+		
+		$db->setQuery($query);
+		$db->execute();
+		
+		
+		
 	}
 }

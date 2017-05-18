@@ -33,4 +33,25 @@ class MemberDatabaseControllerInvoices extends JControllerAdmin
  
 		return $model;
 	}
+	
+	public function delete($key = null, $urlVar = null) {
+		$model = $this->getModel ('Invoice', 'MemberDatabaseModel', array());
+		
+		$jinput = JFactory::getApplication ()->input;
+		$cids = $jinput->post->get ( 'cid', null, array() );
+		
+		error_log("Invoices Controller delete cids = " . json_encode($cids));
+		
+		if (isset($cids)) {
+			$key = null;
+			foreach ($cids as $invoiceId) {
+				error_log("Calling model->delete with invoiceId " . $invoiceId);
+				$model->delete($invoiceId);
+			}
+		}
+		
+		$this->setRedirect ( JRoute::_ ( 'index.php?option=' . $this->option . '&view=' . $this->view_list, false ) );
+		
+	}
+		
 }

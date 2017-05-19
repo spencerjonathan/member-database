@@ -104,7 +104,7 @@ $listDirn = $this->escape ( $this->filter_order_Dir );
 				<td> <?php echo $row->created_by_user; ?> </td>
 				<td> <?php echo $row->created_date; ?> </td>
 				<td style="text-align: right">£<?php echo number_format((float)$row->fee, 2, '.', ''); ?></td>
-				<td><?php if ($row->paid) { echo '<span class="icon-new"></span>'; } ?></td>
+				<td><?php if ($row->paid) { echo '<span class="label label-success"><span class="icon-ok icon-white"></span> Paid</span>'; } ?></td>
 				<td><a class="btn" description="View the Invoice" href="<?php echo $view; ?>"><span class="icon-eye-open"></span></a>
 				<a class="btn" description="Edit the Invoice" href="<?php echo $link; ?>"><span class="icon-edit"></span></a></td>
 			</tr>

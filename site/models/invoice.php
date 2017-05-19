@@ -83,10 +83,9 @@ class MemberDatabaseModelInvoice extends JModelAdmin {
 		$query->select ( 'concat_ws(", ", m.surname, m.forenames) as name, mt.name as member_type, im.fee' )->from ( $db->quoteName ( '#__md_invoicemember', 'im' ) );
 		$query->join ( 'INNER', $db->quoteName ( '#__md_member', 'm' ) . ' ON (' . $db->quoteName ( 'm.id' ) . ' = ' . $db->quoteName ( 'im.member_id' ) . ')' );
 		$query->join ( 'INNER', $db->quoteName ( '#__md_member_type', 'mt' ) . ' ON (' . $db->quoteName ( 'im.member_type_id' ) . ' = ' . $db->quoteName ( 'mt.id' ) . ')' );
-		//$query->join ( 'INNER', $db->quoteName ( '#__md_invoice', 'i' ) . ' ON (' . $db->quoteName ( 'i.id' ) . ' = ' . $db->quoteName ( 'im.invoice_id' ) . ')' );
-		//$query->join ( 'INNER', $db->quoteName ( '#__md_tower', 't' ) . ' ON (' . $db->quoteName ( 'i.tower_id' ) . ' = ' . $db->quoteName ( 't.id' ) . ')' );
-		
+				
 		if (! JFactory::getUser ()->authorise ( 'core.manage', 'com_memberdatabase' )) {
+			$query->join ( 'INNER', $db->quoteName ( '#__md_invoice', 'i' ) . ' ON (' . $db->quoteName ( 'im.invoice_id' ) . ' = ' . $db->quoteName ( 'i.id' ) . ')' );
 			$query->join ( 'INNER', $db->quoteName ( '#__md_usertower', 'ut' ) . ' ON (' . $db->quoteName ( 'i.tower_id' ) . ' = ' . $db->quoteName ( 'ut.tower_id' ) . ')' );
 			$query->where ( 'ut.user_id = ' . $userid );
 		}
@@ -318,6 +317,57 @@ class MemberDatabaseModelInvoice extends JModelAdmin {
 		return $result;
 	}
 	
+	public function allowDelete($invoiceId) {
+		
+		// First check that the invoice isn't paid
+		
+		$db    = JFactory::getDbo();
+		
+		$query = $db->getQuery(true);
+		
+		$query->select('count(*)');
+		$query->from('#__md_invoice i');
+		$query->where ( 'invoice_id = ' . $invoiceId );
+		$query->where( 'paid = true' );
+		
+		$db->setQuery($query);
+		$result = $db->getResult();
+		
+		// should only ever be 0 or 1, but checking for > to be safe
+		if ($result > 0) {
+			return false;
+		}
+		
+		// If the user has manage privilage then they can delete
+		
+		if (JFactory::getUser ()->authorise ( 'core.manage', 'com_memberdatabase' )) {
+			return true;
+		}
+		
+		// If the user has write access to the tower then they can delete
+		
+		$userid = JFactory::getUser()->id;
+		
+		$query = $db->getQuery(true);
+		
+		$query->select('count(*)');
+		$query->from('#__md_invoice i');
+		$query->join('INNER', $db->quoteName ( '#__md_usertower', 'ut' ) . ' ON (i.tower_id = ut.tower_id)');
+		$query->where ( 'i.invoice_id = ' . $invoiceId );
+		$query->where( 'ut.user_id = ' . $userid );
+		
+		$db->setQuery($query);
+		$result = $db->getResult();
+		
+		// should only ever be 0 or 1, but checking for > to be safe
+		if ($result > 0) {
+			return true;
+		}
+		
+		return false;
+		
+	}
+	
 	public function delete($invoiceId) {
 		
 		error_log("In invoice.delete: invoiceId = " . $invoiceId);
@@ -341,7 +391,7 @@ class MemberDatabaseModelInvoice extends JModelAdmin {
 		$db->setQuery($query);
 		$db->execute();
 		
-		
+		return true;
 		
 	}
 }

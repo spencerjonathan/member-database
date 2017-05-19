@@ -16,7 +16,7 @@
 			description="The name of the user who created the invoice" size="3"
 			class="inputbox required" required="true" default="" readonly="true" />
 			
-		<field name="created_date" type="calendar" label="Created Date"
+		<field name="created_date" type="text" label="Created Date"
 			description="The date that the invoice was created" class="inputbox"
 			default="" readonly="true" />
 			
@@ -27,7 +27,7 @@
 			<option value="0">JNO</option>
 		</field>
 		
-		<field name="paid_date" type="text" label="Payment Received Date"
+		<field name="paid_date" type="calendar" label="Payment Received Date"
 			description="The date that the payment for the invoice was received" class="inputbox"
 			default=""/>
 

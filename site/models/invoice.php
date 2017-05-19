@@ -51,7 +51,7 @@ class MemberDatabaseModelInvoice extends JModelAdmin {
 	public function getInvoiceData() {
 		
 		$jinput = JFactory::getApplication ()->input;
-		$invoiceId = $jinput->get ( 'invoiceId', 1, 'INT' );
+		$invoiceId = $jinput->get ( 'id', 1, 'INT' );
 		
 		if (!isset($invoiceId)) {
 			$this->setError("Must specific an invoice number when viewing an invoice");
@@ -59,6 +59,8 @@ class MemberDatabaseModelInvoice extends JModelAdmin {
 		}
 		
 		$data = $this->getItem();
+		
+		error_log("Item in getInvoiceData = " . serialize($data));
 		
 		$data->members = $this->getInvoiceMembers($invoiceId);
 		
@@ -81,7 +83,8 @@ class MemberDatabaseModelInvoice extends JModelAdmin {
 		$query->select ( 'concat_ws(", ", m.surname, m.forenames) as name, mt.name as member_type, im.fee' )->from ( $db->quoteName ( '#__md_invoicemember', 'im' ) );
 		$query->join ( 'INNER', $db->quoteName ( '#__md_member', 'm' ) . ' ON (' . $db->quoteName ( 'm.id' ) . ' = ' . $db->quoteName ( 'im.member_id' ) . ')' );
 		$query->join ( 'INNER', $db->quoteName ( '#__md_member_type', 'mt' ) . ' ON (' . $db->quoteName ( 'im.member_type_id' ) . ' = ' . $db->quoteName ( 'mt.id' ) . ')' );
-		
+		//$query->join ( 'INNER', $db->quoteName ( '#__md_invoice', 'i' ) . ' ON (' . $db->quoteName ( 'i.id' ) . ' = ' . $db->quoteName ( 'im.invoice_id' ) . ')' );
+		//$query->join ( 'INNER', $db->quoteName ( '#__md_tower', 't' ) . ' ON (' . $db->quoteName ( 'i.tower_id' ) . ' = ' . $db->quoteName ( 't.id' ) . ')' );
 		
 		if (! JFactory::getUser ()->authorise ( 'core.manage', 'com_memberdatabase' )) {
 			$query->join ( 'INNER', $db->quoteName ( '#__md_usertower', 'ut' ) . ' ON (' . $db->quoteName ( 'i.tower_id' ) . ' = ' . $db->quoteName ( 'ut.tower_id' ) . ')' );
@@ -151,8 +154,9 @@ class MemberDatabaseModelInvoice extends JModelAdmin {
 	public function getTower() {
 		$jinput = JFactory::getApplication ()->input;
 		$towerId = $jinput->get ( 'towerId', 1, 'INT' );
-		
-		return $this->getTowerById($towerId);
+		if (isset($towerId)) {
+			return $this->getTowerById($towerId);
+		}
 	}
 	
 	public function getTowerById($towerId) {

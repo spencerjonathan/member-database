@@ -120,7 +120,7 @@ foreach ( $this->status ['towers_no_invoices'] as $tower ) :
 <?php
 
 foreach ( $this->invoices as $invoice ) :
-	$create_invoice_link = JRoute::_ ( 'index.php?option=com_memberdatabase&view=invoice&layout=edit&invoiceId=' . $invoice->id );
+	$view_invoice_link = JRoute::_ ( 'index.php?option=com_memberdatabase&view=invoice&layout=view&id=' . $invoice->id );
 	if ($invoice->paid) {
 		$status_rag = "success";
 		$status_msg = "Paid";
@@ -133,7 +133,7 @@ foreach ( $this->invoices as $invoice ) :
 	
 	?>
 	<tr style="text-align: left">
-		<td><a href="<?php echo $link; ?>"
+		<td><a href="<?php echo $view_invoice_link; ?>"
 			title="<?php echo JText::_('Edit Invoice'); ?>">Invoice-<?php echo $invoice->id; ?>
 						</td>
 		<td> <?php echo $invoice->tower_name; ?> </td>

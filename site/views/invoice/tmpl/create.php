@@ -26,7 +26,7 @@ $this->tower = $this->get('Tower');
 	class="btn btn-small">
 	<span class="icon-cancel"></span> Close
 </button>
-<button onclick=""
+<button onclick="var elements = document.getElementsByClassName('excl-checkbox'); Array.prototype.forEach.call(elements, function (element) { element.disabled = false; } );"
 	class="btn btn-small">
 	<span class="icon-unlock"></span> Exclude Some Members
 </button>
@@ -53,7 +53,7 @@ $this->tower = $this->get('Tower');
 			
 				?>
 					<tr>
-						<td><input type="checkbox" class="excl-checkbox" name="cid[]" value="<?php echo $member->id; ?>" checked></td>
+						<td><input type="checkbox" class="excl-checkbox" name="cid[]" value="<?php echo $member->id; ?>" checked disabled></td>
 						<td><?php echo $member->name; ?></td>
 						<td><?php echo $member->member_type; ?></td>
 						<td style="text-align: right"><?php echo number_format((float)$member->fee, 2, '.', ''); ?></td>

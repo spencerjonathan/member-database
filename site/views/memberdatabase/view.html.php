@@ -46,6 +46,9 @@ class MemberDatabaseViewMemberDatabase extends JViewLegacy
 	 */
 	function display($tpl = null)
 	{
+		$document = JFactory::getDocument ();
+		$document->addStyleSheet ( './components/com_memberdatabase/css/bootstrap.min.css' );
+		
 		jimport('joomla.application.component.helper');
 		$this->verification_required_since = JComponentHelper::getParams('com_memberdatabase')->get('verification_required_since');
 		if (!$this->verification_required_since) {

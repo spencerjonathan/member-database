@@ -27,37 +27,46 @@ if (count ( $this->status ['towers_no_invoices'] ) > 0) {
 }
 
 ?>
+
+
 <h1>Status for <?php echo $this->year?></h1>
-<hr>
 
 
-<table width="100%">
-	<col width="50%">
-	<col width="50%">
-	<tr>
-		<td><h2>Member Details</h2></td>
-		<td style="text-align: right"><strong>Status: </strong><?php echo $member_status; ?></td>
-	</tr>
-</table>
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<table width="100%">
+			<col width="50%">
+			<col width="50%">
+			<tr>
+				<td><h2>Member Details</h2></td>
+				<td style="text-align: right"><strong>Status: </strong><?php echo $member_status; ?></td>
+			</tr>
+		</table>
+	</div>
+	<div class="panel-body">
+		<p><?php echo $member_explanation?></p>
+		<br> <a class="btn"
+			href="index.php/component/memberdatabase/?view=members"><span
+			class="icon-eye-open"></span> View Members</a>
 
-<p><?php echo $member_explanation?></p>
-<br>
-<a class="btn" href="index.php/component/memberdatabase/?view=members"><span
-	class="icon-eye-open"></span> View Members</a>
+	</div>
+</div>
 
+<!-- -------------------------Members without Invoice------------------ -->
 
-<hr>
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<table width="100%">
+			<col width="50%">
+			<col width="50%">
+			<tr>
+				<td><h2>Members Without Subscription Invoice</h2></td>
+				<td style="text-align: right"><strong>Status: </strong><?php echo $tower_invoice_status; ?></td>
+			</tr>
+		</table>
+	</div>
+	<div class="panel-body">
 
-<!-- Members without Invoice -->
-
-<table width="100%">
-	<col width="50%">
-	<col width="50%">
-	<tr>
-		<td><h2>Members Without Subscription Invoice</h2></td>
-		<td style="text-align: right"><strong>Status: </strong><?php echo $tower_invoice_status; ?></td>
-	</tr>
-</table>
 
 <?php echo $tower_invoice_explanation?>
 
@@ -71,52 +80,59 @@ foreach ( $this->status ['towers_no_invoices'] as $tower ) :
 	?>
 	
 	<tr>
-		<td><?php echo $tower->tower_name; ?> <span class="badge"><?php echo $tower->number_of_members; ?></span></td>
-
-		<td><a class="btn btn-success"
-			href="<?php echo $create_invoice_link; ?>"><span
-				class="icon-new icon-white"></span> Create Invoice</a></td>
-	
-	
-	<tr>
+				<td><?php echo $tower->tower_name; ?> <span class="badge"><?php echo $tower->number_of_members; ?></span></td>
+				<td><a class="btn btn-success"
+					href="<?php echo $create_invoice_link; ?>"><span
+						class="icon-new icon-white"></span> Create Invoice</a></td>
+			
+			
+			<tr>
 
 <?php endforeach; ?>
 
 
+		
+		
+		
+		</table>
 
+		<br> <a class="btn"
+			href="index.php/component/memberdatabase/?view=invoices"><span
+			class="icon-eye-open"></span> View Invoices</a>
 
-</table>
+	</div>
+</div>
 
-<br>
-<a class="btn" href="index.php/component/memberdatabase/?view=invoices"><span
-	class="icon-eye-open"></span> View Invoices</a>
-
-<hr>
 
 <!-- -----------------------Invoices To Be Paid--------------------------------------- -->
 
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<table width="100%">
+			<col width="50%">
+			<col width="50%">
+			<tr>
+				<td><h2>Invoices To Be Paid</h2></td>
+				<td style="text-align: right"><strong>Status: </strong><?php echo $invoice_status; ?></td>
+			</tr>
+		</table>
+	</div>
+	<div class="panel-body">
 
-<table width="100%">
-	<col width="50%">
-	<col width="50%">
-	<tr>
-		<td><h2>Invoices To Be Paid</h2></td>
-		<td style="text-align: right"><strong>Status: </strong><?php echo $invoice_status; ?></td>
-	</tr>
-</table>
+
 
 <?php echo $invoice_explanation?>
 
 <table width='100%'>
-	<tr style="text-align: left">
-		<th>Invoice #</th>
-		<th>Tower Name</th>
-		<th>Created By</th>
-		<th>Created</th>
-		<th style="text-align: right">Fee £</th>
-		<th>Status</th>
+			<tr style="text-align: left">
+				<th>Invoice #</th>
+				<th>Tower Name</th>
+				<th>Created By</th>
+				<th>Created</th>
+				<th style="text-align: right">Fee £</th>
+				<th>Status</th>
 
-	</tr>
+			</tr>
 <?php
 
 foreach ( $this->invoices as $invoice ) :
@@ -133,17 +149,18 @@ foreach ( $this->invoices as $invoice ) :
 	
 	?>
 	<tr style="text-align: left">
-		<td><a href="<?php echo $view_invoice_link; ?>"
-			title="<?php echo JText::_('Edit Invoice'); ?>">Invoice-<?php echo $invoice->id; ?>
+				<td><a href="<?php echo $view_invoice_link; ?>"
+					title="<?php echo JText::_('Edit Invoice'); ?>">Invoice-<?php echo $invoice->id; ?>
 						</td>
-		<td> <?php echo $invoice->tower_name; ?> </td>
-		<td> <?php echo $invoice->created_by_user; ?> </td>
-		<td> <?php echo $invoice->created_date; ?> </td>
-		<td style="text-align: right"> <?php echo $invoice->fee; ?> </td>
-		<td> <?php echo $status; ?> </td>
+				<td> <?php echo $invoice->tower_name; ?> </td>
+				<td> <?php echo $invoice->created_by_user; ?> </td>
+				<td> <?php echo $invoice->created_date; ?> </td>
+				<td style="text-align: right"> <?php echo $invoice->fee; ?> </td>
+				<td> <?php echo $status; ?> </td>
 
-	</tr>
+			</tr>
 <?php endforeach; ?>
 
 </table>
-<hr>
+	</div>
+</div>

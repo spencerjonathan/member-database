@@ -11,6 +11,30 @@ defined ( '_JEXEC' ) or die ( 'Restricted Access' );
 $this->members = $this->get('Members');
 $this->tower = $this->get('Tower');
 
+$document = JFactory::getDocument ();
+$document->addScriptDeclaration ( '
+        function recalculate(id) {
+			var checkbox = document.getElementById("checkbox-" + id);
+			var fee = document.getElementById("fee-" + id);
+			var total_element = document.getElementById("total");
+
+			var total_value = parseFloat(total_element.getAttribute("fee"));
+			var fee_value = parseFloat(checkbox.getAttribute("fee"));
+	
+			if (checkbox.checked) {
+				total_value += fee_value;
+				fee.style.textDecoration = "none";
+				
+			} else {
+				total_value -= fee_value;
+				fee.style.textDecoration = "line-through";
+			}
+
+			total_element.setAttribute("fee", total_value);
+			total.innerHTML = total_value.toFixed(2);
+        };
+' );
+
 ?>
 
 
@@ -48,20 +72,24 @@ $this->tower = $this->get('Tower');
 			$members = $this->get('Members');
 			$total_fee = 0.0;
 			
+			$id = 1;
+			
 			foreach ( $members as $member ) :
 				$total_fee = $total_fee + $member->fee;
 			
 				?>
 					<tr>
-						<td><input type="checkbox" class="excl-checkbox" name="cid[]" value="<?php echo $member->id; ?>" checked disabled></td>
+						<td><input id="checkbox-<?php echo $id; ?>" fee="<?php echo $member->fee; ?>" onchange="recalculate(<?php echo $id; ?>)" type="checkbox" class="excl-checkbox" name="cid[]" value="<?php echo $member->id; ?>" checked disabled></td>
 						<td><?php echo $member->name; ?></td>
 						<td><?php echo $member->member_type; ?></td>
-						<td style="text-align: right"><?php echo number_format((float)$member->fee, 2, '.', ''); ?></td>
+						<td id="fee-<?php echo $id; ?>" style="text-align: right"><?php echo number_format((float)$member->fee, 2, '.', ''); ?></td>
 					</tr>
 
-			<?php endforeach; ?>
+			<?php 
+			$id = $id + 1; 
+			endforeach; ?>
 					<tr>
-						<td colspan=4 style="text-align: right"><?php echo number_format((float)$total_fee, 2, '.', ''); ?></td>
+						<td colspan=4 id="total" fee="<?php echo $total_fee; ?>" style="text-align: right"><?php echo number_format((float)$total_fee, 2, '.', ''); ?></td>
 					</tr>
 				</table>
 				<input type="hidden" name="task" value="invoice.add" />

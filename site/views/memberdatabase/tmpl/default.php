@@ -155,7 +155,7 @@ foreach ( $this->invoices as $invoice ) :
 				<td> <?php echo $invoice->tower_name; ?> </td>
 				<td> <?php echo $invoice->created_by_user; ?> </td>
 				<td> <?php echo $invoice->created_date; ?> </td>
-				<td style="text-align: right"> <?php echo $invoice->fee; ?> </td>
+				<td style="text-align: right"> <?php echo number_format((float)$invoice->fee, 2, '.', ''); ?> </td>
 				<td> <?php echo $status; ?> </td>
 
 			</tr>

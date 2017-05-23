@@ -26,26 +26,26 @@ $listDirn = $this->escape ( $this->filter_order_Dir );
 		<div class="span12">
 			<!-- <div class="btn-toolbar" id="toolbar" role="btn-toolbar">
 				<div class="btn-group"> -->
-					<button onclick="Joomla.submitbutton('member.add')"
-						class="btn btn-success">
-						<span class="icon-new icon-white"></span> New
-					</button>
-					<button
-						onclick="if (document.adminForm.boxchecked.value==0){alert('Please first make a selection from the list.');}else{ Joomla.submitbutton('member.edit')}"
-						class="btn">
-						<span class="icon-edit"></span> Edit
-					</button>
-					<button
-						onclick="if (document.adminForm.boxchecked.value==0){alert('Please first make a selection from the list.');}else{ Joomla.submitbutton('members.delete')}"
-						class="btn">
-						<span class="icon-delete"></span> Delete
-					</button>
-					<button
-						onclick="if (document.adminForm.boxchecked.value==0){alert('Please first make a selection from the list.');}else{ Joomla.submitbutton('members.verify')}"
-						class="btn btn-success">
-						<span class="icon-ok icon-white"></span> Verify
-					</button>
-				<!-- </div>
+			<button onclick="Joomla.submitbutton('member.add')"
+				class="btn btn-success">
+				<span class="icon-new icon-white"></span> New
+			</button>
+			<button
+				onclick="if (document.adminForm.boxchecked.value==0){alert('Please first make a selection from the list.');}else{ Joomla.submitbutton('member.edit')}"
+				class="btn">
+				<span class="icon-edit"></span> Edit
+			</button>
+			<button
+				onclick="if (document.adminForm.boxchecked.value==0){alert('Please first make a selection from the list.');}else{ Joomla.submitbutton('members.delete')}"
+				class="btn">
+				<span class="icon-delete"></span> Delete
+			</button>
+			<button
+				onclick="if (document.adminForm.boxchecked.value==0){alert('Please first make a selection from the list.');}else{ Joomla.submitbutton('members.verify')}"
+				class="btn btn-success">
+				<span class="icon-ok icon-white"></span> Verify
+			</button>
+			<!-- </div>
 			</div> -->
 		</div>
 	</div>
@@ -99,13 +99,13 @@ $listDirn = $this->escape ( $this->filter_order_Dir );
 				
 				jimport ( 'joomla.application.component.helper' );
 				$verification_required_since = JComponentHelper::getParams ( 'com_memberdatabase' )->get ( 'verification_required_since' );
-				$verification_required_since_time = strtotime($verification_required_since);
+				$verification_required_since_time = strtotime ( $verification_required_since );
 				
 				foreach ( $this->items as $i => $row ) :
 					$link = JRoute::_ ( 'index.php?option=com_memberdatabase&task=member.edit&id=' . $row->id );
 					$verify = JRoute::_ ( 'index.php?option=com_memberdatabase&task=member.verify&id=' . $row->id );
 					
-					$verified_time = strtotime($row->verified_date);
+					$verified_time = strtotime ( $row->verified_date );
 					?>
 					<tr>
 				<td>
@@ -139,16 +139,17 @@ $listDirn = $this->escape ( $this->filter_order_Dir );
 				<td><button class="btn btn-success"
 						onclick="if (confirm('Are you sure you want to verify that the information held about this member is correct?')) { document.getElementById('v<?php echo $row->id ?>').click(); }">
 						<span class="icon-ok"></span> Verify
-					</button>
-					<a id='v<?php echo $row->id ?>' href='<?php echo $verify; ?>' /a></td>
+					</button> <a id='v<?php echo $row->id ?>'
+					href='<?php echo $verify; ?>' /a></td>
 			</tr>
 				<?php endforeach; ?>
 			<?php endif; ?>
 		</tbody>
 	</table>
-	<input type="hidden" name="task" value="" /> <input type="hidden"
-		name="boxchecked" value="0" /> <input type="hidden"
-		name="filter_order" value="<?php echo $listOrder; ?>" /> <input
-		type="hidden" name="filter_order_Dir" value="<?php echo $listDirn; ?>" />
+	<input type="hidden" name="task" value="" /> 
+	<input type="hidden"
+		name="boxchecked" value="0" /> 
+	<input type="hidden" name="filter_order" value="<?php echo $listOrder; ?>" /> 
+	<input type="hidden" name="filter_order_Dir" value="<?php echo $listDirn; ?>" />
 	<?php echo JHtml::_('form.token'); ?>
 </form>

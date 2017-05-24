@@ -80,10 +80,10 @@ class MemberDatabaseModelAnnualreport extends JModelList {
 		sum(unspecified) as unspecified
 		from(
 				select district_id, concat_ws(\', \', t.place, t.designation) as tower,
-					case(insurance_type) when \'Under 16\' then 1 else 0 END as under16,
-					case(insurance_type) when \'16-70\' then 1 else 0 END as over16,
-					case(insurance_type) when \'Over 70\' then 1 else 0 END as over70,
-					case(insurance_type) when null then 1 else 0 END as unspecified
+					case(insurance_group) when \'Under 16\' then 1 else 0 END as under16,
+					case(insurance_group) when \'16-70\' then 1 else 0 END as over16,
+					case(insurance_group) when \'Over 70\' then 1 else 0 END as over70,
+					case(insurance_group) when null then 1 else 0 END as unspecified
 				from #__md_tower t, #__md_member m ' . $query_from_addition . 
 				' where t.id = m.tower_id ' . $query_where_addition . ') as data
 				GROUP BY district_id, tower

@@ -30,9 +30,6 @@ class MemberDatabaseViewMemberDatabase extends JViewLegacy
 		parent::__construct($config);
 		
 		$model = $this->createModel("Invoices", "MemberDatabaseModel");
-		
-		error_log(serialize($model));
-		
 		$this->setModel($model, false);
 	}
 	

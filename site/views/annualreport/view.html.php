@@ -22,6 +22,22 @@ $document->addStyleSheet ( './components/com_memberdatabase/css/print.css' );
  * @since 0.0.1
  */
 class MemberDatabaseViewAnnualreport extends JViewLegacy {
+	
+	/**
+	 * Constructor.
+	 *
+	 * @param   array  $config  An optional associative array of configuration settings.
+	 *
+	 * @see     JController
+	 * @since   1.6
+	 */
+	public function __construct($config = array()) {
+		parent::__construct($config);
+		
+		$model = $this->createModel("Members", "MemberDatabaseModel");
+		$this->setModel($model, false);
+	}
+	
 	/**
 	 * Display the Members view
 	 *
@@ -40,6 +56,7 @@ class MemberDatabaseViewAnnualreport extends JViewLegacy {
 		$this->districts = $this->get ( 'Districts' );
 		$this->association_name = JComponentHelper::getParams('com_memberdatabase')->get('association_name');
 		$this->year = $date->format("Y");
+		//$this->membersSubs = $this->get('MembersSubs', 'Members');
 
 		echo '<div id="md-report">';
 		echo '<button onclick="window.print()" class="btn">
@@ -49,5 +66,27 @@ class MemberDatabaseViewAnnualreport extends JViewLegacy {
 		parent::display ( $tpl );
 		
 		echo '</div>';
+	}
+	
+
+	
+	/**
+	 * Method to load and return a model object.
+	 *
+	 * @param   string  $name    The name of the model.
+	 * @param   string  $prefix  Optional model prefix.
+	 * @param   array   $config  Configuration array for the model. Optional.
+	 *
+	 * @return  JModelLegacy|boolean   Model object on success; otherwise false on failure.
+	 *
+	 * @since   12.2
+	 */
+	protected function createModel($name, $prefix = '', $config = array())
+	{
+		// Clean the model name
+		$modelName = preg_replace('/[^A-Z0-9_]/i', '', $name);
+		$classPrefix = preg_replace('/[^A-Z0-9_]/i', '', $prefix);
+		
+		return JModelLegacy::getInstance($modelName, $classPrefix, $config);
 	}
 }

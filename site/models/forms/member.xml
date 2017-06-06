@@ -169,23 +169,23 @@
                                 name="postcode"
                                 type="text"
                                 label="Postcode"
-				size="9"
+								size="9"
                                 description="Postcode"
-				class="inputbox"
+								class="inputbox"
                 		/>
                 <field
                                 name="country"
                                 type="text"
                                 label="Country"
-				size="2"
+								size="2"
                                 description="Country"
-				class="inputbox"
+								class="inputbox"
                 		/>
                 <field
                                 name="country"
                                 type="text"
                                 label="Country"
-				size="2"
+								size="2"
                                 description="Country"
 				class="inputbox"
                 		/>
@@ -244,7 +244,7 @@
                                 name="dbs_update"
                                 type="calendar"
                                 label="DBS Update"
-                                description="DBS Update"
+                                description="The date that the DBS was last updated"
                                 class="inputbox"
                                 default="" 
 				/>
@@ -257,7 +257,7 @@
 				/>
 				<field
                                 name="mod_date"
-                                type="calendar"
+                                type="text"
                                 label="Last Modified Date"
                                 description="The date that this member record was last edited/saved"
                                 class="inputbox"

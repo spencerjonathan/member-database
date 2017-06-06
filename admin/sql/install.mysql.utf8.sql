@@ -1,12 +1,15 @@
 DROP TABLE IF EXISTS `#__md_tower`;
 DROP TABLE IF EXISTS `#__md_member_verified`;
 DROP TABLE IF EXISTS `#__md_member`;
+DROP TABLE IF EXISTS `#__md_member_history`;
 DROP TABLE IF EXISTS `#__md_usertower`;
 DROP TABLE IF EXISTS `#__md_insurance_group`;
 DROP TABLE IF EXISTS `#__md_district`;
 DROP TABLE IF EXISTS `#__md_invoice`;
 DROP TABLE IF EXISTS `#__md_invoicemember`;
 DROP TABLE IF EXISTS `#__md_member_type`;
+DROP TRIGGER IF EXISTS `md_member_update_trigger`;
+DROP TRIGGER IF EXISTS `md_member_delete_trigger`;
 
 --CREATE TABLE #__md_tower ( `id` INT NOT NULL AUTO_INCREMENT , `bells` INT NOT NULL , `city` VARCHAR(50) NOT NULL , `designation` VARCHAR(50) NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
 
@@ -219,6 +222,33 @@ CREATE TABLE `#__md_member` (
   PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+CREATE TABLE `#__md_member_history` (
+  `history_id` int NOT NULL AUTO_INCREMENT,
+  `id` int(5) NOT NULL,
+  `tower_id` int(3) DEFAULT NULL,
+  `forenames` varchar(50) DEFAULT NULL,
+  `surname` varchar(50) DEFAULT NULL,
+  `title` varchar(12) DEFAULT NULL,
+  `member_type_id` int DEFAULT NULL,
+  `insurance_group` varchar(10) DEFAULT NULL,
+  `annual_report` boolean DEFAULT NULL,
+  `telephone` varchar(28) DEFAULT NULL,
+  `email` varchar(100) DEFAULT NULL,
+  `newsletters` varchar(7) DEFAULT NULL,
+  `date_elected` varchar(21) DEFAULT NULL,
+  `address1` varchar(100) DEFAULT NULL,
+  `address2` varchar(100) DEFAULT NULL,
+  `address3` varchar(100) DEFAULT NULL,
+  `town` varchar(50) DEFAULT NULL,
+  `county` varchar(20) DEFAULT NULL,
+  `postcode` varchar(9) DEFAULT NULL,
+  `country` varchar(2) DEFAULT NULL,
+  `notes` varchar(200) DEFAULT NULL,
+  `dbs_date` varchar(9) DEFAULT NULL,
+  `dbs_update` varchar(9) DEFAULT NULL,
+  PRIMARY KEY (history_id),
+  INDEX `member_history_id_i1` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__md_district` (
   `id` int(1) NOT NULL AUTO_INCREMENT,
@@ -249,4 +279,25 @@ inner join `#__md_member_type` on #__md_member.member_type = #__md_member_type.n
 set #__md_member.member_type_id = #__md_member_type.id;
 
 ALTER TABLE `#__md_member`
-  DROP `member_type`;
+  DROP `member_type`; 
+
+ALTER TABLE `#__md_member`
+  DROP `crb`;
+
+ALTER TABLE `#__md_member`
+DROP `sub_recd`; 
+
+ALTER TABLE `#__md_member`
+DROP `databaseform`;
+
+ALTER TABLE `#__md_member` ADD `mod_user_id` INT NULL AFTER `dbs_update`, ADD `mod_date` TIMESTAMP NULL AFTER `mod_user_id`;
+ALTER TABLE `#__md_member_history` ADD `mod_user_id` INT NULL AFTER `dbs_update`, ADD `mod_date` TIMESTAMP NULL AFTER `mod_user_id`;
+
+CREATE TRIGGER `md_member_update_trigger` BEFORE UPDATE ON `#__md_member` 
+FOR EACH ROW 
+insert into #__md_member_history SELECT null, #__md_member.* FROM #__md_member WHERE #__md_member.id = NEW.id; 
+
+CREATE TRIGGER `md_member_delete_trigger` BEFORE DELETE ON `#__md_member` 
+FOR EACH ROW 
+insert into #__md_member_history SELECT null, #__md_member.* FROM #__md_member WHERE #__md_member.id = OLD.id; 
+

@@ -65,19 +65,14 @@
 				/>
 		<field
 				name="member_type"
-				type="list"
+				type="sql"
 				label="Member Type"
 				description="The type of member"
 				required="true"
-				default="">
-				<option value="">Please Select</option>
-				<option value="1">Adult</option>
-				<option value="6">Associate</option>
-				<option value="3">Honorary Life</option>
-				<option value="5">Junior</option>
-				<option value="2">Long Service</option>
-				<option value="4">Non-Member</option>
-		</field>
+				default=""
+				query="SELECT id AS value, name AS member_type FROM #__md_member_type"
+				/>
+				
 		<field
 				name="insurance_group"
 				type="list"
@@ -102,7 +97,7 @@
                 </field>
 		<field
 				name="telephone"
-				type="text"
+				type="tel"
 				label="Telephone Number"
 				description="Telephone Number of the member"
 				size="40"
@@ -194,7 +189,7 @@
                                 description="Country"
 				class="inputbox"
                 		/>
-                <field
+                <!-- <field
                                 name="databaseform"
                                 type="radio"
                                 label="Databaseform?"
@@ -204,7 +199,7 @@
                                 filter="integer">
                                         <option value="1">JYES</option>
                                         <option value="0">JNO</option>
-                </field>
+                </field> -->
                 <field
                                 name="notes"
                                 type="textarea"
@@ -215,7 +210,7 @@
 				cols="60"
 				rows="3"
                 		/>
-                <field
+                <!-- <field
                                 name="crb"
                                 type="radio"
                                 label="CRB Checked?"
@@ -236,7 +231,7 @@
                                 filter="integer">
                                         <option value="1">JYES</option>
                                         <option value="0">JNO</option>
-                </field>
+                </field> -->
                 <field
                                 name="dbs_date"
                                 type="calendar"
@@ -253,6 +248,20 @@
                                 class="inputbox"
                                 default="" 
 				/>
-
+				<field
+                                name="mod_user_id"
+                                type="user"
+                                label="Last Modified By"
+                                description="The user who most last edited/saved this member record"
+                                readonly="true"
+				/>
+				<field
+                                name="mod_date"
+                                type="calendar"
+                                label="Last Modified Date"
+                                description="The date that this member record was last edited/saved"
+                                class="inputbox"
+                                readonly="true"
+				/>
 	</fieldset>
 </form>

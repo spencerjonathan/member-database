@@ -5,10 +5,7 @@
 				name="id"
 				type="hidden"
 				/>
-		<field
-				name="district_id"
-				type="hidden"
-				/>
+		
 		<field
 				name="place"
 				type="text"
@@ -26,6 +23,14 @@
 				size="40"
 				class="inputbox"
 				default=""
+				/>
+		<field
+				name="district_id"
+				type="sql"
+				label="District"
+				description="Which disctrict does the tower belong to"
+				default=""
+				query="SELECT id AS value, name AS district_id FROM #__md_district"
 				/>
 		<field
 				name="bells"
@@ -310,23 +315,19 @@
 		</field>
 		<field
 				name="correspondent_id"
-				type="number"
-				label="Correspondent ID"
-				description="Correspondent ID"
-				size="4"
-				class="inputbox"
+				type="sql"
+				label="Tower Correspondent"
+				description="Tower Correspondent"
 				default=""
-				validate="number"
+				query="SELECT id AS value, concat_ws(', ', surname, forenames) AS correspondent_id FROM #__md_member order by surname, forenames"
 				/>
 		<field
 				name="captain_id"
-				type="number"
-				label="Captain ID"
-				description="Captain ID"
-				size="5"
-				class="inputbox"
+				type="sql"
+				label="Tower Captain"
+				description="Tower Captain"
 				default=""
-				validate="number"
+				query="SELECT id AS value, concat_ws(', ', surname, forenames) AS captain_id FROM #__md_member order by surname, forenames"
 				/>
 	</fieldset>
 </form>

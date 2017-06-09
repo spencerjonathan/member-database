@@ -11,11 +11,6 @@ DROP TABLE IF EXISTS `#__md_member_type`;
 DROP TRIGGER IF EXISTS `md_member_update_trigger`;
 DROP TRIGGER IF EXISTS `md_member_delete_trigger`;
 
---CREATE TABLE #__md_tower ( `id` INT NOT NULL AUTO_INCREMENT , `bells` INT NOT NULL , `city` VARCHAR(50) NOT NULL , `designation` VARCHAR(50) NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
-
---INSERT INTO `#__md_tower` (`bells`, `city`, `designation`) VALUES
---(8, 'Lindfield', 'All Saints');
-
 CREATE TABLE `#__md_invoice` ( `id` INT NOT NULL AUTO_INCREMENT , `tower_id` INT NOT NULL , `year` INT NOT NULL, `created_by_user_id` INT NOT NULL , `created_date` TIMESTAMP NOT NULL, `paid` boolean, `paid_date` date, `payment_method` varchar(15), `payment_reference` varchar(50) , PRIMARY KEY (`id`), INDEX `tower_id_i1` (`tower_id`)) ENGINE = InnoDB;
 
 CREATE TABLE `#__md_invoicemember` ( `id` INT NOT NULL AUTO_INCREMENT , `invoice_id` INT NOT NULL , `member_id` INT NOT NULL , `member_type_id` INT NOT NULL , `fee` DECIMAL NOT NULL , PRIMARY KEY (`id`), INDEX `invoice_id_i1` (`invoice_id`)) ENGINE = InnoDB;
@@ -148,11 +143,6 @@ INSERT INTO `#__md_district` (`id`, `name`, `include_in_ar`) VALUES
 (5, 'General Association', FALSE);
 
 CREATE TABLE `#__md_member_verified` ( `id` INT NOT NULL AUTO_INCREMENT , `member_id` INT NOT NULL , `user_id` INT NOT NULL , `verified_date` TIMESTAMP NOT NULL /* DEFAULT CURRENT_TIMESTAMP */ , INDEX `tower_id_i1` (`member_id`, `verified_date`), PRIMARY KEY (`id`)) ENGINE = InnoDB;
-
---INSERT INTO `#__md_insurance_group` (`id`, `name`) VALUES
---(1, 'Under 16'),
---(2, '16-70'),
---(3, 'Over 70');
 
 ALTER TABLE `#__md_member` ADD `member_type_id` INT NOT NULL AFTER `member_type`;
 

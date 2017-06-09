@@ -87,7 +87,7 @@ class MemberDatabaseModelMember extends JModelAdmin {
 		
 		$query->select ( 't.id, concat_ws(\', \', t.place, t.designation) as tower' )->from ( $db->quoteName ( '#__md_tower', 't' ) );
 		
-		if (! JFactory::getUser ()->authorise ( 'core.manage', 'com_memberdatabase' )) {
+		if (! JFactory::getUser ()->authorise ( 'member.view', 'com_memberdatabase' )) {
 			$query->join ( 'INNER', $db->quoteName ( '#__md_usertower', 'ut' ) . ' ON (t.id = ut.tower_id)' );
 			$query->where ( 'ut.user_id = ' . ( int ) $userId );
 		}

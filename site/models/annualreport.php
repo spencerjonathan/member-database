@@ -42,7 +42,7 @@ class MemberDatabaseModelAnnualreport extends JModelList {
 		// Create the base select statement.
 		$query->select ( 'm.*, concat_ws(\', \',surname, forenames) as name' )->from ( $db->quoteName ( '#__md_member', 'm' ) );
 		
-		if (! JFactory::getUser ()->authorise ( 'core.manage', 'com_memberdatabase' )) {
+		if (! JFactory::getUser ()->authorise ( 'member.view', 'com_memberdatabase' )) {
 			$query->join ( 'INNER', $db->quoteName ( '#__md_usertower', 'ut' ) . ' ON (' . $db->quoteName ( 'm.tower_id' ) . ' = ' . $db->quoteName ( 'ut.tower_id' ) . ')' );
 			$query->where ( 'ut.user_id = ' . $userid );
 		}
@@ -66,7 +66,7 @@ class MemberDatabaseModelAnnualreport extends JModelList {
 		$query_from_addition = "";
 		$query_where_addition = "";
 		
-		if (! JFactory::getUser ()->authorise ( 'core.manage', 'com_memberdatabase' )) {
+		if (! JFactory::getUser ()->authorise ( 'member.view', 'com_memberdatabase' )) {
 			$query_from_addition = ", #__md_usertower ut";
 			$query_where_addition = " and ut.tower_id = t.id and ut.user_id = " . $userid;
 		}
@@ -167,7 +167,7 @@ class MemberDatabaseModelAnnualreport extends JModelList {
 		$query->join ( 'LEFT', $db->quoteName ( '#__md_member', 'cor' ) . ' ON (' . $db->quoteName ( 't.correspondent_id' ) . ' = ' . $db->quoteName ( 'cor.id' ) . ')' );
 		$query->join ( 'LEFT', $db->quoteName ( '#__md_member', 'cap' ) . ' ON (' . $db->quoteName ( 't.captain_id' ) . ' = ' . $db->quoteName ( 'cap.id' ) . ')' );
 		
-		if (! JFactory::getUser ()->authorise ( 'core.manage', 'com_memberdatabase' )) {
+		if (! JFactory::getUser ()->authorise ( 'member.view', 'com_memberdatabase' )) {
 			$query->join ( 'INNER', $db->quoteName ( '#__md_usertower', 'ut' ) . ' ON (' . $db->quoteName ( 't.id' ) . ' = ' . $db->quoteName ( 'ut.tower_id' ) . ')' );
 			$query->where ( 'ut.user_id = ' . $userid );
 		}

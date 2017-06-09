@@ -70,7 +70,7 @@ class MemberDatabaseModelInvoices extends JModelList
 		->join('INNER', $db->quoteName('#__md_tower', 't') . ' ON (' . $db->quoteName('inv.tower_id') . ' = ' . $db->quoteName('t.id') . ')');
 		// $query->where('ut.user_id = ' . $userid);
 		
-		if (! JFactory::getUser ()->authorise ( 'core.manage', 'com_memberdatabase' )) {
+		if (! JFactory::getUser ()->authorise ( 'invoice.view', 'com_memberdatabase' )) {
 			$query->join ( 'INNER', $db->quoteName ( '#__md_usertower', 'ut' ) . ' ON (' . $db->quoteName ( 'inv.tower_id' ) . ' = ' . $db->quoteName ( 'ut.tower_id' ) . ')' );
 			$query->where ( 'ut.user_id = ' . $userid );
 		}

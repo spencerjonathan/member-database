@@ -84,7 +84,7 @@ class MemberDatabaseModelInvoice extends JModelAdmin {
 		$query->join ( 'INNER', $db->quoteName ( '#__md_member', 'm' ) . ' ON (' . $db->quoteName ( 'm.id' ) . ' = ' . $db->quoteName ( 'im.member_id' ) . ')' );
 		$query->join ( 'INNER', $db->quoteName ( '#__md_member_type', 'mt' ) . ' ON (' . $db->quoteName ( 'im.member_type_id' ) . ' = ' . $db->quoteName ( 'mt.id' ) . ')' );
 				
-		if (! JFactory::getUser ()->authorise ( 'core.manage', 'com_memberdatabase' )) {
+		if (! JFactory::getUser ()->authorise ( 'invoice.manage', 'com_memberdatabase' )) {
 			$query->join ( 'INNER', $db->quoteName ( '#__md_invoice', 'i' ) . ' ON (' . $db->quoteName ( 'im.invoice_id' ) . ' = ' . $db->quoteName ( 'i.id' ) . ')' );
 			$query->join ( 'INNER', $db->quoteName ( '#__md_usertower', 'ut' ) . ' ON (' . $db->quoteName ( 'i.tower_id' ) . ' = ' . $db->quoteName ( 'ut.tower_id' ) . ')' );
 			$query->where ( 'ut.user_id = ' . $userid );
@@ -167,7 +167,7 @@ class MemberDatabaseModelInvoice extends JModelAdmin {
 		// Create the base select statement.
 		$query->select ( 't.id, concat_ws(", ", place, designation) as name' )->from ( $db->quoteName ( '#__md_tower', 't' ) );
 		
-		if (! JFactory::getUser ()->authorise ( 'core.manage', 'com_memberdatabase' )) {
+		if (! JFactory::getUser ()->authorise ( 'invoice.manage', 'com_memberdatabase' )) {
 			$query->join ( 'INNER', $db->quoteName ( '#__md_usertower', 'ut' ) . ' ON (' . $db->quoteName ( 't.id' ) . ' = ' . $db->quoteName ( 'ut.tower_id' ) . ')' );
 			$query->where ( 'ut.user_id = ' . $userid );
 		}
@@ -217,7 +217,7 @@ class MemberDatabaseModelInvoice extends JModelAdmin {
 		$query->join ( 'INNER', $db->quoteName ( '#__md_member_type', 'mt' ) . ' ON (' . $db->quoteName ( 'm.member_type_id' ) . ' = ' . $db->quoteName ( 'mt.id' ) . ')' );
 		$query->join ( 'LEFT', '(select imsub.id, member_id, year from c1jr0_md_invoicemember imsub INNER JOIN c1jr0_md_invoice AS i ON (imsub.invoice_id = i.id) where year = ' . $year . ') as im on m.id = im.member_id' );
 		
-		if (! JFactory::getUser ()->authorise ( 'core.manage', 'com_memberdatabase' )) {
+		if (! JFactory::getUser ()->authorise ( 'invoice.manage', 'com_memberdatabase' )) {
 			$query->join ( 'INNER', $db->quoteName ( '#__md_usertower', 'ut' ) . ' ON (' . $db->quoteName ( 'm.tower_id' ) . ' = ' . $db->quoteName ( 'ut.tower_id' ) . ')' );
 			$query->where ( 'ut.user_id = ' . $userid );
 		}
@@ -338,9 +338,9 @@ class MemberDatabaseModelInvoice extends JModelAdmin {
 			return false;
 		}
 		
-		// If the user has manage privilage then they can delete
+		// If the user has delete privilage then they can delete
 		
-		if (JFactory::getUser ()->authorise ( 'core.manage', 'com_memberdatabase' )) {
+		if (JFactory::getUser ()->authorise ( 'invoice.delete', 'com_memberdatabase' )) {
 			return true;
 		}
 		
@@ -393,5 +393,27 @@ class MemberDatabaseModelInvoice extends JModelAdmin {
 		
 		return true;
 		
+	}
+	
+	public function allowAdd($towerId) {
+		$userId = JFactory::getUser ()->id;
+		$memberId = $data ['id'];
+		
+		$db = JFactory::getDbo ();
+		
+		// Build the database query to get the rules for the asset.
+		$query = $db->getQuery ( true )->select ( 'count(*)' )->from ( $db->quoteName ( '#__md_usertower', 'ut' ) )->where ( 'ut.user_id = ' . ( int ) $userId . ' and t.tower_id = ' . ( int ) $towerId );
+		
+		error_log ( "value of \$query in InvoiceModel allowAdd:" . json_encode ( $query ), 0 );
+		// Execute the query and load the rules from the result.
+		$db->setQuery ( $query );
+		$result = $db->loadResult ();
+		
+		if ($result == 1) {
+			return true;
+		}
+		
+		error_log ( "User with id " . $userId . " does not have authorisation to add an invoice for towerwith id " . $towerId, 0 );
+		return false;
 	}
 }

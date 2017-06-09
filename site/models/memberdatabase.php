@@ -45,7 +45,7 @@ class MemberDatabaseModelMemberDatabase extends JModelItem
 		->from($db->quoteName('#__md_member', 'm'))
 		->join('LEFT', $verifiedSubQuery . ' ON (' . $db->quoteName('m.id') . ' = ' . $db->quoteName('v.member_id') . ')');
 		
-		if (! JFactory::getUser ()->authorise ( 'core.manage', 'com_memberdatabase' )) {
+		if (! JFactory::getUser ()->authorise ( 'member.view', 'com_memberdatabase' )) {
 			$query->join ( 'INNER', $db->quoteName ( '#__md_usertower', 'ut' ) . ' ON (' . $db->quoteName ( 'm.tower_id' ) . ' = ' . $db->quoteName ( 'ut.tower_id' ) . ')' );
 			$query->where ( 'ut.user_id = ' . $userid );
 		}
@@ -72,7 +72,7 @@ class MemberDatabaseModelMemberDatabase extends JModelItem
 		->join('INNER', $db->quoteName('#__md_tower', 't') . ' ON (' . $db->quoteName('m.tower_id') . ' = ' . $db->quoteName('t.id') . ')')
 		->join('LEFT', '(select imsub.id, member_id, year from c1jr0_md_invoicemember imsub LEFT JOIN c1jr0_md_invoice AS i ON (imsub.invoice_id = i.id) where year = ' . $year . ') as im on m.id = im.member_id');
 		
-		if (! JFactory::getUser ()->authorise ( 'core.manage', 'com_memberdatabase' )) {
+		if (! JFactory::getUser ()->authorise ( 'member.view', 'com_memberdatabase' )) {
 			$query->join ( 'INNER', $db->quoteName ( '#__md_usertower', 'ut' ) . ' ON (' . $db->quoteName ( 'm.tower_id' ) . ' = ' . $db->quoteName ( 'ut.tower_id' ) . ')' );
 			$query->where ( 'ut.user_id = ' . $userid );
 		}

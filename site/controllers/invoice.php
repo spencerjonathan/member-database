@@ -36,7 +36,37 @@ class MemberDatabaseControllerInvoice extends JControllerForm {
 	}
 	
 	/**
-	 * Method to verify a member's detail as being correct.
+	 * Method to check if you can add a new record.
+	 *
+	 * Extended classes can override this if necessary.
+	 *
+	 * @param   array  $data  An array of input data.
+	 *
+	 * @return  boolean
+	 *
+	 * @since   12.2
+	 */
+	protected function allowAdd($data = array())
+	{
+		
+		if ($db_locked == true) {
+			$this->setError('Amending invoice details is not permitted because the database is currently locked.');
+			$this->setMessage($this->getError(), 'error');
+			return false;
+		}
+		
+		$user = JFactory::getUser();
+		
+		if ($user->authorise('invoice.create', $this->option)) {
+			return true;
+		}
+		
+		
+	}
+	
+	
+	/**
+	 * Method to add an invoice
 	 *
 	 * @param string $key
 	 *        	The name of the primary key of the URL variable.
@@ -48,6 +78,24 @@ class MemberDatabaseControllerInvoice extends JControllerForm {
 	 * @since 12.2
 	 */
 	public function add($key = null, $urlVar = null) {
+		
+		// Access check.
+		if (!$this->allowAdd())
+		{
+			// Set the internal error and also the redirect error.
+			$this->setError(JText::_('JLIB_APPLICATION_ERROR_CREATE_RECORD_NOT_PERMITTED'));
+			$this->setMessage($this->getError(), 'error');
+			
+			$this->setRedirect(
+					JRoute::_(
+							'index.php?option=' . $this->option . '&view=' . $this->view_list
+							. $this->getRedirectToListAppend(), false
+							)
+					);
+			
+			return false;
+		}
+		
 		$model = $this->getModel ();
 		
 		error_log ( "invoice.save function called" );
@@ -64,7 +112,7 @@ class MemberDatabaseControllerInvoice extends JControllerForm {
 		if ($members == null) {
 			$this->setError ( "Each invoice must include at least one member!" );
 			$this->setMessage($this->getError(), 'error');
-			return 0;
+			return false;
 		}
 		
 		error_log ( json_encode ( $members ) );
@@ -74,14 +122,26 @@ class MemberDatabaseControllerInvoice extends JControllerForm {
 		if (! $model->addInvoice ( $towerId, $year, $userid, $members )) {
 			$this->setError ( "Could not save invoice!" );
 			$this->setMessage($this->getError(), 'error');
-			return 0;
+			return false;
 		}
 		
 		$this->setMessage("Invoice created successfully");
 		
-		return 1;
+		return true;
 	}
 	
+	protected function allowDelete($data = array(), $key = 'id') {
+			
+		$userId = JFactory::getUser ()->id;
+		$invoiceId = $data ['id'];
+		
+		if (JFactory::getUser ()->authorise ( 'invoice.delete', 'com_memberdatabase' )) {
+			return true;
+		}
+		
+		error_log ( "User with id " . $userId . " does not have authorisation to delete invoice with id " . $invoiceId, 0 );
+		return false;
+	}
 	
 	
 	protected function allowEdit($data = array(), $key = 'id') {
@@ -89,10 +149,7 @@ class MemberDatabaseControllerInvoice extends JControllerForm {
 		$userId = JFactory::getUser ()->id;
 		$invoiceId = $data ['id'];
 		
-		//error_log ( "value of \$data in allowEdit:" . json_encode ( $data ), 0 );
-		//error_log ( "value of \$user in allowEdit:" . json_encode ( JFactory::getUser () ), 0 );
-		
-		if (JFactory::getUser ()->authorise ( 'core.manage', 'com_memberdatabase' )) {
+		if (JFactory::getUser ()->authorise ( 'invoice.edit', 'com_memberdatabase' )) {
 			return true;
 		}
 		

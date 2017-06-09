@@ -37,7 +37,7 @@ class MemberDatabaseControllerMember extends JControllerForm {
 		error_log ( "value of \$data in allowEdit:" . json_encode ( $data ), 0 );
 		error_log ( "value of \$user in allowEdit:" . json_encode ( JFactory::getUser () ), 0 );
 		
-		if (JFactory::getUser ()->authorise ( 'core.manage', 'com_memberdatabase' )) {
+		if (JFactory::getUser ()->authorise ( 'member.edit', 'com_memberdatabase' )) {
 			return true;
 		}
 		
@@ -71,11 +71,11 @@ class MemberDatabaseControllerMember extends JControllerForm {
 			$this->setMessage($this->getError(), 'error');
 			return false;
 		}
-		
+
 		return true;
 	}
+
 	protected function allowAdd($data = array(), $key = 'id') {
-		return true;
 		
 		$db_locked = JComponentHelper::getParams('com_memberdatabase')->get('db_locked');
 		
@@ -86,6 +86,12 @@ class MemberDatabaseControllerMember extends JControllerForm {
 			$this->setMessage($this->getError(), 'error');
 			return false;
 		}
+
+		if (JFactory::getUser ()->authorise ( 'member.create', 'com_memberdatabase' )) {
+			return true;
+		}
+		
+		return false;
 		
 	}
 	

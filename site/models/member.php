@@ -105,14 +105,30 @@ class MemberDatabaseModelMember extends JModelAdmin {
 		
 		$query = $db->getQuery ( true );
 		
-		$query_string = "null, #__md_member.* from #__md_member where id = $memberId UNION ALL select #__md_member_history.* from #__md_member_history where id = $memberId order by mod_date DESC";
 		
+		$query_string = 
+		"(select null as history_id, #__md_member.* 
+		from #__md_member 
+		where id = $memberId 
+		UNION ALL 
+		select #__md_member_history.* 
+		from #__md_member_history 
+		where id = $memberId 
+		order by mod_date DESC) mh";
+		
+		$query->select('mh.*, concat_ws(", ", t.place, t.designation) as tower, mt.name as member_type, u.name as mod_user');
+		$query->from($query_string);
+		$query->join('LEFT', $db->quoteName ( '#__md_tower', 't' ) . 'ON (mh.tower_id = t.id)' );
+		$query->join('LEFT', $db->quoteName ( '#__md_member_type', 'mt' ) . 'ON (mh.member_type_id = mt.id)' );
+		$query->join('LEFT', $db->quoteName ( '#__users', 'u' ) . 'ON (mh.mod_user_id = u.id)' );
+		
+		/* 
 		$query->select ( $query_string );
-		
-		/* if (! JFactory::getUser ()->authorise ( 'member.view', 'com_memberdatabase' )) {
-			$query->join ( 'INNER', $db->quoteName ( '#__md_usertower', 'ut' ) . ' ON (t.id = ut.tower_id)' );
+		 */
+		if (! JFactory::getUser ()->authorise ( 'member.view', 'com_memberdatabase' )) {
+			$query->join ( 'INNER', $db->quoteName ( '#__md_usertower', 'ut' ) . ' ON (mh.tower_id = ut.tower_id)' );
 			$query->where ( 'ut.user_id = ' . ( int ) $userId );
-		} */
+		}
 		
 		$db->setQuery ( $query );
 		

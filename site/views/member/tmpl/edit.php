@@ -40,6 +40,7 @@ $document->addScriptDeclaration ( '
 	class="btn btn-small btn-success">
 	<span class="icon-ok"></span> Save & Verify
 </button>
+<a href="<?php echo JRoute::_('index.php/?option=com_memberdatabase&view=memberhistory&memberId=' . (int) $this->item->id); ?>" class="btn btn-small"><span class="icon-ok"></span> View History</a>
 </div>
 <hr>
 

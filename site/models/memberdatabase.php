@@ -70,7 +70,7 @@ class MemberDatabaseModelMemberDatabase extends JModelItem
 		$query->select('t.id, concat_ws(", ", t.place, t.designation) as tower_name, count(m.id) as number_of_members')
 		->from($db->quoteName('#__md_member', 'm'))
 		->join('INNER', $db->quoteName('#__md_tower', 't') . ' ON (' . $db->quoteName('m.tower_id') . ' = ' . $db->quoteName('t.id') . ')')
-		->join('LEFT', '(select imsub.id, member_id, year from c1jr0_md_invoicemember imsub LEFT JOIN c1jr0_md_invoice AS i ON (imsub.invoice_id = i.id) where year = ' . $year . ') as im on m.id = im.member_id');
+		->join('LEFT', '(select imsub.id, member_id, year from #__md_invoicemember imsub LEFT JOIN #__md_invoice AS i ON (imsub.invoice_id = i.id) where year = ' . $year . ') as im on m.id = im.member_id');
 		
 		if (! JFactory::getUser ()->authorise ( 'member.view', 'com_memberdatabase' )) {
 			$query->join ( 'INNER', $db->quoteName ( '#__md_usertower', 'ut' ) . ' ON (' . $db->quoteName ( 'm.tower_id' ) . ' = ' . $db->quoteName ( 'ut.tower_id' ) . ')' );

@@ -99,6 +99,28 @@ class MemberDatabaseModelMember extends JModelAdmin {
 		return $results;
 	}
 	
+	public function getHistory($memberId) {
+		$db = JFactory::getDbo ();
+		$userId = JFactory::getUser ()->id;
+		
+		$query = $db->getQuery ( true );
+		
+		$query_string = "null, #__md_member.* from #__md_member where id = $memberId UNION ALL select #__md_member_history.* from #__md_member_history where id = $memberId order by mod_date DESC";
+		
+		$query->select ( $query_string );
+		
+		/* if (! JFactory::getUser ()->authorise ( 'member.view', 'com_memberdatabase' )) {
+			$query->join ( 'INNER', $db->quoteName ( '#__md_usertower', 'ut' ) . ' ON (t.id = ut.tower_id)' );
+			$query->where ( 'ut.user_id = ' . ( int ) $userId );
+		} */
+		
+		$db->setQuery ( $query );
+		
+		$results = $db->loadObjectList ();
+		
+		return $results;
+	}
+	
 	public function markAsVerified($memberId) {
 		$db = JFactory::getDbo ();
 		$userId = JFactory::getUser()->id;

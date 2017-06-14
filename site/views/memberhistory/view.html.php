@@ -60,11 +60,11 @@ class MemberDatabaseViewMemberHistory extends JViewLegacy
 		$context = "memberdatabase.list.admin.memberhistory"; */
 
 		$jinput = JFactory::getApplication ()->input;
-		$memberId = $jinput->get ( 'memberId', 0, 'INT' );
+		$this->memberId = $jinput->get ( 'memberId', 0, 'INT' );
 	
 		error_log("Displaying info for memberId: " . $memberId);
 		// Get data from the model
-		$this->history = $this->getModel('Member')->getHistory($memberId);
+		$this->history = $this->getModel('Member')->getHistory($this->memberId);
 		/* $this->pagination	= $this->get('Pagination'); */
  
 		/* $this->state		= $this->get('State'); */

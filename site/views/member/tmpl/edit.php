@@ -28,6 +28,10 @@ $document->addScriptDeclaration ( '
 <!-- Add the toolbar at the top  -->
 
 <div>
+<button onclick="if (confirm('Are you sure you want to verify that the information held about this member is correct?')) { Joomla.submitbutton('member.saveandverify'); }" id="saveandverify_button"
+	class="btn btn-small btn-success">
+	<span class="icon-ok"></span> Save & Verify
+</button>
 <button onclick="Joomla.submitbutton('member.save')" id="save_button"
 	class="btn btn-small">
 	<span class="icon-save"></span> Save & Close
@@ -36,11 +40,8 @@ $document->addScriptDeclaration ( '
 	class="btn btn-small">
 	<span class="icon-cancel"></span> Close
 </button>
-<button onclick="if (confirm('Are you sure you want to verify that the information held about this member is correct?')) { Joomla.submitbutton('member.saveandverify'); }" id="saveandverify_button"
-	class="btn btn-small btn-success">
-	<span class="icon-ok"></span> Save & Verify
-</button>
-<a href="<?php echo JRoute::_('index.php/?option=com_memberdatabase&view=memberhistory&memberId=' . (int) $this->item->id); ?>" class="btn btn-small"><span class="icon-ok"></span> View History</a>
+
+<a href="<?php echo JRoute::_('index.php/?option=com_memberdatabase&view=memberhistory&memberId=' . (int) $this->item->id); ?>" class="btn btn-small"><span class="icon-eye-open"></span> View History</a>
 </div>
 <hr>
 

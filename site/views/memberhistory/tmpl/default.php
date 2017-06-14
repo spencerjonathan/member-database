@@ -12,6 +12,11 @@ defined ( '_JEXEC' ) or die ( 'Restricted access' );
 
 ?>
 
+<div>
+<a href="<?php echo JRoute::_('index.php/?option=com_memberdatabase&view=member&layout=edit&id=' . (int) $this->memberId); ?>" class="btn btn-small"><span class="icon-edit"></span> Back to Edit</a>
+</div>
+<hr>
+
 <div style="overflow-x:scroll;"><table class="table table-bordered">
 	
 <?php 

@@ -42,6 +42,8 @@ $document->addScriptDeclaration ( '
 </button>
 
 <a href="<?php echo JRoute::_('index.php/?option=com_memberdatabase&view=memberhistory&memberId=' . (int) $this->item->id); ?>" class="btn btn-small"><span class="icon-eye-open"></span> View History</a>
+<a href="<?php echo JRoute::_('index.php/?option=com_memberdatabase&view=annualreport&layout=memberdetails&memberId=' . (int) $this->item->id); ?>" class="btn btn-small"><span class="icon-eye-open"></span> View Only</a>
+
 </div>
 <hr>
 

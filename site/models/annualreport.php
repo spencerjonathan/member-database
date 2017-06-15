@@ -33,7 +33,7 @@ class MemberDatabaseModelAnnualreport extends JModelList {
 	 *
 	 * @return string An SQL query
 	 */
-	public function getMembers() {
+	public function getMembers($memberId) {
 		// Initialize variables.
 		$db = JFactory::getDbo ();
 		$userid = JFactory::getUser ()->id;
@@ -45,6 +45,10 @@ class MemberDatabaseModelAnnualreport extends JModelList {
 		if (! JFactory::getUser ()->authorise ( 'member.view', 'com_memberdatabase' )) {
 			$query->join ( 'INNER', $db->quoteName ( '#__md_usertower', 'ut' ) . ' ON (' . $db->quoteName ( 'm.tower_id' ) . ' = ' . $db->quoteName ( 'ut.tower_id' ) . ')' );
 			$query->where ( 'ut.user_id = ' . $userid );
+		}
+		
+		if ($memberId) {
+			$query->where( "m.id = $memberId");
 		}
 		
 		$query->order ( 'surname, forenames asc' );

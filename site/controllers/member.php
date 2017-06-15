@@ -17,17 +17,73 @@ defined ( '_JEXEC' ) or die ( 'Restricted access' );
  * @since 0.0.9
  */
 class MemberDatabaseControllerMember extends JControllerForm {
+	
+	/**
+	 * Method to edit an existing record.
+	 *
+	 * @param string $key
+	 *        	The name of the primary key of the URL variable.
+	 * @param string $urlVar
+	 *        	The name of the URL variable if different from the primary key
+	 *        	(sometimes required to avoid router collisions).
+	 *        	
+	 * @return boolean True if access level check and checkout passes, false otherwise.
+	 *        
+	 * @since 12.2
+	 */
+	public function edit($key = null, $urlVar = null) {
+		$model = $this->getModel ();
+		$table = $model->getTable ();
+		$cid = $this->input->post->get ( 'cid', array (), 'array' );
+		$context = "$this->option.edit.$this->context";
+		
+		// Determine the name of the primary key for the data.
+		if (empty ( $key )) {
+			$key = $table->getKeyName ();
+		}
+		
+		// To avoid data collisions the urlVar may be different from the primary key.
+		if (empty ( $urlVar )) {
+			$urlVar = $key;
+		}
+		
+		// Get the previous record id (if any) and the current record id.
+		$recordId = ( int ) (count ( $cid ) ? $cid [0] : $this->input->getInt ( $urlVar ));
+		// $checkin = property_exists($table, 'checked_out');
+		
+		// Access check.
+		if (! $this->allowEdit ( array (
+				$key => $recordId 
+		), $key )) {
+			/*
+			 * $this->setError(JText::_('JLIB_APPLICATION_ERROR_EDIT_NOT_PERMITTED'));
+			 * $this->setMessage($this->getError(), 'error');
+			 */
+			
+			$this->setRedirect ( JRoute::_ ( 'index.php?option=' . $this->option . '&view=annualreport&layout=memberdetails&memberId=' . $recordId, false ) );
+			
+			return false;
+		}
+		
+		// push the new record id into the session.
+		$this->holdEditId ( $context, $recordId );
+		JFactory::getApplication ()->setUserState ( $context . '.data', null );
+		
+		$this->setRedirect ( JRoute::_ ( 'index.php?option=' . $this->option . '&view=' . $this->view_item . $this->getRedirectToItemAppend ( $recordId, $urlVar ), false ) );
+		
+		return true;
+		
+	}
 	protected function allowEdit($data = array(), $key = 'id') {
+		jimport ( 'joomla.application.component.helper' );
 		
-		jimport('joomla.application.component.helper');
+		$db_locked = JComponentHelper::getParams ( 'com_memberdatabase' )->get ( 'db_locked' );
 		
-		$db_locked = JComponentHelper::getParams('com_memberdatabase')->get('db_locked');
-		
-		error_log("member.allowEdit: db_locked is " . $db_locked);
+		error_log ( "member.allowEdit: db_locked is " . $db_locked );
 		
 		if ($db_locked == true) {
-			$this->setError('Editing member details is currently not permitted because the database is currently locked.');
-			$this->setMessage($this->getError(), 'error');
+			$this->setError ( 'Editing member details is currently not permitted because the database is currently locked.' );
+			$this->setMessage ( $this->getError (), 'error' );
 			return false;
 		}
 		
@@ -46,7 +102,6 @@ class MemberDatabaseControllerMember extends JControllerForm {
 		// Build the database query to get the rules for the asset.
 		$query = $db->getQuery ( true )->select ( 'count(*)' )->from ( $db->quoteName ( '#__md_usertower', 'ut' ) )->join ( 'INNER', $db->quoteName ( '#__md_member', 'm' ) . ' ON (' . $db->quoteName ( 'm.tower_id' ) . ' = ' . $db->quoteName ( 'ut.tower_id' ) . ')' )->where ( 'ut.user_id = ' . ( int ) $userId . ' and m.id = ' . ( int ) $memberId );
 		
-		error_log ( "value of \$query in allowEdit:" . json_encode ( $query ), 0 );
 		// Execute the query and load the rules from the result.
 		$db->setQuery ( $query );
 		$result = $db->loadResult ();
@@ -57,132 +112,125 @@ class MemberDatabaseControllerMember extends JControllerForm {
 		;
 		
 		error_log ( "User with id " . $userId . " does not have authorisation to modify member with id " . $memberId, 0 );
+		
 		return false;
 	}
 	
 	protected function allowSave($data = array(), $key = 'id') {
+		$db_locked = JComponentHelper::getParams ( 'com_memberdatabase' )->get ( 'db_locked' );
 		
-		$db_locked = JComponentHelper::getParams('com_memberdatabase')->get('db_locked');
-		
-		error_log("member.allowSave: db_locked is " . $db_locked);
+		error_log ( "member.allowSave: db_locked is " . $db_locked );
 		
 		if ($db_locked == true) {
-			$this->setError('Editing member details is currently not permitted because the database is currently locked.');
-			$this->setMessage($this->getError(), 'error');
+			$this->setError ( 'Editing member details is currently not permitted because the database is currently locked.' );
+			$this->setMessage ( $this->getError (), 'error' );
 			return false;
 		}
-
+		
 		return true;
 	}
-
 	protected function allowAdd($data = array(), $key = 'id') {
+		$db_locked = JComponentHelper::getParams ( 'com_memberdatabase' )->get ( 'db_locked' );
 		
-		$db_locked = JComponentHelper::getParams('com_memberdatabase')->get('db_locked');
-		
-		error_log("member.allowAdd: db_locked is " . $db_locked);
+		error_log ( "member.allowAdd: db_locked is " . $db_locked );
 		
 		if ($db_locked == true) {
-			$this->setError('Editing member details is currently not permitted because the database is currently locked.');
-			$this->setMessage($this->getError(), 'error');
+			$this->setError ( 'Editing member details is currently not permitted because the database is currently locked.' );
+			$this->setMessage ( $this->getError (), 'error' );
 			return false;
 		}
-
+		
 		if (JFactory::getUser ()->authorise ( 'member.create', 'com_memberdatabase' )) {
 			return true;
 		}
 		
 		return false;
-		
 	}
 	
 	/**
 	 * Method to verify a member's detail as being correct.
 	 *
-	 * @param   string  $key     The name of the primary key of the URL variable.
-	 * @param   string  $urlVar  The name of the URL variable if different from the primary key (sometimes required to avoid router collisions).
-	 *
-	 * @return  boolean  True if successful, false otherwise.
-	 *
-	 * @since   12.2
+	 * @param string $key
+	 *        	The name of the primary key of the URL variable.
+	 * @param string $urlVar
+	 *        	The name of the URL variable if different from the primary key (sometimes required to avoid router collisions).
+	 *        	
+	 * @return boolean True if successful, false otherwise.
+	 *        
+	 * @since 12.2
 	 */
-	public function verify($key = null, $urlVar = null)
-	{
-		$model = $this->getModel();
-		$table = $model->getTable();
-		$memberId = $this->input->get->get('id');
+	public function verify($key = null, $urlVar = null) {
+		$model = $this->getModel ();
+		$table = $model->getTable ();
+		$memberId = $this->input->get->get ( 'id' );
 		
-		error_log("member.verify function called with id = " . $memberId);
+		error_log ( "member.verify function called with id = " . $memberId );
 		
 		// Determine the name of the primary key for the data.
-		if (empty($key))
-		{
-			$key = $table->getKeyName();
+		if (empty ( $key )) {
+			$key = $table->getKeyName ();
 		}
 		
 		// To avoid data collisions the urlVar may be different from the primary key.
-		if (empty($urlVar))
-		{
+		if (empty ( $urlVar )) {
 			$urlVar = $key;
 		}
 		
-		error_log("member.verify controller has determined that key is " . $key . ".  About to call allowEdit...");
+		error_log ( "member.verify controller has determined that key is " . $key . ".  About to call allowEdit..." );
 		
-		$this->setRedirect(
-				JRoute::_(
-						'index.php?option=' . $this->option . '&view=' . $this->view_list
-						. $this->getRedirectToListAppend(), false
-						)
-				);
+		$this->setRedirect ( JRoute::_ ( 'index.php?option=' . $this->option . '&view=' . $this->view_list . $this->getRedirectToListAppend (), false ) );
 		
 		// Access check.
-		if (!$this->allowEdit(array($key => $memberId), $key))
-		{
-			$this->setError(JText::_('JLIB_APPLICATION_ERROR_EDIT_NOT_PERMITTED'));
-			$this->setMessage($this->getError(), 'error');
+		if (! $this->allowEdit ( array (
+				$key => $memberId 
+		), $key )) {
+			$this->setError ( JText::_ ( 'JLIB_APPLICATION_ERROR_EDIT_NOT_PERMITTED' ) );
+			$this->setMessage ( $this->getError (), 'error' );
 			
-			/* $this->setRedirect(
-					JRoute::_(
-							'index.php?option=' . $this->option . '&view=' . $this->view_list
-							. $this->getRedirectToListAppend(), false
-							)
-					);
-		 */	
+			/*
+			 * $this->setRedirect(
+			 * JRoute::_(
+			 * 'index.php?option=' . $this->option . '&view=' . $this->view_list
+			 * . $this->getRedirectToListAppend(), false
+			 * )
+			 * );
+			 */
 			return false;
 		}
 		
 		if ($model->markAsVerified ( $memberId )) {
-			$this->setMessage(JText::_('Member successfully verified.'));
+			$this->setMessage ( JText::_ ( 'Member successfully verified.' ) );
 			return true;
 		} else {
-			$this->setError(JText::_('Could not verify member with id: ' . $memberId ));
-			$this->setMessage($this->getError(), 'error');
+			$this->setError ( JText::_ ( 'Could not verify member with id: ' . $memberId ) );
+			$this->setMessage ( $this->getError (), 'error' );
 			
 			return false;
 		}
-		
 	}
-	
 	
 	/**
 	 * Method to save and verify a member's detail as being correct.
 	 *
-	 * @param   string  $key     The name of the primary key of the URL variable.
-	 * @param   string  $urlVar  The name of the URL variable if different from the primary key (sometimes required to avoid router collisions).
-	 *
-	 * @return  boolean  True if successful, false otherwise.
-	 *
-	 * @since   12.2
+	 * @param string $key
+	 *        	The name of the primary key of the URL variable.
+	 * @param string $urlVar
+	 *        	The name of the URL variable if different from the primary key (sometimes required to avoid router collisions).
+	 *        	
+	 * @return boolean True if successful, false otherwise.
+	 *        
+	 * @since 12.2
 	 */
 	public function saveandverify($key = null, $urlVar = null) {
-		error_log("In member.saveandverify");
-		if ($this->save($key, $urlVar)) {
-			$return = $this->verify($key, $urlVar);
+		error_log ( "In member.saveandverify" );
+		if ($this->save ( $key, $urlVar )) {
+			$return = $this->verify ( $key, $urlVar );
 			
 			if ($return == true) {
-				$this->setMessage(JText::_('Member successfully saved and verified.'));
+				$this->setMessage ( JText::_ ( 'Member successfully saved and verified.' ) );
 			}
 			return $return;
-			
-		} else return false;
+		} else
+			return false;
 	}
 }

@@ -71,4 +71,25 @@ class MemberDatabaseModelTowers extends JModelList
  
 		return $query;
 	}
+	
+	public function getTowers() {
+		$db = JFactory::getDbo ();
+		$userId = JFactory::getUser ()->id;
+		
+		$query = $db->getQuery ( true );
+		
+		$query->select ( 't.id, concat_ws(\', \', t.place, t.designation) as tower' )->from ( $db->quoteName ( '#__md_tower', 't' ) );
+		
+		if (! JFactory::getUser ()->authorise ( 'member.edit', 'com_memberdatabase' )) {
+			$query->join ( 'INNER', $db->quoteName ( '#__md_usertower', 'ut' ) . ' ON (t.id = ut.tower_id)' );
+			$query->where ( 'ut.user_id = ' . ( int ) $userId );
+		}
+		
+		$db->setQuery ( $query );
+		
+		$results = $db->loadObjectList ();
+		
+		return $results;
+	}
+	
 }

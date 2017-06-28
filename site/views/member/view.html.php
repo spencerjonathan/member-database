@@ -45,7 +45,6 @@ class MemberDatabaseViewMember extends JViewLegacy
 		// Get the Data
 		$this->form = $this->get('Form');
 		$this->item = $this->get('Item');
-		$this->towers = $this->get('towers');
  
 		// Check for errors.
 		if (count($errors = $this->get('Errors')))

@@ -73,7 +73,6 @@ class MemberDatabaseViewAnnualreport extends JViewLegacy {
 		// Display the template
 		parent::display ( $tpl );
 		
-		echo '</div>';
 	}
 	
 	/**

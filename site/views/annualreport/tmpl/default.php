@@ -15,27 +15,35 @@ defined ( '_JEXEC' ) or die ( 'Restricted Access' );
 	<div class="row-fluid">
 		<div class="span12">
 
+			<table style="table-layout: fixed;">
+				<col width="29%" />
+				<col width="5%" />
+				<col width="17%" />
+				<col width="17%" />
+				<col width="17%" />
+				<col width="15%" />
+
 	<?php
 	
 	$currentdistrictid = 0;
 	$firstdistrict = 1;
+	
 	foreach ( $this->towers as $tower ) :
 		if ($currentdistrictid != $tower->district_id) :
 			$currentdistrictid = $tower->district_id;
 			?>
-			<h1
-				<?php if ($firstdistrict) { echo 'class="page-break-before-avoid"'; $firstdistrict=0; } else { echo 'class="page-break-before-always"'; } ?>
-				align="center"><?php echo $this->districts[$tower->district_id] ?></h1>
-			<h2 align="center">TOWER DETAILS AND MEMBERS FOR <?php echo $this->year?></h2>
+			<tr>
+					<td colspan=6>
+						<h1
+							<?php if ($firstdistrict) { echo 'class="page-break-before-avoid"'; $firstdistrict=0; } else { echo 'class="page-break-before-always"'; } ?>
+							align="center"><?php echo $this->districts[$tower->district_id] ?></h1>
+					</td>
+				</tr>
+				<tr>
+					<td colspan=6><h2 align="center">TOWER DETAILS AND MEMBERS FOR <?php echo $this->year?></h2></td>
+				</tr>
 		<?php endif ?>
 	<div class="tower">
-				<table style="table-layout: fixed;" width="100%">
-					<col width="29%" />
-					<col width="5%" />
-					<col width="17%" />
-					<col width="17%" />
-					<col width="17%" />
-					<col width="15%" />
 					<tbody>
 						<tr>
 							<td><strong><?php echo $tower->place ?>, <?php echo $tower->designation ?></strong></td>
@@ -73,13 +81,15 @@ defined ( '_JEXEC' ) or die ( 'Restricted Access' );
 		;
 		if ($i != 1) :
 			?>
-			</tr> 
+			
+				
+				
+				</tr> 
 		<?php endif ?>
 		</tbody>
-				</table>
-			</div>
+				
 	<?php endforeach; ?>
-
-</div>
+</table>
+		</div>
 	</div>
 </div>

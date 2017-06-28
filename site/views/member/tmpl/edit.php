@@ -10,17 +10,6 @@
 // No direct access
 defined ( '_JEXEC' ) or die ( 'Restricted access' );
 
-$document = JFactory::getDocument ();
-
-$document->addScriptDeclaration ( '
-	function updateTowerId() {
-		var towername = document.getElementById("tower_name");
-		var towerid = document.getElementById("jform_tower_id");
-		var savebutton = document.getElementById("save_button");
-		towerid.value = towername.value;
-	};
-' );
-
 ?>
 <legend><?php echo JText::_('Member Database - Member Details'); ?></legend>
 
@@ -57,24 +46,6 @@ $document->addScriptDeclaration ( '
 		<fieldset class="adminform">
 			<div class="row-fluid">
 				<div class="span6">
-
-					<div class="control-group">
-						<div class="control-label">
-							<label class="control-label">Tower</label>
-						</div>
-						<div class="controls">
-							<select id="tower_name" name="tower_name"
-								onchange="updateTowerId()" required="true">
-								<option value="">--Select Tower--</option>
-								<?php foreach ($this->towers as $tower): ?>
-				    				<option value=<?php echo $tower->id ?>
-										<?php if ($tower->id == $this->item->tower_id) { echo "selected=\"selected\""; } ?>>
-										<?php echo $tower->tower ?>
-				    				</option> 
-                    			<?php endforeach; ?>
-			    			</select>
-						</div>
-					</div>
 
                     <?php foreach ($this->form->getFieldset() as $field): ?>
                         <div class="control-group">

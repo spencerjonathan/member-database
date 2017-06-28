@@ -7,17 +7,14 @@
 				/>
 		<field
 				name="tower_id"
-				type="number"
-				label="Tower ID"
-				size="40"
-				class="inputbox"
+				type="towers"
+				label="Tower"
 				/>
 		<field
 				name="user_id"
-				type="number"
-				label="User ID"
-				size="40"
-				class="inputbox"
+				type="sql"
+				label="User"
+				query="select id as value, concat(username, ' (', name, ')' ) as user_id from #__users"
 				/>
 	</fieldset>
 </form>

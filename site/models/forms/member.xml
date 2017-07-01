@@ -64,13 +64,13 @@
 				default=""
 				/>
 		<field
-				name="member_type"
+				name="member_type_id"
 				type="sql"
 				label="Member Type"
 				description="The type of member"
 				required="true"
 				default=""
-				query="SELECT id AS value, name AS member_type FROM #__md_member_type"
+				query="SELECT id AS value, name AS member_type_id FROM #__md_member_type"
 				/>
 				
 		<field

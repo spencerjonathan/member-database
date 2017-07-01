@@ -40,7 +40,9 @@ class MemberDatabaseModelAnnualreport extends JModelList {
 		$query = $db->getQuery ( true );
 		
 		// Create the base select statement.
-		$query->select ( 'm.*, concat_ws(\', \',surname, forenames) as name' )->from ( $db->quoteName ( '#__md_member', 'm' ) );
+		$query->select ( 'm.*, concat_ws(\', \',surname, forenames) as name, mt.name as member_type' )->from ( $db->quoteName ( '#__md_member', 'm' ) );
+		
+		$query->join ( 'LEFT', $db->quoteName ( '#__md_member_type', 'mt' ) . ' ON (' . $db->quoteName ( 'm.member_type_id' ) . ' = ' . $db->quoteName ( 'mt.id' ) . ')' );
 		
 		if (! JFactory::getUser ()->authorise ( 'member.view', 'com_memberdatabase' )) {
 			$query->join ( 'INNER', $db->quoteName ( '#__md_usertower', 'ut' ) . ' ON (' . $db->quoteName ( 'm.tower_id' ) . ' = ' . $db->quoteName ( 'ut.tower_id' ) . ')' );

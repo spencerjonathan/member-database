@@ -55,7 +55,7 @@
 		</field>
 		<field
 				name="email"
-				type="text"
+				type="email"
 				label="Email Address"
 				description="Email Address of the member"
 				size="40"

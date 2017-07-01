@@ -68,6 +68,11 @@ foreach ( $this->members as $member ) :
 	</tr>
 	<tr>
 		<td></td>
+		<th>Member Type:</th>
+		<td colspan=3><?php echo $member->member_type?></td>
+	</tr>
+	<tr>
+		<td></td>
 		<th>Correspondence (incl Newsletter):</th>
 		<td>Email = <strong><?php if ($member->newsletters == "Email") { echo 'YES'; } else echo 'NO'; ?></strong></td>
 		<td>Post = <strong><?php if ($member->newsletters == "Post") { echo 'YES'; } else echo 'NO';?></strong></td>

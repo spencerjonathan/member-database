@@ -82,6 +82,22 @@ class MemberDatabaseModelMembers extends JModelList {
 		
 	}
 	
+	public function getMembersByUniqueAddress() {
+		
+		$db = JFactory::getDbo ();
+		$query = $this->getMembersSubsQuery($db);
+		
+		$query->where( 'm.newsletters in ("Postal", "Both")');
+		$query->where( 'm.member_type_id not in (4, 7)');
+		//$query->order('t.district_id');
+		
+		$db->setQuery ( $query );
+		$results = $db->loadObjectList ();
+		
+		return $results;
+		
+	}
+	
 	/**
 	 * Method to build an SQL query to load the list data.
 	 *

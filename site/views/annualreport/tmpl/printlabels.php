@@ -8,24 +8,15 @@
 // No direct access to this file
 defined ( '_JEXEC' ) or die ( 'Restricted Access' );
 
-?>
 
+$members = $this->getModel("Members")->getMembersByUniqueAddress();
 
-
-<table style="table-layout: fixed;" width="700px" class="table-bordered">
-	<col width="33%" />
-	<col width="33%" />
-	<col width="33%" />
-				
-
-	<?php
-	
 	$column = 1;
 	$row = 1;
 	$needClosingTr = false;
 	$needClosingTable = false;
 	
-	foreach ($this->members as $member) { 
+	foreach ($members as $member) { 
 		
 		if ($column == 1) {
 			if ($row == 1) {
@@ -40,11 +31,34 @@ defined ( '_JEXEC' ) or die ( 'Restricted Access' );
 			echo "<tr>";
 			$needClosingTr = true;
 		}
-		echo "<td height='145px'>";
+		echo "<td height='145px' style='padding-left: 20px; padding-right: 20px;'>";
 		
-		echo "$member->name";
+		echo '<div style="text-align:right; font-size:60%">';
+		echo substr($member->district, 0, 1) . "/$member->tower";
+		echo '</div><br><div style="font-size:80%">';
 		
-		echo "</td>";
+		echo "$member->title $member->surname";
+		
+		if ($member->address1) {
+			echo "<br>$member->address1";
+		}
+		if ($member->address2) {
+			echo "<br>$member->address2";
+		}
+		if ($member->address3) {
+			echo "<br>$member->address3";
+		}
+		if ($member->town) {
+			echo "<br>$member->town";
+		}
+		if ($member->county) {
+			echo "<br>$member->county";
+		}
+		if ($member->postcode) {
+			echo "<br>$member->postcode";
+		}
+		
+		echo "</div></td>";
 		if ($column == 3) {
 			$column = 1; 
 			echo "</tr>";

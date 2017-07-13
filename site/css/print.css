@@ -9,17 +9,14 @@
 	} */
 	#md-report .page-break-before-avoid {
 		page-break-before: avoid !important;
-		color: red !important;
 	}
 	#md-report .page-break-before-always {
 		page-break-before: always !important;
-		color: green !important;
 	}
 	#md-report .page-break-after-always {
 		page-break-after: always !important;
-		color: green !important;
 	}
-	#md-report div.tower {
+	#md-report div.tower .page-break-inside-avoid {
 		page-break-inside: avoid;
 		page-break-after: auto
 	}

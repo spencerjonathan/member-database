@@ -9,7 +9,7 @@
 defined ( '_JEXEC' ) or die ( 'Restricted Access' );
 
 
-$members = $this->getModel("Members")->getMembersByUniqueAddress();
+$members = $this->getModel("Members")->getMembersByUniqueAddress($this->districtId);
 
 	$column = 1;
 	$row = 1;

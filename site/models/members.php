@@ -82,17 +82,41 @@ class MemberDatabaseModelMembers extends JModelList {
 		
 	}
 	
-	public function getMembersByUniqueAddress() {
+	public function getMembersByUniqueAddress($districtId) {
 		
 		$db = JFactory::getDbo ();
 		$query = $this->getMembersSubsQuery($db);
 		
+		if ($districtId) {
+			$query->where( "t.district_id = $districtId");
+		}
+		
 		$query->where( 'm.newsletters in ("Postal", "Both")');
 		$query->where( 'm.member_type_id not in (4, 7)');
-		//$query->order('t.district_id');
+		$query->order('m.postcode, m.address1, m.address2, m.address3');
 		
 		$db->setQuery ( $query );
-		$results = $db->loadObjectList ();
+		$db_results = $db->loadObjectList ();
+		
+		$results = [];
+		
+		$previous = null;
+		
+		foreach ($db_results as $member) {
+			if ($previous) {
+				if ($previous->postcode == $member->postcode && $previous->address1 == $member->address1) {
+					$previous->title = $previous->title . " & $member->title " . substr($member->forenames, 0, 1);
+				} else {
+					$member->title = "$member->title " . substr($member->forenames, 0, 1);
+					array_push($results, $member);
+					$previous = $member;
+				}
+			} else {
+				$member->title = "$member->title " . substr($member->forenames, 0, 1);
+				array_push($results, $member);
+				$previous = $member;
+			}
+		}
 		
 		return $results;
 		

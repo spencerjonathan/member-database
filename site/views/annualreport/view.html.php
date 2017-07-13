@@ -62,6 +62,8 @@ class MemberDatabaseViewAnnualreport extends JViewLegacy {
 		$this->year = $date->format ( "Y" );
 		// $this->membersSubs = $this->get('MembersSubs', 'Members');
 		
+		$this->districtId = $jinput->get ( 'districtId', 0, 'INT' );
+		
 		$print = $jinput->get ( 'print', 0, 'INT' );
 		
 		if ($print) {

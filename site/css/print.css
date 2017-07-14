@@ -1,3 +1,10 @@
+@page {
+	margin-top: 10mm;
+	margin-bottom:10mm;
+	margin-left: 5mm;
+	margin-right: 5mm;
+}
+
 @media print {
 	/* #md-report h1 {
 		page-break-before: always;

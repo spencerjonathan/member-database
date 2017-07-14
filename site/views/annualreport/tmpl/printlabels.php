@@ -20,7 +20,7 @@ $members = $this->getModel("Members")->getMembersByUniqueAddress($this->district
 		
 		if ($column == 1) {
 			if ($row == 1) {
-				echo '<table style="table-layout: fixed;" width="700px" class="table-bordered page-break-inside-avoid page-break-after-always">
+				echo '<table style="table-layout: fixed;" width="100%" class="page-break-inside-avoid page-break-after-always">
 			<col width="33%" />
 			<col width="33%" />
 			<col width="33%" />';

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+	<layout title="Report - Print Labels">
+		<message>Report of members addresses in csv formation for label printing.</message>
+	</layout>
+	<fields name="request">
+		<fieldset name="request">
+			<field name="print" type="list" label="Print Layout"
+				description="Don't show other content on page" default="1">
+				<option value="0">No</option>
+				<option value="1">Yes</option>
+			</field>
+			<field name="districtId" type="list" label="District"
+				description="Don't show other content on page" default="1">
+				<option value="0">All Districts</option>
+				<option value="1">Northern</option>
+				<option value="2">Southern</option>
+				<option value="3">Eastern</option>
+				<option value="4">Western</option>
+				<option value="5">General Association</option>
+			</field>
+			<field name="tmpl" type="list" label="Template"
+				description="Template" default="com_memberdatabase">
+				<option value="com_memberdatabase">Default</option>
+			</field>
+		</fieldset>
+	</fields>
+</metadata>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <metadata>
-	<layout title="Report - Print Labels">
-		<message>Report of members addresses in csv formation for label printing.</message>
+	<layout title="Report - Postal Newsletter Addresses (CSV)">
+		<message>Report of members addresses in csv format for label printing.</message>
 	</layout>
 	<fields name="request">
 		<fieldset name="request">

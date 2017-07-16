@@ -86,6 +86,7 @@ class MemberDatabaseModelMembers extends JModelList {
 		
 		$db = JFactory::getDbo ();
 		$query = $this->getMembersSubsQuery($db);
+		$query->select('t.place');
 		
 		if ($districtId) {
 			$query->where( "t.district_id = $districtId");

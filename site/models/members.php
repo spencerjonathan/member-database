@@ -74,8 +74,9 @@ class MemberDatabaseModelMembers extends JModelList {
 		$query->join ( 'LEFT', $verifiedSubQuery . ' ON (' . $db->quoteName ( 'm.id' ) . ' = ' . $db->quoteName ( 'v.member_id' ) . ')' );
 		
 		if (! JFactory::getUser ()->authorise ( 'member.view', 'com_memberdatabase' )) {
-			$query->join('INNER', $db->quoteName('#__md_usertower', 'ut') . ' ON (' . $db->quoteName('m.tower_id') . ' = ' . $db->quoteName('ut.tower_id') . ')');
-			$query->where ( 'ut.user_id = ' . $userid );
+			$query->join('LEFT', $db->quoteName('#__md_usertower', 'ut') . ' ON (' . $db->quoteName('m.tower_id') . ' = ' . $db->quoteName('ut.tower_id') . " and ut.user_id = $userid)");
+			$query->join('LEFT', $db->quoteName('#__md_userdistrict', 'ud') . ' ON (' . $db->quoteName('t.district_id') . ' = ' . $db->quoteName('ud.district_id') . " and ud.user_id = $userid)");
+			$query->where ( '(ut.user_id is not null or ud.user_id is not null)');
 		}
 		
 		return $query;
@@ -121,6 +122,29 @@ class MemberDatabaseModelMembers extends JModelList {
 		
 		return $results;
 		
+	}
+	
+	public function getMembers($memberId) {
+		// Initialize variables.
+		$db = JFactory::getDbo ();
+		$userid = JFactory::getUser ()->id;
+		$query = $this->getBaseQuery($db);
+		
+		$query->select('mt.name as member_type, mt.fee, t.district_id, d.name as district');
+		$query->join('INNER', $db->quoteName ( '#__md_member_type', 'mt' ) . ' ON (' . $db->quoteName ( 'm.member_type_id' ) . ' = ' . $db->quoteName ( 'mt.id' ) . ')');
+		$query->join('INNER', $db->quoteName ( '#__md_district', 'd' ) . ' ON (' . $db->quoteName ( 't.district_id' ) . ' = ' . $db->quoteName ( 'd.id' ) . ')');
+		
+		if ($memberId) {
+			$query->where( "m.id = $memberId");
+		}
+		
+		$query->order ( 'surname, forenames asc' );
+		
+		$db->setQuery ( $query );
+		
+		$results = $db->loadObjectList ();
+		
+		return $results;
 	}
 	
 	/**

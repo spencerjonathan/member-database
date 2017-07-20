@@ -215,7 +215,7 @@ class MemberDatabaseModelInvoice extends JModelAdmin {
 		// Create the base select statement.
 		$query->select ( 'm.id, mt.name as member_type, concat_ws(\', \',m.surname, m.forenames) as name, mt.fee' )->from ( $db->quoteName ( '#__md_member', 'm' ) );
 		$query->join ( 'INNER', $db->quoteName ( '#__md_member_type', 'mt' ) . ' ON (' . $db->quoteName ( 'm.member_type_id' ) . ' = ' . $db->quoteName ( 'mt.id' ) . ')' );
-		$query->join ( 'LEFT', '(select imsub.id, member_id, year from c1jr0_md_invoicemember imsub INNER JOIN c1jr0_md_invoice AS i ON (imsub.invoice_id = i.id) where year = ' . $year . ') as im on m.id = im.member_id' );
+		$query->join ( 'LEFT', '(select imsub.id, member_id, year from #__md_invoicemember imsub INNER JOIN #__md_invoice AS i ON (imsub.invoice_id = i.id) where year = ' . $year . ') as im on m.id = im.member_id' );
 		
 		if (! JFactory::getUser ()->authorise ( 'invoice.manage', 'com_memberdatabase' )) {
 			$query->join ( 'INNER', $db->quoteName ( '#__md_usertower', 'ut' ) . ' ON (' . $db->quoteName ( 'm.tower_id' ) . ' = ' . $db->quoteName ( 'ut.tower_id' ) . ')' );

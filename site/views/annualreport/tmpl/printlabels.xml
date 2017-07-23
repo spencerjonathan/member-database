@@ -19,6 +19,11 @@
 				<option value="4">Western</option>
 				<option value="5">General Association</option>
 			</field>
+			<field name="correspFlag" type="list" label="Which Group"
+				description="Don't show other content on page" default="0">
+				<option value="0">Members</option>
+				<option value="1">Correspondents</option>
+			</field>
 			<field name="tmpl" type="list" label="Template"
 				description="Template" default="com_memberdatabase">
 				<option value="com_memberdatabase">Default</option>

@@ -10,6 +10,11 @@
 				<option value="0">No</option>
 				<option value="1">Yes</option>
 			</field>
+			<field name="correspFlag" type="list" label="Which Group"
+				description="Don't show other content on page" default="0">
+				<option value="0">Members</option>
+				<option value="1">Correspondents</option>
+			</field>
 			<field name="districtId" type="list" label="District"
 				description="Don't show other content on page" default="1">
 				<option value="0">All Districts</option>

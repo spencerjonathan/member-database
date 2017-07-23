@@ -62,7 +62,7 @@ class MemberDatabaseModelMembers extends JModelList {
 	}
 	
 	private function getBaseQuery($db) {
-		$userid = JFactory::getUser ()->id;
+		
 		$query = $db->getQuery ( true );
 		
 		$verifiedSubQuery = '(SELECT member_id, max(verified_date) as `verified_date` FROM `#__md_member_verified` group by member_id) v';
@@ -73,6 +73,15 @@ class MemberDatabaseModelMembers extends JModelList {
 		$query->join ( 'LEFT', $db->quoteName ( '#__md_tower', 't' ) . ' ON (' . $db->quoteName ( 'm.tower_id' ) . ' = ' . $db->quoteName ( 't.id' ) . ')' );
 		$query->join ( 'LEFT', $verifiedSubQuery . ' ON (' . $db->quoteName ( 'm.id' ) . ' = ' . $db->quoteName ( 'v.member_id' ) . ')' );
 		
+		$query = $this->addDataPermissionConstraints($db, $query);
+		
+		return $query;
+		
+	}
+	
+	private function addDataPermissionConstraints($db, $query) {
+		$userid = JFactory::getUser ()->id;
+		
 		if (! JFactory::getUser ()->authorise ( 'member.view', 'com_memberdatabase' )) {
 			$query->join('LEFT', $db->quoteName('#__md_usertower', 'ut') . ' ON (' . $db->quoteName('m.tower_id') . ' = ' . $db->quoteName('ut.tower_id') . " and ut.user_id = $userid)");
 			$query->join('LEFT', $db->quoteName('#__md_userdistrict', 'ud') . ' ON (' . $db->quoteName('t.district_id') . ' = ' . $db->quoteName('ud.district_id') . " and ud.user_id = $userid)");
@@ -80,7 +89,6 @@ class MemberDatabaseModelMembers extends JModelList {
 		}
 		
 		return $query;
-		
 	}
 	
 	public function getMembersByUniqueAddress($districtId) {
@@ -119,6 +127,33 @@ class MemberDatabaseModelMembers extends JModelList {
 				$previous = $member;
 			}
 		}
+		
+		return $results;
+		
+	}
+	
+	public function getCorrespondents($districtId) {
+		
+		$db = JFactory::getDbo ();
+		$query = $db->getQuery ( true );
+		
+		// Create the base select statement.
+		$query->select ( 'm.*, concat_ws(\', \',place, designation) as tower, d.name as district' );
+		$query->from ( $db->quoteName ( '#__md_member', 'm' ) );
+		$query->join ( 'INNER', $db->quoteName ( '#__md_tower', 't' ) . ' ON (' . $db->quoteName ( 'm.id' ) . ' = ' . $db->quoteName ( 't.correspondent_id' ) . ')' );
+		$query->join('INNER', $db->quoteName ( '#__md_district', 'd' ) . ' ON (' . $db->quoteName ( 't.district_id' ) . ' = ' . $db->quoteName ( 'd.id' ) . ')');
+		
+		if ($districtId) {
+			$query->where( "t.district_id = $districtId");
+		}
+		
+		$query = $this->addDataPermissionConstraints($db, $query);
+		
+		$query->order ( 't.district_id, t.place asc' );
+		
+		$db->setQuery ( $query );
+		
+		$results = $db->loadObjectList ();
 		
 		return $results;
 		

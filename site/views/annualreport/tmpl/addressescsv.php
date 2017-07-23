@@ -8,7 +8,14 @@
 // No direct access to this file
 defined ( '_JEXEC' ) or die ( 'Restricted Access' );
 
-$members = $this->getModel ( "Members" )->getMembersByUniqueAddress ( $this->districtId );
+$jinput = JFactory::getApplication ()->input;
+$correspFlag = $jinput->get ( 'correspFlag', 0, 'INT' );
+
+if ($correspFlag) {
+	$members = $this->getModel("Members")->getCorrespondents($this->districtId);
+} else {
+	$members = $this->getModel("Members")->getMembersByUniqueAddress($this->districtId);
+}
 
 $file_content = '"tower","district/tower","name","address1","address2","address3","town","county","postcode"';
 

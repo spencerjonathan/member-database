@@ -8,8 +8,14 @@
 // No direct access to this file
 defined ( '_JEXEC' ) or die ( 'Restricted Access' );
 
+$jinput = JFactory::getApplication ()->input;
+$correspFlag = $jinput->get ( 'correspFlag', 0, 'INT' );
 
-$members = $this->getModel("Members")->getMembersByUniqueAddress($this->districtId);
+if ($correspFlag) {
+	$members = $this->getModel("Members")->getCorrespondents($this->districtId);
+} else {
+	$members = $this->getModel("Members")->getMembersByUniqueAddress($this->districtId);
+}
 
 	$column = 1;
 	$row = 1;

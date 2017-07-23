@@ -25,4 +25,13 @@ class MemberDatabaseTableTower extends JTable
 	{
 		parent::__construct('#__md_tower', 'id', $db);
 	}
+
+	public function store($updateNulls = false)
+	{
+		$this->mod_user_id = JFactory::getUser ()->id;
+		$this->mod_date = $currentDate = date('Y-m-d H:i:s');
+
+		return parent::store($updateNulls);
+        }
+
 }

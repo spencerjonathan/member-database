@@ -9,7 +9,7 @@
  
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
- 
+
 /**
  * Tower View
  *
@@ -84,5 +84,6 @@ class MemberDatabaseViewTower extends JViewLegacy
 			'tower.cancel',
 			$isNew ? 'JTOOLBAR_CANCEL' : 'JTOOLBAR_CLOSE'
 		);
+		JToolbarHelper::custom('tower.history', 'eye-open', 'eye-open', 'View History', false);
 	}
 }

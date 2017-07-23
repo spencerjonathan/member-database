@@ -329,5 +329,20 @@
 				default=""
 				query="SELECT id AS value, concat_ws(', ', surname, forenames) AS captain_id FROM #__md_member order by surname, forenames"
 				/>
+		<field
+				name="mod_user_id"
+				type="user"
+				label="Last Modified By"
+				description="The user who most last edited/saved this tower record"
+				readonly="true"
+				/>
+		<field
+				name="mod_date"
+				type="text"
+				label="Last Modified Date"
+				description="The date that this tower record was last edited/saved"
+				class="inputbox"
+				readonly="true"
+				/>
 	</fieldset>
 </form>

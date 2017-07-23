@@ -85,4 +85,35 @@ class MemberDatabaseModelTower extends JModelAdmin
  
 		return $data;
 	}
+	
+	public function getHistory($towerId) {
+		$db = JFactory::getDbo ();
+		$userId = JFactory::getUser ()->id;
+		
+		$query = $db->getQuery ( true );
+		
+		
+		$query_string =
+		"(select null as history_id, #__md_tower.*
+		from #__md_tower
+		where id = $towerId
+		UNION ALL
+		select #__md_tower_history.*
+		from #__md_tower_history
+		where id = $towerId
+		order by mod_date DESC) th";
+		
+		$query->select('th.*, d.name as district, concat_ws(", ", capt.title, capt.forenames, capt.surname) as captain, concat_ws(", ", corresp.title, corresp.forenames, corresp.surname) as correspondent, u.name as mod_user');
+		$query->from($query_string);
+		$query->join('LEFT', $db->quoteName ( '#__md_member', 'capt' ) . 'ON (th.captain_id = capt.id)' );
+		$query->join('LEFT', $db->quoteName ( '#__md_member', 'corresp' ) . 'ON (th.correspondent_id = corresp.id)' );
+		$query->join('LEFT', $db->quoteName ( '#__md_district', 'd' ) . 'ON (th.district_id = d.id)' );
+		$query->join('LEFT', $db->quoteName ( '#__users', 'u' ) . 'ON (th.mod_user_id = u.id)' );
+		
+		$db->setQuery ( $query );
+		
+		$results = $db->loadObjectList ();
+		
+		return $results;
+	}
 }

@@ -15,7 +15,13 @@ if(!class_exists('JToolbarHelper')) {
 }
 
 $document = JFactory::getDocument();
-$document->addScript('./media/system/js/core.js');
+$document->addScript('./media/system/js/core-uncompressed.js');
+$document->addScriptDeclaration('
+Joomla.submitbutton = function( pressbutton, form ) {
+	Joomla.submitform( pressbutton, form );
+};
+');
+
 //$document->addScript('./components/com_memberdatabase/js/typeahead.bundle.js');
 
  
@@ -45,6 +51,8 @@ class MemberDatabaseViewMember extends JViewLegacy
 		// Get the Data
 		$this->form = $this->get('Form');
 		$this->item = $this->get('Item');
+		
+		//$this->id = $this->input->get->get ( 'id' );
  
 		// Check for errors.
 		if (count($errors = $this->get('Errors')))

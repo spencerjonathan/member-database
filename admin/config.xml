@@ -19,6 +19,11 @@
 			label="Verification Required Since"
 			description="Members will be flagged as needing re-verification if they've not been verified since this date (usually set to the start of the current year).  This date also determines the year number on the reports"
 			class="inputbox" default="" />
+			
+					<field name="attachment_location" type="text"
+			label="Member Attachment Location"
+			description="Location on file system where the member attachments are stored"
+			class="inputbox" default="" />
 
 	</fieldset>
 	<fieldset name="permissions" label="JCONFIG_PERMISSIONS_LABEL"

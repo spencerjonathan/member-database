@@ -10,6 +10,8 @@
 // No direct access to this file
 defined ( '_JEXEC' ) or die ( 'Restricted access' );
 
+jimport ('joomla.filesystem.file');
+
 /**
  * HelloWorld Model
  *
@@ -78,7 +80,6 @@ class MemberDatabaseModelMember extends JModelAdmin {
 		
 		return $data;
 	}
-	
 	public function getTowers() {
 		$db = JFactory::getDbo ();
 		$userId = JFactory::getUser ()->id;
@@ -98,16 +99,13 @@ class MemberDatabaseModelMember extends JModelAdmin {
 		
 		return $results;
 	}
-	
 	public function getHistory($memberId) {
 		$db = JFactory::getDbo ();
 		$userId = JFactory::getUser ()->id;
 		
 		$query = $db->getQuery ( true );
 		
-		
-		$query_string = 
-		"(select null as history_id, #__md_member.* 
+		$query_string = "(select null as history_id, #__md_member.* 
 		from #__md_member 
 		where id = $memberId 
 		UNION ALL 
@@ -116,14 +114,14 @@ class MemberDatabaseModelMember extends JModelAdmin {
 		where id = $memberId 
 		order by mod_date DESC) mh";
 		
-		$query->select('mh.*, concat_ws(", ", t.place, t.designation) as tower, mt.name as member_type, u.name as mod_user');
-		$query->from($query_string);
-		$query->join('LEFT', $db->quoteName ( '#__md_tower', 't' ) . 'ON (mh.tower_id = t.id)' );
-		$query->join('LEFT', $db->quoteName ( '#__md_member_type', 'mt' ) . 'ON (mh.member_type_id = mt.id)' );
-		$query->join('LEFT', $db->quoteName ( '#__users', 'u' ) . 'ON (mh.mod_user_id = u.id)' );
+		$query->select ( 'mh.*, concat_ws(", ", t.place, t.designation) as tower, mt.name as member_type, u.name as mod_user' );
+		$query->from ( $query_string );
+		$query->join ( 'LEFT', $db->quoteName ( '#__md_tower', 't' ) . 'ON (mh.tower_id = t.id)' );
+		$query->join ( 'LEFT', $db->quoteName ( '#__md_member_type', 'mt' ) . 'ON (mh.member_type_id = mt.id)' );
+		$query->join ( 'LEFT', $db->quoteName ( '#__users', 'u' ) . 'ON (mh.mod_user_id = u.id)' );
 		
-		/* 
-		$query->select ( $query_string );
+		/*
+		 * $query->select ( $query_string );
 		 */
 		if (! JFactory::getUser ()->authorise ( 'member.view', 'com_memberdatabase' )) {
 			$query->join ( 'INNER', $db->quoteName ( '#__md_usertower', 'ut' ) . ' ON (mh.tower_id = ut.tower_id)' );
@@ -136,35 +134,99 @@ class MemberDatabaseModelMember extends JModelAdmin {
 		
 		return $results;
 	}
-	
 	public function markAsVerified($memberId) {
 		$db = JFactory::getDbo ();
-		$userId = JFactory::getUser()->id;
-		$currentDate = date('Y-m-d H:i:s');
+		$userId = JFactory::getUser ()->id;
+		$currentDate = date ( 'Y-m-d H:i:s' );
 		
 		// Create a new query object.
-		$query = $db->getQuery(true);
+		$query = $db->getQuery ( true );
 		
 		// Insert columns.
-		$columns = array('member_id', 'user_id', 'verified_date');
+		$columns = array (
+				'member_id',
+				'user_id',
+				'verified_date' 
+		);
 		
 		// Insert values.
-		$values = array($memberId, $userId, $db->quote($currentDate) );
+		$values = array (
+				$memberId,
+				$userId,
+				$db->quote ( $currentDate ) 
+		);
 		
 		// Prepare the insert query.
-		$query
-		->insert($db->quoteName('#__md_member_verified'))
-		->columns($db->quoteName($columns))
-		->values(implode(',', $values));
+		$query->insert ( $db->quoteName ( '#__md_member_verified' ) )->columns ( $db->quoteName ( $columns ) )->values ( implode ( ',', $values ) );
 		
 		// Set the query using our newly populated query object and execute it.
-		$db->setQuery($query);
-		$result = $db->execute();
+		$db->setQuery ( $query );
+		$result = $db->execute ();
 		
-		error_log("Result from executing query to markAsVerified: " . serialize($result));
+		error_log ( "Result from executing query to markAsVerified: " . serialize ( $result ) );
 		
 		return $result;
-		
 	}
-	
+	public function addAttachment($memberId, $filename, $type, $description, $tmp_name) {
+		$db = JFactory::getDbo ();
+		$userId = JFactory::getUser ()->id;
+		$currentDate = date ( 'Y-m-d H:i:s' );
+		
+		$filename = JFile::makeSafe($filename);
+		
+		// Create a new query object.
+		$query = $db->getQuery ( true );
+		
+		// Insert columns.
+		$columns = array (
+				'member_id',
+				'name',
+				'type',
+				'description',
+				'mod_user_id',
+				'mod_date' 
+		);
+		
+		// Insert values.
+		// $values = array($memberId, $filename, $type, mysql_real_escape_string(file_get_contents($tmp_name)) ,$userId, $db->quote($currentDate) );
+		$values = array (
+				$memberId,
+				$db->quote ( $filename ),
+				$db->quote ( $type ),
+				$db->quote( $description ),
+				$userId,
+				$db->quote ( $currentDate ) 
+		);
+		
+		// Prepare the insert query.
+		$query->insert ( $db->quoteName ( '#__md_member_attachment' ) )->columns ( $db->quoteName ( $columns ) )->values ( implode ( ',', $values ) );
+		
+		// Set the query using our newly populated query object and execute it.
+		$db->setQuery ( $query );
+		$result = $db->query ();
+		
+		$key = $db->insertid ();
+		
+		if ($key) {
+			$attachment_location = JComponentHelper::getParams ( 'com_memberdatabase' )->get ( 'attachment_location' );
+			$dest = $attachment_location . "/" . $key;
+			
+			error_log ( "member.addAtachment: copying file from $tmp_name to $dest" );
+			
+			if (!JFile::copy ( $tmp_name, $dest )) {
+				
+				// If the file copy was not successful then remove the record from the db table
+				$query = $db->getQuery ( true );
+				$query->delete ( $db->quoteName ( '#__md_member_attachment' ) );
+				$query->where ("id = $key");
+				$db->query ();
+				
+				return false;
+			}
+		}
+		
+		error_log ( "Result from executing query to addAtachment: " . $result );
+		
+		return $result;
+	}
 }

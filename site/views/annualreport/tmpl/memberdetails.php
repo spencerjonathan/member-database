@@ -87,7 +87,7 @@ foreach ( $this->members as $member ) :
 	</tr>
 	<tr>
 		<td></td>
-		<th colspan=2>You would like to recieve an annual report (free):</th>
+		<th colspan=2>You would like to receive an annual report (free):</th>
 		<td colspan=2><strong><?php if ($member->annual_report == true) { echo 'YES'; } else echo 'NO'; ?></strong></td>
 	</tr>
 	<tr>

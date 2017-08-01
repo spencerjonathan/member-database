@@ -233,4 +233,53 @@ class MemberDatabaseControllerMember extends JControllerForm {
 		} else
 			return false;
 	}
+	
+	/**
+	 * Method to add an attachment to a member's record.
+	 *
+	 * @param string $key
+	 *        	The name of the primary key of the URL variable.
+	 * @param string $urlVar
+	 *        	The name of the URL variable if different from the primary key (sometimes required to avoid router collisions).
+	 *
+	 * @return boolean True if successful, false otherwise.
+	 *
+	 * @since 12.2
+	 */
+	public function addattachment($key = null, $urlVar = null) {
+		
+		$model = $this->getModel ();
+		$table = $model->getTable ();
+		$memberId = (int) $this->input->get->get ( 'id' );
+		
+		error_log ( "member.addattachment function called with id = " . $memberId );
+		
+		$file = JRequest::getVar('jform', array(), 'files', 'array');
+		$form = JRequest::getVar('jform', array());
+		
+		if ($file['error']['a_file']!=0) {
+			error_log("member.addattachment - no file provided");
+		}
+		
+		/* error_log ("Input Descr: " . $form['a_description']);
+		
+		error_log ("Name:     " . $file['name']['a_file']);
+		error_log ("Name:     " . $file['type']['a_file']);
+		error_log ("Name:     " . $file['tmp_name']['a_file']); */
+		
+		// Access check.
+		if ($this->allowEdit ( array ('id' => $memberId), 'id' )) {
+			
+			$return = $model->addAttachment($memberId, $file['name']['a_file'], $file['type']['a_file'], $form['a_description'], $file['tmp_name']['a_file']);
+			
+			if ($return == true) {
+				$this->setMessage ( JText::_ ( 'Attachment successfully added.' ) );
+			}
+			return $return;
+		} else
+			$this->setError ( JText::_ ( 'JLIB_APPLICATION_ERROR_EDIT_NOT_PERMITTED' ) );
+			$this->setMessage ( $this->getError (), 'error' );
+			return false;
+	}
+	
 }

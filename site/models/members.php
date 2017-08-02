@@ -9,6 +9,8 @@
 // No direct access to this file
 defined ( '_JEXEC' ) or die ( 'Restricted access' );
 
+JLoader::import('QueryHelper', JPATH_COMPONENT . "/helpers/");
+
 /**
  * MemberDatabaseList Model
  *
@@ -73,13 +75,13 @@ class MemberDatabaseModelMembers extends JModelList {
 		$query->join ( 'LEFT', $db->quoteName ( '#__md_tower', 't' ) . ' ON (' . $db->quoteName ( 'm.tower_id' ) . ' = ' . $db->quoteName ( 't.id' ) . ')' );
 		$query->join ( 'LEFT', $verifiedSubQuery . ' ON (' . $db->quoteName ( 'm.id' ) . ' = ' . $db->quoteName ( 'v.member_id' ) . ')' );
 		
-		$query = $this->addDataPermissionConstraints($db, $query);
+		$query = QueryHelper::addDataPermissionConstraints($db, $query);
 		
 		return $query;
 		
 	}
 	
-	private function addDataPermissionConstraints($db, $query) {
+	/* private function addDataPermissionConstraints($db, $query) {
 		$userid = JFactory::getUser ()->id;
 		
 		if (! JFactory::getUser ()->authorise ( 'member.view', 'com_memberdatabase' )) {
@@ -89,7 +91,7 @@ class MemberDatabaseModelMembers extends JModelList {
 		}
 		
 		return $query;
-	}
+	} */
 	
 	public function getMembersByUniqueAddress($districtId) {
 		
@@ -147,7 +149,7 @@ class MemberDatabaseModelMembers extends JModelList {
 			$query->where( "t.district_id = $districtId");
 		}
 		
-		$query = $this->addDataPermissionConstraints($db, $query);
+		$query = QueryHelper::addDataPermissionConstraints($db, $query);
 		
 		$query->order ( 't.district_id, t.place asc' );
 		

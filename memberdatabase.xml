@@ -10,7 +10,7 @@
 	<copyright>Copyright Info</copyright>
 	<license>License Info</license>
 	<!-- The version string is recorded in the components table -->
-	<version>0.0.711</version>
+	<version>0.0.722</version>
 	<!-- The description is optional and defaults to the name -->
 	<description>Member Database for Ringing Society</description>
 
@@ -48,6 +48,7 @@
 		<folder>css</folder>
 		<folder>models</folder>
 		<folder>controllers</folder>
+		<folder>helpers</folder>
 	</files>
 
 	<administration>

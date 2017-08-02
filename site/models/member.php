@@ -12,8 +12,10 @@ defined ( '_JEXEC' ) or die ( 'Restricted access' );
 
 jimport ('joomla.filesystem.file');
 
+JLoader::import('QueryHelper', JPATH_COMPONENT . "/helpers/");
+
 /**
- * HelloWorld Model
+ * Member Model
  *
  * @since 0.0.1
  */
@@ -99,6 +101,28 @@ class MemberDatabaseModelMember extends JModelAdmin {
 		
 		return $results;
 	}
+	
+	public function getAttachments($memberId) {
+		$db = JFactory::getDbo ();
+		$userId = JFactory::getUser ()->id;
+		
+		$query = $db->getQuery ( true );
+		
+		$query->select('a.*, concat(u.name, " (", u.username, ")") as mod_user');
+		$query->from($db->quoteName ( '#__md_member_attachment', 'a' ));
+		$query->join('INNER', $db->quoteName ( '#__md_member', 'm' ) . ' ON (a.member_id = m.id)' );
+		$query->join('INNER', $db->quoteName ( '#__md_tower', 't' ) . ' ON (m.tower_id = t.id)' );
+		$query->join('INNER', $db->quoteName ( '#__users', 'u' ) . ' ON (a.mod_user_id = u.id)' );
+		$query->where('a.member_id = ' . (int) $memberId);
+		
+		$query = QueryHelper::addDataPermissionConstraints($db, $query);
+		
+		$db->setQuery ( $query );
+		$results = $db->loadObjectList ();
+		
+		return $results;
+	}
+	
 	public function getHistory($memberId) {
 		$db = JFactory::getDbo ();
 		$userId = JFactory::getUser ()->id;

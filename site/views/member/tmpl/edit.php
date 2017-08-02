@@ -108,4 +108,30 @@ defined ( '_JEXEC' ) or die ( 'Restricted access' );
 		<span class="icon-add"></span> Add Attachment
 	</button>
 </div>
+<hr>
+<div>
+		<table width="100%" class="table table-striped">
+		<tr>
+			<th>Added By</th>
+			<th>Added Date</th>
+			<th>File Name</th>
+			<th>Description</th>
+			<th>Actions</th>
+		</tr>
+		
+		<?php foreach ($this->attachments as $attachment) {
+		$viewLink = JRoute::_('index.php/?option=com_memberdatabase&view=memberattachment&attachmentId=' . (int) $attachment->id);
+		
+		echo "<tr>";
+			echo "<td>$attachment->mod_user</td>";
+			echo "<td>$attachment->mod_date</td>";
+			echo "<td>$attachment->name</td>";
+			echo "<td>$attachment->description</td>";
+			echo "<td><a href='$viewLink' class='btn btn-small'><span class='icon-eye-open'></span> View</a></td>";
+		echo "</tr>";
+		
+		}; ?>
+		
+		</table>
+	</div>
 <?php echo JHtml::_('bootstrap.endTabSet'); ?>

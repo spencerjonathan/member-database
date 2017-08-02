@@ -52,7 +52,11 @@ class MemberDatabaseViewMember extends JViewLegacy
 		$this->form = $this->get('Form');
 		$this->item = $this->get('Item');
 		
-		//$this->id = $this->input->get->get ( 'id' );
+		$this->attachments = array();
+		
+		if ($this->item->id) {
+			$this->attachments = $this->getModel()->getAttachments($this->item->id);
+		}
  
 		// Check for errors.
 		if (count($errors = $this->get('Errors')))

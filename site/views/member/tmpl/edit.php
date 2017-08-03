@@ -75,40 +75,11 @@ defined ( '_JEXEC' ) or die ( 'Restricted access' );
 
 <?php echo JHtml::_('bootstrap.endTab'); ?>
 
-<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'attachments', 'Member Attachments'); ?>
+<?php 
+if ($this->item->id) :
+	echo JHtml::_('bootstrap.addTab', 'myTab', 'attachments', 'Member Attachments'); ?>
 
-<form name="attachmentAdminForm" id="attachmentAdminForm" enctype="multipart/form-data" method="post"
-	action="<?php echo JRoute::_('index.php?option=com_memberdatabase&view=member&layout=edit&id=' . (int) $this->item->id); ?>">
-	<h1>Attachments</h1>
-	
-	<div class="form-horizontal">
-		<fieldset class="adminform">
-			
-                    <?php foreach ($this->form->getFieldset('attachment') as $field): ?>
-                        <div class="control-group">
-						<div class="control-label"><?php echo $field->label; ?></div>
-						<div class="controls"><?php echo $field->input; ?></div>
-					</div>
-                    <?php endforeach; ?>
-                
-
-		</fieldset>
-	</div>
-	
-	<input type="hidden" name="jform[id]"
-		value="<?php echo (int) $this->item->id; ?>"> <input type="hidden"
-		name="task" value="member.addattachment" />
-    <?php echo JHtml::_('form.token'); ?>
-</form>
-<hr>
-<div>
-	<button
-		onclick="Joomla.submitbutton('member.addattachment', document.getElementById('attachmentAdminForm') );"
-		id="addattachment_button" class="btn btn-small btn-success">
-		<span class="icon-add"></span> Add Attachment
-	</button>
-</div>
-<hr>
+<h2>Attachments</h2>
 <div>
 		<table width="100%" class="table table-striped">
 		<tr>
@@ -133,5 +104,35 @@ defined ( '_JEXEC' ) or die ( 'Restricted access' );
 		}; ?>
 		
 		</table>
-	</div>
-<?php echo JHtml::_('bootstrap.endTabSet'); ?>
+</div>
+<hr>
+<form class="form-horizontal" name="attachmentAdminForm" id="attachmentAdminForm" enctype="multipart/form-data" method="post"
+	action="<?php echo JRoute::_('index.php?option=com_memberdatabase&view=member&layout=edit&id=' . (int) $this->item->id); ?>">
+	<h2>Add Attachment</h2>
+	
+	<fieldset class="adminform">
+	<?php foreach ($this->form->getFieldset('attachment') as $field): ?>
+		<div class="control-group">
+		<div class="control-label"><?php echo $field->label; ?></div>
+		<div class="controls"><?php echo $field->input; ?></div>
+		</div>				
+    <?php endforeach; ?>
+	</fieldset>
+	<input type="hidden" name="jform[id]"
+		value="<?php echo (int) $this->item->id; ?>"> <input type="hidden"
+		name="task" value="member.addattachment" />
+    <?php echo JHtml::_('form.token'); ?>
+</form>
+
+<div>
+	<button
+		onclick="Joomla.submitbutton('member.addattachment', document.getElementById('attachmentAdminForm') );"
+		id="addattachment_button" class="btn btn-small btn-success">
+		<span class="icon-new icon-white"></span> Add Attachment
+	</button>
+</div>
+<hr>	
+
+<?php echo JHtml::_('bootstrap.endTabSet'); 
+endif;
+?>

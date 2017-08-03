@@ -72,7 +72,6 @@ class MemberDatabaseControllerMember extends JControllerForm {
 		$this->setRedirect ( JRoute::_ ( 'index.php?option=' . $this->option . '&view=' . $this->view_item . $this->getRedirectToItemAppend ( $recordId, $urlVar ), false ) );
 		
 		return true;
-		
 	}
 	protected function allowEdit($data = array(), $key = 'id') {
 		jimport ( 'joomla.application.component.helper' );
@@ -115,7 +114,6 @@ class MemberDatabaseControllerMember extends JControllerForm {
 		
 		return false;
 	}
-	
 	protected function allowSave($data = array(), $key = 'id') {
 		$db_locked = JComponentHelper::getParams ( 'com_memberdatabase' )->get ( 'db_locked' );
 		
@@ -241,45 +239,54 @@ class MemberDatabaseControllerMember extends JControllerForm {
 	 *        	The name of the primary key of the URL variable.
 	 * @param string $urlVar
 	 *        	The name of the URL variable if different from the primary key (sometimes required to avoid router collisions).
-	 *
+	 *        	
 	 * @return boolean True if successful, false otherwise.
-	 *
+	 *        
 	 * @since 12.2
 	 */
 	public function addattachment($key = null, $urlVar = null) {
-		
 		$model = $this->getModel ();
 		$table = $model->getTable ();
-		$memberId = (int) $this->input->get->get ( 'id' );
+		$memberId = ( int ) $this->input->get->get ( 'id' );
 		
 		error_log ( "member.addattachment function called with id = " . $memberId );
 		
-		$file = JRequest::getVar('jform', array(), 'files', 'array');
-		$form = JRequest::getVar('jform', array());
+		$file = JRequest::getVar ( 'jform', array (), 'files', 'array' );
+		$form = JRequest::getVar ( 'jform', array () );
 		
-		if ($file['error']['a_file']!=0) {
-			error_log("member.addattachment - no file provided");
+		if ($file ['error'] ['a_file'] != 0) {
+			error_log ( "member.addattachment - no file provided" );
 		}
 		
-		/* error_log ("Input Descr: " . $form['a_description']);
+		/*
+		 * error_log ("Input Descr: " . $form['a_description']);
+		 *
+		 * error_log ("Name: " . $file['name']['a_file']);
+		 * error_log ("Name: " . $file['type']['a_file']);
+		 * error_log ("Name: " . $file['tmp_name']['a_file']);
+		 */
 		
-		error_log ("Name:     " . $file['name']['a_file']);
-		error_log ("Name:     " . $file['type']['a_file']);
-		error_log ("Name:     " . $file['tmp_name']['a_file']); */
+		$this->setRedirect ( JRoute::_ ( 'index.php?option=' . $this->option . '&view=member&layout=edit&id=' . $memberId, false ) );
 		
 		// Access check.
-		if ($this->allowEdit ( array ('id' => $memberId), 'id' )) {
+		if ($this->allowEdit ( array (
+				'id' => $memberId 
+		), 'id' )) {
 			
-			$return = $model->addAttachment($memberId, $file['name']['a_file'], $file['type']['a_file'], $form['a_description'], $file['tmp_name']['a_file']);
+			$return = $model->addAttachment ( $memberId, $file ['name'] ['a_file'], $file ['type'] ['a_file'], $form ['a_description'], $file ['tmp_name'] ['a_file'] );
 			
 			if ($return == true) {
 				$this->setMessage ( JText::_ ( 'Attachment successfully added.' ) );
 			}
+			
+			
+			
+			
 			return $return;
-		} else
+		} else {
 			$this->setError ( JText::_ ( 'JLIB_APPLICATION_ERROR_EDIT_NOT_PERMITTED' ) );
 			$this->setMessage ( $this->getError (), 'error' );
 			return false;
+		}
 	}
-	
 }

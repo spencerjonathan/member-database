@@ -102,7 +102,7 @@ class MemberDatabaseModelMember extends JModelAdmin {
 		return $results;
 	}
 	
-	public function getAttachments($memberId) {
+	public function getAttachments($memberId, $attachmentId = 0) {
 		$db = JFactory::getDbo ();
 		$userId = JFactory::getUser ()->id;
 		
@@ -113,12 +113,20 @@ class MemberDatabaseModelMember extends JModelAdmin {
 		$query->join('INNER', $db->quoteName ( '#__md_member', 'm' ) . ' ON (a.member_id = m.id)' );
 		$query->join('INNER', $db->quoteName ( '#__md_tower', 't' ) . ' ON (m.tower_id = t.id)' );
 		$query->join('INNER', $db->quoteName ( '#__users', 'u' ) . ' ON (a.mod_user_id = u.id)' );
-		$query->where('a.member_id = ' . (int) $memberId);
+		
+		if ($memberId) {
+			$query->where('a.member_id = ' . (int) $memberId);
+		} elseif ($attachmentId) {
+			$query->where('a.id = ' . (int) $attachmentId);
+		} else {
+			$this->setError("Must specifiy a memberId or attachmentId when retrieving MemberAttachment details");
+			return -1;
+		}
 		
 		$query = QueryHelper::addDataPermissionConstraints($db, $query);
 		
 		$db->setQuery ( $query );
-		$results = $db->loadObjectList ();
+		$results = $db->loadObjectList ();;
 		
 		return $results;
 	}

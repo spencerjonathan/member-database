@@ -266,28 +266,9 @@
 	</fieldset>
 		<fieldset name="attachment" addrulepath="components/com_memberdatabase/models/rules" addfieldpath="administrator/components/com_memberdatabase/models/fields">
 		<field
-				name="a_id"
-				type="number"
-				label="Record Id"
-				description="Record Id"
-				class="inputbox"
-                readonly="true"
-				/>
-		<field
 				name="id"
-				type="number"
-				label="Member Id"
-				description="Member"
-				class="inputbox"
-                readonly="true"
-				/>
-		
-				<field
-				name="a_name"
-				type="text"
-				label="File Name"
-				description="File Name"
-				class="inputbox"
+				type="hidden"
+                
 				/>
 				<field
 				name="a_description"

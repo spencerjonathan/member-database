@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+	<fieldset>
+		<field
+				name="id"
+				type="hidden"
+				/>
+		<field
+				name="district_id"
+				type="sql"
+				label="District"
+				query="select id as value, name as district_id from #__md_district"
+				/>
+		<field
+				name="user_id"
+				type="sql"
+				label="User"
+				query="select id as value, concat(username, ' (', name, ')' ) as user_id from #__users"
+				/>
+	</fieldset>
+</form>

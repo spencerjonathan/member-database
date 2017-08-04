@@ -10,7 +10,7 @@
 	<copyright>Copyright Info</copyright>
 	<license>License Info</license>
 	<!-- The version string is recorded in the components table -->
-	<version>0.0.741</version>
+	<version>0.0.746</version>
 	<!-- The description is optional and defaults to the name -->
 	<description>Member Database for Ringing Society</description>
 
@@ -56,6 +56,7 @@
 		<menu link='index.php?option=com_memberdatabase'>COM_MEMBERDATABASE_ADMIN_MENU_TITLE</menu>
 		<submenu>
 			<menu view='usertowers'>COM_MEMBERDATABASE_ADMIN_MENU_UT_TITLE</menu>
+			<menu view='userdistricts'>COM_MEMBERDATABASE_ADMIN_MENU_UD_TITLE</menu>
 			<menu view='towers'>COM_MEMBERDATABASE_ADMIN_MENU_T_TITLE</menu>
 		</submenu>
 		<!-- Administration Main File Copy Section -->

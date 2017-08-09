@@ -205,7 +205,7 @@
 				/>
 		<field
 				name="email2"
-				type="number"
+				type="hidden"
 				label="Email 2"
 				description="Email 2"
 				size="4"
@@ -264,7 +264,7 @@
 				/>
 		<field
 				name="multi_towers"
-				type="radio"
+				type="hidden"
 				label="Multi Towers?"
 				description="Multi Tosers (better description needed)?"
 				class="btn-group btn-group-yesno"
@@ -319,7 +319,7 @@
 				label="Tower Correspondent"
 				description="Tower Correspondent"
 				default=""
-				query="SELECT id AS value, concat_ws(', ', surname, forenames) AS correspondent_id FROM #__md_member order by surname, forenames"
+				query="SELECT value, correspondent_id from (SELECT 0 AS o, 0 AS `value`, '--Please Select--' AS correspondent_id UNION SELECT 1 AS o, VALUE, correspondent_id FROM ( SELECT id AS `value`, CONCAT_WS(', ', surname, forenames) AS correspondent_id FROM c1jr0_md_member ) a) b order by o, correspondent_id"
 				/>
 		<field
 				name="captain_id"
@@ -327,7 +327,7 @@
 				label="Tower Captain"
 				description="Tower Captain"
 				default=""
-				query="SELECT id AS value, concat_ws(', ', surname, forenames) AS captain_id FROM #__md_member order by surname, forenames"
+				query="SELECT value, captain_id from (SELECT 0 AS o, 0 AS `value`, '--Please Select--' AS captain_id UNION SELECT 1 AS o, VALUE, captain_id FROM ( SELECT id AS `value`, CONCAT_WS(', ', surname, forenames) AS captain_id FROM c1jr0_md_member ) a) b order by o, captain_id"
 				/>
 		<field
 				name="mod_user_id"

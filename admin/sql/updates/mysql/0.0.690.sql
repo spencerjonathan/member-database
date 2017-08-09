@@ -1,4 +1,4 @@
-DROP TABLE if exists `#__md_member_attachments`;
+DROP TABLE if exists `#__md_member_attachment`;
 
 CREATE TABLE `#__md_member_attachment`(
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,

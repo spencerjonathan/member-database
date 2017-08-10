@@ -41,7 +41,9 @@ class MemberDatabaseModelMembers extends JModelList {
 	
 	public function getMembersSubs() {
 		$db = JFactory::getDbo ();
-		$table = $this->getMembersSubsQuery($db)->__toString();
+		$query = $this->getMembersSubsQuery($db);
+		$query->order ( 't.district_id, t.place asc' );
+		$table = $query->__toString();
 		$pivotColumn = "member_type"; 
 		$groupByColumns = array("district", "tower");
 		$aggregationColumns = array("fee" => "sum", "tower" => "count");
@@ -58,7 +60,6 @@ class MemberDatabaseModelMembers extends JModelList {
 		$query->select('mt.name as member_type, mt.fee, t.district_id, d.name as district');
 		$query->join('INNER', $db->quoteName ( '#__md_member_type', 'mt' ) . ' ON (' . $db->quoteName ( 'm.member_type_id' ) . ' = ' . $db->quoteName ( 'mt.id' ) . ')');
 		$query->join('INNER', $db->quoteName ( '#__md_district', 'd' ) . ' ON (' . $db->quoteName ( 't.district_id' ) . ' = ' . $db->quoteName ( 'd.id' ) . ')');
-		$query->order ( 't.district_id, t.place asc' );
 		
 		return $query;
 	}
@@ -133,6 +134,47 @@ class MemberDatabaseModelMembers extends JModelList {
 		return $results;
 		
 	}
+
+	public function getMembersByUniqueEmailAddress($districtId) {
+		
+		$db = JFactory::getDbo ();
+		$query = $this->getMembersSubsQuery($db);
+		$query->select('t.place');
+		
+		if ($districtId) {
+			$query->where( "t.district_id = $districtId");
+		}
+		
+		$query->where( 'm.newsletters in ("Email", "Both")');
+		$query->where( 'm.member_type_id not in (4, 7)');
+		$query->order('d.name, t.place, m.surname, m.email');
+		
+		$db->setQuery ( $query );
+		$db_results = $db->loadObjectList ();
+		
+		$results = [];
+		
+		$previous = null;
+		
+		foreach ($db_results as $member) {
+			if ($previous) {
+				if ($previous->email == $member->email) {
+					$previous->title = $previous->title . " & $member->title " . substr($member->forenames, 0, 1);
+				} else {
+					$member->title = "$member->title " . substr($member->forenames, 0, 1);
+					array_push($results, $member);
+					$previous = $member;
+				}
+			} else {
+				$member->title = "$member->title " . substr($member->forenames, 0, 1);
+				array_push($results, $member);
+				$previous = $member;
+			}
+		}
+		
+		return $results;
+		
+	}
 	
 	public function getCorrespondents($districtId) {
 		
@@ -140,7 +182,7 @@ class MemberDatabaseModelMembers extends JModelList {
 		$query = $db->getQuery ( true );
 		
 		// Create the base select statement.
-		$query->select ( 'm.*, concat_ws(\', \',place, designation) as tower, d.name as district' );
+		$query->select ( 'm.*, concat_ws(\', \',place, designation) as tower, d.name as district, concat_ws(", ", surname, forenames) as member_name' );
 		$query->from ( $db->quoteName ( '#__md_member', 'm' ) );
 		$query->join ( 'INNER', $db->quoteName ( '#__md_tower', 't' ) . ' ON (' . $db->quoteName ( 'm.id' ) . ' = ' . $db->quoteName ( 't.correspondent_id' ) . ')' );
 		$query->join('INNER', $db->quoteName ( '#__md_district', 'd' ) . ' ON (' . $db->quoteName ( 't.district_id' ) . ' = ' . $db->quoteName ( 'd.id' ) . ')');
@@ -155,12 +197,16 @@ class MemberDatabaseModelMembers extends JModelList {
 		
 		$db->setQuery ( $query );
 		
-		$results = $db->loadObjectList ();
+		$db_results = $db->loadObjectList ();
+
+		foreach ($db_results as $member) {
+			$member->title = "$member->title " . substr($member->forenames, 0, 1);
+		}
 		
-		return $results;
+		return $db_results;
 		
 	}
-	
+
 	public function getMembers($memberId) {
 		// Initialize variables.
 		$db = JFactory::getDbo ();

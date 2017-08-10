@@ -34,6 +34,7 @@ $fieldNames = array(
 		telephone => "Telephone Number",	
 		email => "Email Address",	
 		newsletters	=> "Newsletters",
+		district_newsletters => "Comms from All Districts?",
 		date_elected => "Date Elected",	
 		address1 => "Address 1",	
 		address2 => "Address 2",

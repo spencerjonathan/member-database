@@ -117,6 +117,16 @@
 					<option value="Both">Both Email and Postal</option>
 					<option value="Neither">Neither</option>
 		</field>
+		<field
+				name="district_newsletters"
+				type="list"
+				label="Receive District Comms"
+				description="Which districts' communications to receive?"
+				required="true"
+				default="0">
+					<option value="0">Own District</option>
+					<option value="1">All Districts</option>
+		</field>
                 <field
                                 name="date_elected"
                                 type="calendar"

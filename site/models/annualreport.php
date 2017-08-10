@@ -146,60 +146,18 @@ class MemberDatabaseModelAnnualreport extends JModelList {
 		$query->join ( 'LEFT', $db->quoteName ( '#__md_member', 'cor' ) . ' ON (' . $db->quoteName ( 't.correspondent_id' ) . ' = ' . $db->quoteName ( 'cor.id' ) . ')' );
 		$query->join ( 'LEFT', $db->quoteName ( '#__md_member', 'cap' ) . ' ON (' . $db->quoteName ( 't.captain_id' ) . ' = ' . $db->quoteName ( 'cap.id' ) . ')' );
 		
-		if (! JFactory::getUser ()->authorise ( 'member.view', 'com_memberdatabase' )) {
+		QueryHelper::addDistrictJoin($db, $query);
+		QueryHelper::addDataPermissionConstraints($db, $query);
+		
+		/* if (! JFactory::getUser ()->authorise ( 'member.view', 'com_memberdatabase' )) {
 			$query->join ( 'INNER', $db->quoteName ( '#__md_usertower', 'ut' ) . ' ON (' . $db->quoteName ( 't.id' ) . ' = ' . $db->quoteName ( 'ut.tower_id' ) . ')' );
 			$query->where ( 'ut.user_id = ' . $userid );
-		}
+		} */
 		
 		$query->order ( 'district_id, place, designation asc' );
 		
 		return $query;
 	}
 	
-/* 	private function pivot($table, $pivotColumn, $groupByColumns, $aggregationColumns) {
-		$db = JFactory::getDbo ();
-		$userid = JFactory::getUser ()->id;
-		$query = $db->getQuery ( true );
-		
-		$query->select("distinct " . $pivotColumn);
-		$query->from($table);
-		
-		$db->setQuery($query);
-		$columns = $db->loadColumn();
-		
-		$sub_query_str = "select " . join(", ", $groupByColumns);
-		
-		$column_clauses = array();
-		$sub_column_clauses = array();
-		
-		foreach ($columns as $column) {
-			foreach ($aggregationColumns as $aggr_funct) {
-				$aggr = "";
-				if ($aggr_funct == "sum") {
-					$val_to_aggr = "`$pivotColumn`"; 
-				} else if ($aggr_funct == "count") {
-					$val_to_aggr = 1;
-				}
-				
-				$column_name = "$aggr_funct" . "_" . "$column";
-				$sub_column_clause = "case($pivotColumn) when '$column' then " . $val_to_aggr . " else 0 END as `$column_name`";
-				array_push($sub_column_clauses, $sub_column_clause);
-				$column_clause = "$aggr_funct(`$column_name`) as `$column_name`";
-				array_push($column_clauses, $column_clause);
-			}
-		}
-		
-		$sub_query_str = $sub_query_str . ", " . join(", ", $column_clauses);
-		 
-		$sub_query_str = "( " . $sub_query_str . " " . $table . " )";
-		
-		$query_str = join(", ", $groupByColumns) . ", " . join(", ", $column_clauses);
-		$query_str = $query_str . " from " . $sub_query_str;
-		$query_str = $query_str . " group by " . join(", ", $groupByColumns);
-		
-		error_log("Generaged pivot query = " . $query_str);
-		
-		
-	} */
-	
+
 }

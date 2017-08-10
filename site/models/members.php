@@ -41,25 +41,29 @@ class MemberDatabaseModelMembers extends JModelList {
 	
 	public function getMembersSubs() {
 		$db = JFactory::getDbo ();
-		$query = $this->getMembersSubsQuery($db);
+		$query = $this->getExtendedQuery($db);
 		$query->order ( 't.district_id, t.place asc' );
 		$table = $query->__toString();
 		$pivotColumn = "member_type"; 
 		$groupByColumns = array("district", "tower");
 		$aggregationColumns = array("fee" => "sum", "tower" => "count");
 		
-		$pivot_results = $this->pivot($table, $pivotColumn, $groupByColumns, $aggregationColumns);
+		$pivot_results = QueryHelper::pivot($table, $pivotColumn, $groupByColumns, $aggregationColumns);
 		
 		return $pivot_results;
 	}
 	
-	private function getMembersSubsQuery($db) {
+	private function getExtendedQuery($db) {
 		
 		$query = $this->getBaseQuery($db);
 		
-		$query->select('mt.name as member_type, mt.fee, t.district_id, d.name as district');
+		QueryHelper::addMemberTypeJoin($db, $query);
+		QueryHelper::addDistrictJoin($db, $query);
+		/* $query->select('mt.name as member_type, mt.fee, t.district_id, d.name as district');
 		$query->join('INNER', $db->quoteName ( '#__md_member_type', 'mt' ) . ' ON (' . $db->quoteName ( 'm.member_type_id' ) . ' = ' . $db->quoteName ( 'mt.id' ) . ')');
-		$query->join('INNER', $db->quoteName ( '#__md_district', 'd' ) . ' ON (' . $db->quoteName ( 't.district_id' ) . ' = ' . $db->quoteName ( 'd.id' ) . ')');
+		$query->join('INNER', $db->quoteName ( '#__md_district', 'd' ) . ' ON (' . $db->quoteName ( 't.district_id' ) . ' = ' . $db->quoteName ( 'd.id' ) . ')'); */
+		
+		$query = QueryHelper::addDataPermissionConstraints($db, $query);
 		
 		return $query;
 	}
@@ -76,7 +80,7 @@ class MemberDatabaseModelMembers extends JModelList {
 		$query->join ( 'LEFT', $db->quoteName ( '#__md_tower', 't' ) . ' ON (' . $db->quoteName ( 'm.tower_id' ) . ' = ' . $db->quoteName ( 't.id' ) . ')' );
 		$query->join ( 'LEFT', $verifiedSubQuery . ' ON (' . $db->quoteName ( 'm.id' ) . ' = ' . $db->quoteName ( 'v.member_id' ) . ')' );
 		
-		$query = QueryHelper::addDataPermissionConstraints($db, $query);
+		//$query = QueryHelper::addDataPermissionConstraints($db, $query);
 		
 		return $query;
 		
@@ -97,7 +101,7 @@ class MemberDatabaseModelMembers extends JModelList {
 	public function getMembersByUniqueAddress($districtId) {
 		
 		$db = JFactory::getDbo ();
-		$query = $this->getMembersSubsQuery($db);
+		$query = $this->getExtendedQuery($db);
 		$query->select('t.place');
 		
 		if ($districtId) {
@@ -138,11 +142,13 @@ class MemberDatabaseModelMembers extends JModelList {
 	public function getMembersByUniqueEmailAddress($districtId) {
 		
 		$db = JFactory::getDbo ();
-		$query = $this->getMembersSubsQuery($db);
-		$query->select('t.place');
+		$query = $this->getBaseQuery($db);
+		$query->join('INNER', $db->quoteName ( '#__md_district', 'd' ) . ' ON ((' . $db->quoteName ( 't.district_id' ) . ' = ' . $db->quoteName ( 'd.id' ) . ') or (m.district_newsletters = 1 and d.id != 5))');
+		QueryHelper::addDataPermissionConstraints($db, $query);
+		$query->select('t.place, t.district_id, d.name as district');
 		
 		if ($districtId) {
-			$query->where( "t.district_id = $districtId");
+			$query->where( "d.id = $districtId");
 		}
 		
 		$query->where( 'm.newsletters in ("Email", "Both")');
@@ -158,7 +164,7 @@ class MemberDatabaseModelMembers extends JModelList {
 		
 		foreach ($db_results as $member) {
 			if ($previous) {
-				if ($previous->email == $member->email) {
+				if ($previous->email == $member->email && $previous->district == $member->district) {
 					$previous->title = $previous->title . " & $member->title " . substr($member->forenames, 0, 1);
 				} else {
 					$member->title = "$member->title " . substr($member->forenames, 0, 1);
@@ -211,12 +217,12 @@ class MemberDatabaseModelMembers extends JModelList {
 		// Initialize variables.
 		$db = JFactory::getDbo ();
 		$userid = JFactory::getUser ()->id;
-		$query = $this->getBaseQuery($db);
+		$query = $this->getExtendedQuery($db);
 		
-		$query->select('mt.name as member_type, mt.fee, t.district_id, d.name as district');
+/* 		$query->select('mt.name as member_type, mt.fee, t.district_id, d.name as district');
 		$query->join('INNER', $db->quoteName ( '#__md_member_type', 'mt' ) . ' ON (' . $db->quoteName ( 'm.member_type_id' ) . ' = ' . $db->quoteName ( 'mt.id' ) . ')');
 		$query->join('INNER', $db->quoteName ( '#__md_district', 'd' ) . ' ON (' . $db->quoteName ( 't.district_id' ) . ' = ' . $db->quoteName ( 'd.id' ) . ')');
-		
+ */		
 		if ($memberId) {
 			$query->where( "m.id = $memberId");
 		}
@@ -238,7 +244,7 @@ class MemberDatabaseModelMembers extends JModelList {
 	protected function getListQuery() {
 		// Initialize variables.
 		$db = JFactory::getDbo ();
-		$query = $this->getBaseQuery($db);
+		$query = $this->getExtendedQuery($db);
 		
 		// Filter: like / search
 		$search = $this->getState ( 'filter.search' );
@@ -299,70 +305,6 @@ class MemberDatabaseModelMembers extends JModelList {
 		parent::populateState($ordering, $direction);
 	}
 	
-	private function pivot($table, $pivotColumn, $groupByColumns, $aggregationColumns) {
-		$db = JFactory::getDbo ();
-		$userid = JFactory::getUser ()->id;
-		$query = $db->getQuery ( true );
-		
-		$query->select("distinct " . $pivotColumn);
-		$query->from("( $table ) as `derivedtable`");
-		
-		$db->setQuery($query);
-		$columns = $db->loadColumn();
-		
-		$sub_query_str = "select " . join(", ", $groupByColumns);
-		
-		$column_clauses = array();
-		$sub_column_clauses = array();
-		$column_names = array();
-		
-		foreach ($columns as $column) {
-			foreach ($aggregationColumns as $field => $aggr_funct) {
-				$aggr = "";
-				if ($aggr_funct == "sum") {
-					$val_to_aggr = "`$field`";
-				} else if ($aggr_funct == "count") {
-					$val_to_aggr = 1;
-				}
-				
-				$column_name = "$aggr_funct" . "_" . "$column";
-				array_push($column_names, $column_name);
-				$sub_column_clause = "case($pivotColumn) when '$column' then " . $val_to_aggr . " else 0 END as `$column_name`";
-				array_push($sub_column_clauses, $sub_column_clause);
-				$column_clause = "sum(`$column_name`) as `$column_name`";
-				array_push($column_clauses, $column_clause);
-			}
-		}
-		
-		$sub_query_str = $sub_query_str . ", " . join(", ", $sub_column_clauses);
-		
-		$sub_query_str = "( " . $sub_query_str . " from (" . $table . ") as subquery )";
-		
-		$query_str = join(", ", $groupByColumns) . ", " . join(", ", $column_clauses);
-		$query_str = $query_str . " from " . $sub_query_str . " as `derivedtable`";
-		$query_str = $query_str . " group by " . join(", ", $groupByColumns);
-		
-		error_log("Generated pivot query = " . $query_str);
-		
-		$query = $db->getQuery ( true );
-		
-		$query->select($query_str);	
-		
-		$db->setQuery ( $query );
-		$results = $db->loadAssocList ();
-		
-		$return_value = array(
-				"resultset" => $results,
-				"pivotcolumns" => $column_names,
-				"groupbycolumns" => $groupByColumns
-		);
-		
-		//var_dump($return_value);
-		error_log("Result Set from Pivot: " . json_encode($return_value));
-		
-		return $return_value;
-		
-		return $query_str;
-	}
+	
 	
 }

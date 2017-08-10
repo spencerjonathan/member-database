@@ -113,6 +113,7 @@ class MemberDatabaseModelMember extends JModelAdmin {
 		$query->join('INNER', $db->quoteName ( '#__md_member', 'm' ) . ' ON (a.member_id = m.id)' );
 		$query->join('INNER', $db->quoteName ( '#__md_tower', 't' ) . ' ON (m.tower_id = t.id)' );
 		$query->join('INNER', $db->quoteName ( '#__users', 'u' ) . ' ON (a.mod_user_id = u.id)' );
+		QueryHelper::addDistrictJoin($db, $query);
 		
 		if ($memberId) {
 			$query->where('a.member_id = ' . (int) $memberId);
@@ -144,7 +145,7 @@ class MemberDatabaseModelMember extends JModelAdmin {
 		select #__md_member_history.* 
 		from #__md_member_history 
 		where id = $memberId 
-		order by mod_date DESC) mh";
+		) mh";
 		
 		$query->select ( 'mh.*, concat_ws(", ", t.place, t.designation) as tower, mt.name as member_type, u.name as mod_user' );
 		$query->from ( $query_string );
@@ -159,6 +160,8 @@ class MemberDatabaseModelMember extends JModelAdmin {
 			$query->join ( 'INNER', $db->quoteName ( '#__md_usertower', 'ut' ) . ' ON (mh.tower_id = ut.tower_id)' );
 			$query->where ( 'ut.user_id = ' . ( int ) $userId );
 		}
+		
+		$query->order("mod_date DESC");
 		
 		$db->setQuery ( $query );
 		

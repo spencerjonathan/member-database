@@ -264,4 +264,25 @@ class MemberDatabaseModelMember extends JModelAdmin {
 		
 		return $result;
 	}
+	
+	public function getLookups($id) {
+		$db = JFactory::getDbo ();
+
+		// Create a new query object.
+		$query = $db->getQuery ( true );
+
+		$query->select("mt.name as member_type_id, 
+						concat_ws(', ', place, designation) as tower_id,
+						concat(u.name, ' (', u.username, ')') as mod_user_id, 
+						CASE m.annual_report when 1 then 'Y' else 'N' end as annual_report,
+						CASE m.district_newsletters when 0 then 'Own District' when 1 then 'All Districts' end as district_newsletters");
+		$query->from("#__md_member m");
+		$query->join("LEFT", "#__md_member_type mt on (mt.id = m.member_type_id)");
+		$query->join("LEFT", "#__md_tower t on (t.id = m.tower_id)");
+		$query->join("LEFT", "#__users u on (u.id = m.mod_user_id)");
+		
+		$db->setQuery($query);
+		
+		return $db->loadAssoc();
+	}
 }

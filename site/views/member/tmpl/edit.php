@@ -46,7 +46,7 @@ defined ( '_JEXEC' ) or die ( 'Restricted access' );
 		href="<?php echo JRoute::_('index.php/?option=com_memberdatabase&view=memberhistory&memberId=' . (int) $this->item->id); ?>"
 		class="btn btn-small"><span class="icon-eye-open"></span> View History</a>
 	<a
-		href="<?php echo JRoute::_('index.php/?option=com_memberdatabase&view=annualreport&layout=memberdetails&memberId=' . (int) $this->item->id); ?>"
+		href="<?php echo JRoute::_('index.php/?option=com_memberdatabase&view=member&layout=view&id=' . (int) $this->item->id); ?>"
 		class="btn btn-small"><span class="icon-eye-open"></span> View Only</a>
 
 </div>
@@ -58,7 +58,7 @@ defined ( '_JEXEC' ) or die ( 'Restricted access' );
 	<div class="form-horizontal">
 		<fieldset class="adminform">
 			
-                    <?php foreach ($this->form->getFieldset('detail') as $field): ?>
+                    <?php foreach ($this->form->getFieldset('detail') as $field):?>
                         <div class="control-group">
 						<div class="control-label"><?php echo $field->label; ?></div>
 						<div class="controls"><?php echo $field->input; ?></div>

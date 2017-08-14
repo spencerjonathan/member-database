@@ -60,7 +60,7 @@ class MemberDatabaseControllerMember extends JControllerForm {
 			 * $this->setMessage($this->getError(), 'error');
 			 */
 			
-			$this->setRedirect ( JRoute::_ ( 'index.php?option=' . $this->option . '&view=annualreport&layout=memberdetails&memberId=' . $recordId, false ) );
+			$this->setRedirect ( JRoute::_ ( 'index.php?option=' . $this->option . '&view=member&layout=view&id=' . $recordId, false ) );
 			
 			return false;
 		}
@@ -125,8 +125,9 @@ class MemberDatabaseControllerMember extends JControllerForm {
 			return false;
 		}
 		
-		return true;
+		return $this->allowEdit($data, $key);
 	}
+	
 	protected function allowAdd($data = array(), $key = 'id') {
 		$db_locked = JComponentHelper::getParams ( 'com_memberdatabase' )->get ( 'db_locked' );
 		

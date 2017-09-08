@@ -48,6 +48,9 @@ defined ( '_JEXEC' ) or die ( 'Restricted access' );
 	<a
 		href="<?php echo JRoute::_('index.php/?option=com_memberdatabase&view=member&layout=view&id=' . (int) $this->item->id); ?>"
 		class="btn btn-small"><span class="icon-eye-open"></span> View Only</a>
+	<a
+		href="<?php echo JRoute::_('index.php/?option=com_memberdatabase&view=annualreport&layout=memberdetails&memberId=' . (int) $this->item->id); ?>"
+		class="btn btn-small"><span class="icon-eye-open"></span> Annual Report View</a>
 
 </div>
 <hr>
@@ -60,9 +63,9 @@ defined ( '_JEXEC' ) or die ( 'Restricted access' );
 			
                     <?php foreach ($this->form->getFieldset('detail') as $field):?>
                         <div class="control-group">
-						<div class="control-label"><?php echo $field->label; ?></div>
-						<div class="controls"><?php echo $field->input; ?></div>
-					</div>
+				<div class="control-label"><?php echo $field->label; ?></div>
+				<div class="controls"><?php echo $field->input; ?></div>
+			</div>
                     <?php endforeach; ?>
                 
 
@@ -75,13 +78,14 @@ defined ( '_JEXEC' ) or die ( 'Restricted access' );
 
 <?php echo JHtml::_('bootstrap.endTab'); ?>
 
-<?php 
+<?php
 if ($this->item->id) :
-	echo JHtml::_('bootstrap.addTab', 'myTab', 'attachments', 'Member Attachments'); ?>
+	echo JHtml::_ ( 'bootstrap.addTab', 'myTab', 'attachments', 'Member Attachments' );
+	?>
 
 <h2>Attachments</h2>
 <div>
-		<table width="100%" class="table table-striped">
+	<table width="100%" class="table table-striped">
 		<tr>
 			<th>Added By</th>
 			<th>Added Date</th>
@@ -90,31 +94,35 @@ if ($this->item->id) :
 			<th>Actions</th>
 		</tr>
 		
-		<?php foreach ($this->attachments as $attachment) {
-		$viewLink = JRoute::_('index.php/?option=com_memberdatabase&view=memberattachment&attachmentId=' . (int) $attachment->id);
+		<?php
+	
+foreach ( $this->attachments as $attachment ) {
+		$viewLink = JRoute::_ ( 'index.php/?option=com_memberdatabase&view=memberattachment&attachmentId=' . ( int ) $attachment->id );
 		
 		echo "<tr>";
-			echo "<td>$attachment->mod_user</td>";
-			echo "<td>$attachment->mod_date</td>";
-			echo "<td>$attachment->name</td>";
-			echo "<td>$attachment->description</td>";
-			echo "<td><a href='$viewLink' class='btn btn-small'><span class='icon-eye-open'></span> View</a></td>";
+		echo "<td>$attachment->mod_user</td>";
+		echo "<td>$attachment->mod_date</td>";
+		echo "<td>$attachment->name</td>";
+		echo "<td>$attachment->description</td>";
+		echo "<td><a href='$viewLink' class='btn btn-small'><span class='icon-eye-open'></span> View</a></td>";
 		echo "</tr>";
-		
-		}; ?>
+	}
+	;
+	?>
 		
 		</table>
 </div>
 <hr>
-<form class="form-horizontal" name="attachmentAdminForm" id="attachmentAdminForm" enctype="multipart/form-data" method="post"
+<form class="form-horizontal" name="attachmentAdminForm"
+	id="attachmentAdminForm" enctype="multipart/form-data" method="post"
 	action="<?php echo JRoute::_('index.php?option=com_memberdatabase&view=member&layout=edit&id=' . (int) $this->item->id); ?>">
 	<h2>Add Attachment</h2>
-	
+
 	<fieldset class="adminform">
 	<?php foreach ($this->form->getFieldset('attachment') as $field): ?>
 		<div class="control-group">
-		<div class="control-label"><?php echo $field->label; ?></div>
-		<div class="controls"><?php echo $field->input; ?></div>
+			<div class="control-label"><?php echo $field->label; ?></div>
+			<div class="controls"><?php echo $field->input; ?></div>
 		</div>				
     <?php endforeach; ?>
 	</fieldset>
@@ -131,8 +139,11 @@ if ($this->item->id) :
 		<span class="icon-new icon-white"></span> Add Attachment
 	</button>
 </div>
-<hr>	
+<hr>
 
-<?php echo JHtml::_('bootstrap.endTabSet'); 
+<?php
+	
+echo JHtml::_ ( 'bootstrap.endTabSet' ); 
 endif;
+
 ?>

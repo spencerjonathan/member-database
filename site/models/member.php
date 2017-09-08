@@ -280,7 +280,7 @@ class MemberDatabaseModelMember extends JModelAdmin {
 		$query->join("LEFT", "#__md_member_type mt on (mt.id = m.member_type_id)");
 		$query->join("LEFT", "#__md_tower t on (t.id = m.tower_id)");
 		$query->join("LEFT", "#__users u on (u.id = m.mod_user_id)");
-		
+		$query->where("m.id = $id");
 		$db->setQuery($query);
 		
 		return $db->loadAssoc();

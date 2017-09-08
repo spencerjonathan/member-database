@@ -17,11 +17,11 @@ if ($correspFlag) {
 	$members = $this->getModel("Members")->getMembersByUniqueAddress($this->districtId);
 }
 
-$file_content = '"tower","district/tower","name","address1","address2","address3","town","county","postcode"';
+$file_content = '"tower","district/tower","full name","forename","surname","address1","address2","address3","town","county","postcode"';
 
 foreach ( $members as $member ) {
 	$file_content = $file_content . "\n\"$member->place\",\"" . substr($member->district, 0, 1) . "/$member->tower" . '"';
-	$file_content = $file_content . ",\"$member->title $member->surname\",\"$member->address1\",\"$member->address2\",\"$member->address3\",\"$member->town\",\"$member->county\",\"$member->postcode\"";
+	$file_content = $file_content . ",\"$member->title $member->surname\",\"$member->forenames\",\"$member->surname\",\"$member->address1\",\"$member->address2\",\"$member->address3\",\"$member->town\",\"$member->county\",\"$member->postcode\"";
 }
 
 header ( 'Content-Description: File Transfer' );

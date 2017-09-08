@@ -123,6 +123,7 @@ class MemberDatabaseModelMembers extends JModelList {
 			if ($previous) {
 				if ($previous->postcode == $member->postcode && $previous->address1 == $member->address1) {
 					$previous->title = $previous->title . " & $member->title " . substr($member->forenames, 0, 1);
+					$previous->forenames = $previous->forenames . " & $member->forenames";
 				} else {
 					$member->title = "$member->title " . substr($member->forenames, 0, 1);
 					array_push($results, $member);
@@ -188,7 +189,7 @@ class MemberDatabaseModelMembers extends JModelList {
 		$query = $db->getQuery ( true );
 		
 		// Create the base select statement.
-		$query->select ( 'm.*, concat_ws(\', \',place, designation) as tower, d.name as district, concat_ws(", ", surname, forenames) as member_name' );
+		$query->select ( 'm.*, concat_ws(\', \',place, designation) as tower, t.place, d.name as district, concat_ws(", ", surname, forenames) as member_name' );
 		$query->from ( $db->quoteName ( '#__md_member', 'm' ) );
 		$query->join ( 'INNER', $db->quoteName ( '#__md_tower', 't' ) . ' ON (' . $db->quoteName ( 'm.id' ) . ' = ' . $db->quoteName ( 't.correspondent_id' ) . ')' );
 		$query->join('INNER', $db->quoteName ( '#__md_district', 'd' ) . ' ON (' . $db->quoteName ( 't.district_id' ) . ' = ' . $db->quoteName ( 'd.id' ) . ')');

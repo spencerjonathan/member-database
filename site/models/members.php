@@ -306,6 +306,19 @@ class MemberDatabaseModelMembers extends JModelList {
 		parent::populateState($ordering, $direction);
 	}
 	
-	
+	public function getMemberTypeChanges($since) {
+		// Initialize variables.
+		$db = JFactory::getDbo ();
+		$query = $db->getQuery($db);
+		
+		$query->setQuery("call #__md_MemberStatusChanges('$since')");
+		
+		$db->setQuery ( $query );
+		
+		$results = $db->loadObjectList ();
+		
+		return $results;
+		
+	}
 	
 }

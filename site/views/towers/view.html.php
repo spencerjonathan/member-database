@@ -10,6 +10,11 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
  
+if(!class_exists('JToolbarHelper')) {
+	require_once JPATH_ADMINISTRATOR . '/includes/toolbar.php';
+}
+
+
 /**
  * MembersDatabase View
  *

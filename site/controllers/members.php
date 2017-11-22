@@ -27,10 +27,25 @@ class MemberDatabaseControllerMembers extends JControllerAdmin
 	 *
 	 * @since   1.6
 	 */
-	public function getModel($name = 'Member', $prefix = 'MemberDatabaseModel', $config = array('ignore_request' => true))
+	public function getModel($name = 'Members', $prefix = 'MemberDatabaseModel', $config = array('ignore_request' => true))
 	{
 		$model = parent::getModel($name, $prefix, $config);
  
 		return $model;
+	}
+	
+	public function requestlink()
+	{
+		$model = $this->getModel ();
+		
+		$email = $this->input->post->get ( 'email' );
+		
+		$model->generateAndSendLink($email);
+		
+		error_log("requestlink - got email - $email");
+		
+		echo "requestlink - got email - $email";
+		
+		//$this->setRedirect ( JRoute::_ ( 'index.php?option=' . $this->option . '&view=requestlink', false ) );
 	}
 }

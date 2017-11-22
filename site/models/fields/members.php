@@ -22,7 +22,7 @@ JModelLegacy::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_memberdataba
  *
  * @since  11.1
  */
-class JFormFieldTowers extends JFormFieldList
+class JFormFieldMembers extends JFormFieldList
 {
 
 	/**
@@ -33,12 +33,12 @@ class JFormFieldTowers extends JFormFieldList
 	 */
 	protected $type = 'Towers';
 	
-	protected function getTowers()
+	protected function getMembers()
 	{
 
-		$model = $this->createModel ( "Towers", "MemberDatabaseModel" );
+		$model = $this->createModel ( "Members", "MemberDatabaseModel" );
 		
-		return $model->getTowers();
+		return $model->getMembers();
 	}
 	
 	/**
@@ -52,12 +52,12 @@ class JFormFieldTowers extends JFormFieldList
 	{
 		$options = array();
 
-		foreach ($this->getTowers() as $tower)
+		foreach ($this->getMembers() as $member)
 		{
 			// Filter requirements
 
-			$value = (integer) $tower->id;
-			$text = trim((string) $tower->tower);
+			$value = (integer) $member->id;
+			$text = trim((string) $member->name);
 
 			$tmp = array(
 					'value'    => $value,

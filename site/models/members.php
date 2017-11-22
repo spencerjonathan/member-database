@@ -86,18 +86,6 @@ class MemberDatabaseModelMembers extends JModelList {
 		
 	}
 	
-	/* private function addDataPermissionConstraints($db, $query) {
-		$userid = JFactory::getUser ()->id;
-		
-		if (! JFactory::getUser ()->authorise ( 'member.view', 'com_memberdatabase' )) {
-			$query->join('LEFT', $db->quoteName('#__md_usertower', 'ut') . ' ON (' . $db->quoteName('m.tower_id') . ' = ' . $db->quoteName('ut.tower_id') . " and ut.user_id = $userid)");
-			$query->join('LEFT', $db->quoteName('#__md_userdistrict', 'ud') . ' ON (' . $db->quoteName('t.district_id') . ' = ' . $db->quoteName('ud.district_id') . " and ud.user_id = $userid)");
-			$query->where ( '(ut.user_id is not null or ud.user_id is not null)');
-		}
-		
-		return $query;
-	} */
-	
 	public function getMembersByUniqueAddress($districtId) {
 		
 		$db = JFactory::getDbo ();
@@ -318,6 +306,38 @@ class MemberDatabaseModelMembers extends JModelList {
 		$results = $db->loadObjectList ();
 		
 		return $results;
+		
+	}
+	
+	public function generateAndSendLink($email) {
+		
+		$data = strtotime("now") . $email;
+		
+		$hash = hash ( "md5" , $data , false );
+		
+		echo "data is $data;  hash is $hash";
+		error_log ("data is $data;  hash is $hash");
+		
+		$mailer = JFactory::getMailer();
+		
+		$sender = array(
+				'membership@scacr.org',
+				'Membership Coordinator'
+		);
+		
+		$mailer->setSender($sender);
+		$mailer->addRecipient( $email);
+		
+		$body   = "Use this link to access your SCACR membership account record : index.php?hash=$hash";
+		$subject = 'Link to your SCACR membership record';
+		
+		
+		$send = $mailer->sendMail('membership@scacr.org', 'Membership Coordinator', "$email", $subject, $body);
+		if ( $send !== true ) {
+			echo "\n\nError sending email to $email";
+		} else {
+			echo '\n\nMail sent';
+		}
 		
 	}
 	

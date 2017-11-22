@@ -279,10 +279,7 @@ class MemberDatabaseControllerMember extends JControllerForm {
 			if ($return == true) {
 				$this->setMessage ( JText::_ ( 'Attachment successfully added.' ) );
 			}
-			
-			
-			
-			
+
 			return $return;
 		} else {
 			$this->setError ( JText::_ ( 'JLIB_APPLICATION_ERROR_EDIT_NOT_PERMITTED' ) );

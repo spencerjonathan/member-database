@@ -84,17 +84,17 @@
 				<option value="16-70">16-70</option>
 				<option value="Over 70">Over 70</option>
 		</field>
-                <field
-                                name="annual_report"
-                                type="radio"
-                                label="Annual Report?"
-                                description="Does the member want to receive an annual report?"
-                                class="btn-group btn-group-yesno"
-                                default="0"
-                                filter="integer">
-                                        <option value="1">JYES</option>
-                                        <option value="0">JNO</option>
-                </field>
+        <field
+        	name="annual_report"
+            type="radio"
+            label="Annual Report?"
+            description="Does the member want to receive an annual report?"
+            class="btn-group btn-group-yesno"
+            default="0"
+            filter="integer">
+            	<option value="1">JYES</option>
+            	<option value="0">JNO</option>
+        </field>
 		<field
 				name="telephone"
 				type="tel"
@@ -199,49 +199,27 @@
                                 description="Country"
 				class="inputbox"
                 		/>
-                <!-- <field
-                                name="databaseform"
-                                type="radio"
-                                label="Databaseform?"
-                                description="Has a 'Database form' been received for the member?  (redundant field)"
-                                class="btn-group btn-group-yesno"
-                                default="0"
-                                filter="integer">
-                                        <option value="1">JYES</option>
-                                        <option value="0">JNO</option>
-                </field> -->
                 <field
-                                name="notes"
-                                type="textarea"
-                                label="Notes"
-				size="200"
-                                description="Notes"
-				class="inputbox"
-				cols="60"
-				rows="3"
-                		/>
-                <!-- <field
-                                name="crb"
-                                type="radio"
-                                label="CRB Checked?"
-                                description="CRB Checked?"
-                                class="btn-group btn-group-yesno"
-                                default="0"
-                                filter="integer">
-                                        <option value="1">JYES</option>
-                                        <option value="0">JNO</option>
+                	name="databaseform"
+                    type="radio"
+                    label="Databaseform?"
+                    description="Has a 'Database form' been received for the member?  (redundant field)"
+                    class="btn-group btn-group-yesno"
+                    default="0"
+                    filter="integer">
+                    	<option value="1">JYES</option>
+                    	<option value="0">JNO</option>
                 </field>
                 <field
-                                name="sub_recd"
-                                type="radio"
-                                label="Subscription Received?"
-                                description="Subscription Received?"
-                                class="btn-group btn-group-yesno"
-                                default="0"
-                                filter="integer">
-                                        <option value="1">JYES</option>
-                                        <option value="0">JNO</option>
-                </field> -->
+                	name="notes"
+                	type="textarea"
+                	label="Notes"
+					size="200"
+                    description="Notes"
+					class="inputbox"
+					cols="60"
+					rows="3"
+                />
                 <field
                                 name="dbs_date"
                                 type="calendar"
@@ -297,4 +275,184 @@
 				/>
 
 		</fieldset>
+		<fieldset name="minimal" addrulepath="components/com_memberdatabase/models/rules" addfieldpath="administrator/components/com_memberdatabase/models/fields">
+		<field
+				name="id"
+				type="hidden"
+				/>
+		<field
+				name="tower_id"
+				type="towers"
+				class="required"
+				label="Tower ID"
+				validate="towerid"
+				message="Please select a valid tower for the memeber"
+				required="true"
+				/>
+		<field
+				name="forenames"
+				type="text"
+				label="Forenames"
+				description="The forename(s) of the member"
+				size="50"
+				class="inputbox required"
+				required="true"
+				default=""
+				/>
+		<field
+				name="surname"
+				type="text"
+				label="Surname"
+				description="The Surname of the member"
+				size="50"
+				class="inputbox required"
+				required="true"
+				default=""
+				/>
+		<field
+				name="title"
+				type="list"
+				label="Title"
+				description="The Title of the member"
+				required="true"
+				default="">
+				<option value="">Please Select</option>
+				<option value="Dr">Dr</option>
+				<option value="Father">Father</option>
+				<option value="Master">Master</option>
+				<option value="Miss">Miss</option>
+				<option value="Mr">Mr</option>
+				<option value="Mrs">Mrs</option>
+				<option value="Ms">Ms</option>
+				<option value="Prof">Prof</option>
+				<option value="Rev">Rev</option>
+				<option value="Rev Canon Dr">Rev Canon Dr</option>
+		</field>
+		<field
+				name="email"
+				type="hidden"
+				default=""
+				/>
+		<field
+				name="member_type_id"
+				type="sql"
+				label="Member Type"
+				description="The type of member"
+				required="true"
+				default=""
+				query="SELECT id AS value, name AS member_type_id FROM #__md_member_type"
+				/>
+				
+		<field
+				name="insurance_group"
+				type="list"
+				label="Insurance Group"
+				description="The insurance group for the member"
+				default="">
+				<option value="">Please Select</option>
+				<option value="Under 16">Under 16</option>
+				<option value="16-70">16-70</option>
+				<option value="Over 70">Over 70</option>
+		</field>
+        <field
+        	name="annual_report"
+        	type="hidden"
+			default="0"
+		/>
+		<field
+			name="telephone"
+			type="hidden"
+			default=""
+		/>
+		<field
+			name="newsletters"
+			type="hidden"
+			default="0"
+		/>
+		<field
+			name="district_newsletters"
+			type="hidden"
+			default="0"
+		/>
+        <field
+            name="date_elected"
+            type="hidden"
+			default=""
+		/>
+        <field
+            name="address1"
+            type="hidden"
+			default=""
+		/>
+        <field
+            name="address2"
+            type="hidden"
+			default=""
+		/>
+        <field
+            name="address3"
+            type="hidden"
+			default=""
+		/>
+        <field
+            name="town"
+            type="hidden"
+			default=""
+		/>
+        <field
+            name="county"
+            type="hidden"
+			default=""
+		/>
+        <field
+            name="postcode"
+            type="hidden"
+			default=""
+		/>
+        <field
+            name="country"
+            type="hidden"
+			default=""
+		/>
+        <field
+            name="country"
+            type="hidden"
+			default=""
+		/>
+        <field
+            name="databaseform"
+            type="hidden"
+			default="0"
+		/>
+        <field
+            name="notes"
+            type="hidden"
+			default=""
+		/>
+        <field
+            name="dbs_date"
+            type="hidden"
+			default=""
+		/>
+        <field
+            name="dbs_update"
+            type="hidden"
+			default=""
+		/>
+		<field
+            name="mod_user_id"
+            type="user"
+            label="Last Modified By"
+            description="The user who most last edited/saved this member record"
+            readonly="true"
+		/>
+		<field
+            name="mod_date"
+            type="text"
+            label="Last Modified Date"
+            description="The date that this member record was last edited/saved"
+            class="inputbox"
+            readonly="true"
+		/>
+	</fieldset>
 </form>

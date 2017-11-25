@@ -33,10 +33,10 @@ class JFormFieldTowers extends JFormFieldList
 	 */
 	protected $type = 'Towers';
 	
-	protected function getMembers()
+	protected function getTowers()
 	{
 
-		$model = $this->createModel ( "Members", "MemberDatabaseModel" );
+		$model = $this->createModel ( "Towers", "MemberDatabaseModel" );
 		
 		return $model->getTowers();
 	}

@@ -73,6 +73,7 @@ class MemberDatabaseControllerMember extends JControllerForm {
 		
 		return true;
 	}
+	
 	protected function allowEdit($data = array(), $key = 'id') {
 		jimport ( 'joomla.application.component.helper' );
 		
@@ -99,16 +100,19 @@ class MemberDatabaseControllerMember extends JControllerForm {
 		$db = JFactory::getDbo ();
 		
 		// Build the database query to get the rules for the asset.
-		$query = $db->getQuery ( true )->select ( 'count(*)' )->from ( $db->quoteName ( '#__md_usertower', 'ut' ) )->join ( 'INNER', $db->quoteName ( '#__md_member', 'm' ) . ' ON (' . $db->quoteName ( 'm.tower_id' ) . ' = ' . $db->quoteName ( 'ut.tower_id' ) . ')' )->where ( 'ut.user_id = ' . ( int ) $userId . ' and m.id = ' . ( int ) $memberId );
+		$query = $db->getQuery ( true )->select ( 'count(*)' )
+		->from ( $db->quoteName ( '#__md_usertower', 'ut' ) )
+		->join ( 'INNER', 
+				$db->quoteName ( '#__md_member', 'm' ) . ' ON (' . $db->quoteName ( 'm.tower_id' ) . ' = ' . $db->quoteName ( 'ut.tower_id' ) . ')' )
+		->where ( 'ut.user_id = ' . ( int ) $userId . ' and m.id = ' . ( int ) $memberId );
 		
 		// Execute the query and load the rules from the result.
 		$db->setQuery ( $query );
 		$result = $db->loadResult ();
 		
-		if ($result == 1) {
+		if ($result > 0) {
 			return true;
-		}
-		;
+		};
 		
 		error_log ( "User with id " . $userId . " does not have authorisation to modify member with id " . $memberId, 0 );
 		
@@ -125,7 +129,11 @@ class MemberDatabaseControllerMember extends JControllerForm {
 			return false;
 		}
 		
-		return $this->allowEdit($data, $key);
+		if ($data ['id']) {
+			return $this->allowEdit($data, $key);
+		} else {
+			return $this->allowAdd($data, $key);
+		}
 	}
 	
 	protected function allowAdd($data = array(), $key = 'id') {
@@ -142,6 +150,21 @@ class MemberDatabaseControllerMember extends JControllerForm {
 		if (JFactory::getUser ()->authorise ( 'member.create', 'com_memberdatabase' )) {
 			return true;
 		}
+		
+		$db = JFactory::getDbo ();
+		
+		// Build the database query to get the rules for the asset.
+		$query = $db->getQuery ( true )->select ( 'count(*)' )
+		->from ( $db->quoteName ( '#__md_usertower', 'ut' ) )
+		->where ( 'ut.user_id = ' . ( int ) $userId . ' and ut.tower_id = ' . ( int ) $data['tower_id'] );
+		
+		// Execute the query and load the rules from the result.
+		$db->setQuery ( $query );
+		$result = $db->loadResult ();
+		
+		if ($result > 0) {
+			return true;
+		};
 		
 		return false;
 	}

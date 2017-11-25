@@ -10,21 +10,16 @@
 // No direct access
 defined ( '_JEXEC' ) or die ( 'Restricted access' );
 
+if ($this->item->id) {
+	$task = "member.edit";
+} else {
+	$task = "member.add";
+}
+
 ?>
 <legend><?php echo JText::_('Member Database - Member Details'); ?></legend>
 
-
-<!-- Add the toolbar at the top  -->
-
-
-
-
-<!-- The form itself -->
-
-
-
 <?php echo JHtml::_('bootstrap.startTabSet', 'myTab', array('active' => 'details')); ?>
-
 <?php echo JHtml::_('bootstrap.addTab', 'myTab', 'details', 'Member Details'); ?>
 
 <div>
@@ -61,7 +56,17 @@ defined ( '_JEXEC' ) or die ( 'Restricted access' );
 	<div class="form-horizontal">
 		<fieldset class="adminform">
 			
-                    <?php foreach ($this->form->getFieldset('detail') as $field):?>
+                    <?php 
+                    
+                    // Get an appropriate set of fields to display
+                    if (JFactory::getUser ()->authorise ( 'core.admin', 'com_memberdatabase' ) ) {
+                    	$fieldset = $this->form->getFieldset('detail');
+                    } else {
+                    	$fieldset = $this->form->getFieldset('minimal');
+                    }
+                    
+                    
+                    foreach ($fieldset as $field):?>
                         <div class="control-group">
 				<div class="control-label"><?php echo $field->label; ?></div>
 				<div class="controls"><?php echo $field->input; ?></div>
@@ -72,7 +77,7 @@ defined ( '_JEXEC' ) or die ( 'Restricted access' );
 		</fieldset>
 	</div>
 
-	<input type="hidden" name="task" value="member.edit" />
+	<input type="hidden" name="task" value="<?php echo $task?>" />
     <?php echo JHtml::_('form.token'); ?>
 </form>
 

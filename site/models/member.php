@@ -39,6 +39,39 @@ class MemberDatabaseModelMember extends JModelAdmin {
 		return JTable::getInstance ( $type, $prefix, $config );
 	}
 	
+	
+	public function getItem($pk = null)
+	{
+		$item = parent::getItem($pk);
+		
+		// If the user has privilages to edit any member then return the item.
+		if (JFactory::getUser ()->authorise ( 'member.edit', 'com_memberdatabase' )) {
+			return $item;
+		}
+		
+		$userId = JFactory::getUser ()->id;
+		error_log ( "Member::getItem - User $userId does not have member.edit permission.");
+		
+		// Check if the user has privilages to edit members of a tower.
+		$db = JFactory::getDbo ();
+		
+		// Build the database query to get the rules for the asset.
+		$query = $db->getQuery ( true )->select ( 'count(*)' )
+		->from ( $db->quoteName ( '#__md_usertower', 'ut' ) )
+		->where ( 'ut.user_id = ' . ( int ) $userId . ' and ut.tower_id = ' . ( int ) $item->tower_id );
+				
+		// Execute the query and load the rules from the result.
+		$db->setQuery ( $query );
+		$result = $db->loadResult ();
+				
+		if ($result > 0) {
+			return $item;
+		} else {
+			return false;
+		}
+		
+	}	
+	
 	/**
 	 * Method to get the record form.
 	 *
@@ -51,6 +84,7 @@ class MemberDatabaseModelMember extends JModelAdmin {
 	 *        
 	 * @since 1.6
 	 */
+	
 	public function getForm($data = array(), $loadData = true) {
 		// Get the form.
 		$form = $this->loadForm ( 'com_memberdatabase.member', 'member', array (

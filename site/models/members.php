@@ -202,6 +202,23 @@ class MemberDatabaseModelMembers extends JModelList {
 		
 	}
 
+	public function getMembersForReports() {
+		// Initialize variables.
+		$db = JFactory::getDbo ();
+		$userid = JFactory::getUser ()->id;
+		$query = $this->getExtendedQuery($db);
+		
+		$query->where('mt.include_in_reports = true');
+		
+		$query->order ( 'district, tower, surname, forenames asc' );
+		
+		$db->setQuery ( $query );
+		
+		$results = $db->loadObjectList ();
+		
+		return $results;
+	}
+	
 	public function getMembers($memberId) {
 		// Initialize variables.
 		$db = JFactory::getDbo ();

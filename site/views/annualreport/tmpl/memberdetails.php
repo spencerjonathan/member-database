@@ -11,6 +11,7 @@ defined ( '_JEXEC' ) or die ( 'Restricted Access' );
 $towers = $this->get ( "TowersAssocArray" );
 
 foreach ( $this->members as $member ) :
+if ($member->newsletters != "Email") :
 	echo '<div class="page-break-after-always" style="font-size:20px">';
 	echo $towers [$member->tower_id];
 	echo '<h1 align="center">' . $this->association_name . ' Member Details ' . $this->year . '</h1>';
@@ -140,7 +141,7 @@ foreach ( $this->members as $member ) :
 
 </table>
 </div>
-<?php endforeach; ?>
+<?php endif; endforeach; ?>
 	
 		
 	

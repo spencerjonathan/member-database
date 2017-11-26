@@ -57,7 +57,11 @@ class MemberDatabaseViewAnnualreport extends JViewLegacy {
 		
 		$this->towers = $this->get ( 'Towers' );
 		//$this->members = $this->getModel ()->getMembers ( $memberId );
-		$this->members = $this->getModel ( "Members" )->getMembers ( $memberId );
+		if ($memberId) {
+			$this->members = $this->getModel ( "Members" )->getMembers ( $memberId );
+		} else {
+			$this->members = $this->getModel ( "Members" )->getMembersForReports();
+		}
 		$this->districts = $this->get ( 'Districts' );
 		$this->association_name = JComponentHelper::getParams ( 'com_memberdatabase' )->get ( 'association_name' );
 		$this->year = $date->format ( "Y" );

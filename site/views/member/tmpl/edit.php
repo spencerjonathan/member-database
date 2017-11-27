@@ -50,8 +50,10 @@ if ($this->item->id) {
 </div>
 <hr>
 
+<?php $list_view_parameter = ""; if ($this->list_view != "") { $list_view_parameter = "&list_view=" . $this->list_view; }; ?>
+
 <form class="form-validate"
-	action="<?php echo JRoute::_('index.php?option=com_memberdatabase&view=member&layout=edit&id=' . (int) $this->item->id); ?>"
+	action="<?php echo JRoute::_('index.php?option=com_memberdatabase&view=member&layout=edit&id=' . (int) $this->item->id . $list_view_parameter); ?>"
 	method="post" name="adminForm" id="adminForm">
 	<div class="form-horizontal">
 		<fieldset class="adminform">

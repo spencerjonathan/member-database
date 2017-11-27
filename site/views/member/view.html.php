@@ -69,7 +69,9 @@ class MemberDatabaseViewMember extends JViewLegacy
 			return false;
 		}
  
- 
+		$jinput = JFactory::getApplication ()->input;
+		$this->list_view = $jinput->get ( 'list_view', "", STRING );
+		
 		// Set the toolbar
 		$this->addToolBar();
  

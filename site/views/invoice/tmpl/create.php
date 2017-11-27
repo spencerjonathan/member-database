@@ -57,6 +57,11 @@ $document->addScriptDeclaration ( '
 
 <hr>
 <h1> <?php echo $this->year; ?> Invoice for <?php echo $this->tower->name; ?></h1>
+Want to include a new member on the invoice? 
+<a
+		href="<?php echo JRoute::_('index.php/component/memberdatabase/?view=member&layout=edit&list_view=invoice'); ?>"
+		class="btn btn-success"><span	class="icon-new icon-white"></span> Add New Member</a><br>
+Remember, if you add a new member you also need to complete a New Member Nomination form and sent it to the Membership Coordinator.
 
 			<form class="adminform" name="adminForm" id="adminForm" method="post" action="<?php echo JRoute::_('index.php?option=com_memberdatabase&view=invoice&layout=create&towerId=' . (int) $this->tower->id); ?>">
 

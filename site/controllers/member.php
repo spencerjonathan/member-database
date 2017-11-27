@@ -73,7 +73,6 @@ class MemberDatabaseControllerMember extends JControllerForm {
 		
 		return true;
 	}
-	
 	protected function allowEdit($data = array(), $key = 'id') {
 		jimport ( 'joomla.application.component.helper' );
 		
@@ -100,11 +99,7 @@ class MemberDatabaseControllerMember extends JControllerForm {
 		$db = JFactory::getDbo ();
 		
 		// Build the database query to get the rules for the asset.
-		$query = $db->getQuery ( true )->select ( 'count(*)' )
-		->from ( $db->quoteName ( '#__md_usertower', 'ut' ) )
-		->join ( 'INNER', 
-				$db->quoteName ( '#__md_member', 'm' ) . ' ON (' . $db->quoteName ( 'm.tower_id' ) . ' = ' . $db->quoteName ( 'ut.tower_id' ) . ')' )
-		->where ( 'ut.user_id = ' . ( int ) $userId . ' and m.id = ' . ( int ) $memberId );
+		$query = $db->getQuery ( true )->select ( 'count(*)' )->from ( $db->quoteName ( '#__md_usertower', 'ut' ) )->join ( 'INNER', $db->quoteName ( '#__md_member', 'm' ) . ' ON (' . $db->quoteName ( 'm.tower_id' ) . ' = ' . $db->quoteName ( 'ut.tower_id' ) . ')' )->where ( 'ut.user_id = ' . ( int ) $userId . ' and m.id = ' . ( int ) $memberId );
 		
 		// Execute the query and load the rules from the result.
 		$db->setQuery ( $query );
@@ -112,7 +107,8 @@ class MemberDatabaseControllerMember extends JControllerForm {
 		
 		if ($result > 0) {
 			return true;
-		};
+		}
+		;
 		
 		error_log ( "User with id " . $userId . " does not have authorisation to modify member with id " . $memberId, 0 );
 		
@@ -130,12 +126,11 @@ class MemberDatabaseControllerMember extends JControllerForm {
 		}
 		
 		if ($data ['id']) {
-			return $this->allowEdit($data, $key);
+			return $this->allowEdit ( $data, $key );
 		} else {
-			return $this->allowAdd($data, $key);
+			return $this->allowAdd ( $data, $key );
 		}
 	}
-	
 	protected function allowAdd($data = array(), $key = 'id') {
 		$db_locked = JComponentHelper::getParams ( 'com_memberdatabase' )->get ( 'db_locked' );
 		
@@ -154,9 +149,7 @@ class MemberDatabaseControllerMember extends JControllerForm {
 		$db = JFactory::getDbo ();
 		
 		// Build the database query to get the rules for the asset.
-		$query = $db->getQuery ( true )->select ( 'count(*)' )
-		->from ( $db->quoteName ( '#__md_usertower', 'ut' ) )
-		->where ( 'ut.user_id = ' . ( int ) $userId . ' and ut.tower_id = ' . ( int ) $data['tower_id'] );
+		$query = $db->getQuery ( true )->select ( 'count(*)' )->from ( $db->quoteName ( '#__md_usertower', 'ut' ) )->where ( 'ut.user_id = ' . ( int ) $userId . ' and ut.tower_id = ' . ( int ) $data ['tower_id'] );
 		
 		// Execute the query and load the rules from the result.
 		$db->setQuery ( $query );
@@ -164,7 +157,8 @@ class MemberDatabaseControllerMember extends JControllerForm {
 		
 		if ($result > 0) {
 			return true;
-		};
+		}
+		;
 		
 		return false;
 	}
@@ -302,12 +296,37 @@ class MemberDatabaseControllerMember extends JControllerForm {
 			if ($return == true) {
 				$this->setMessage ( JText::_ ( 'Attachment successfully added.' ) );
 			}
-
+			
 			return $return;
 		} else {
 			$this->setError ( JText::_ ( 'JLIB_APPLICATION_ERROR_EDIT_NOT_PERMITTED' ) );
 			$this->setMessage ( $this->getError (), 'error' );
 			return false;
+		}
+	}
+	
+	/**
+	 * Function that allows child controller access to model data
+	 * after the data has been saved.
+	 *
+	 * @param JModelLegacy $model
+	 *        	The data model object.
+	 * @param array $validData
+	 *        	The validated data.
+	 *        	
+	 * @return void
+	 *
+	 * @since 12.2
+	 */
+	protected function postSaveHook(JModelLegacy $model, $validData = array()) {
+		error_log ( "validData = " . json_encode ( $validData ) );
+		
+		$jinput = JFactory::getApplication ()->input;
+		
+		// If the user has created an new member from the create invoice screen, then send them back there after the new member has been saved.
+		if ($jinput->get ( 'list_view', "", STRING ) == "invoice") {
+			
+			$this->setRedirect ( JRoute::_ ( 'index.php?option=' . $this->option . '&view=invoice&layout=create&towerId=' . $validData ['tower_id'], false ) );
 		}
 	}
 }

@@ -75,7 +75,7 @@ if (count ( $this->status ['towers_no_invoices'] ) > 0) {
 
 foreach ( $this->status ['towers_no_invoices'] as $tower ) :
 	
-	$create_invoice_link = JRoute::_ ( 'index.php?option=com_memberdatabase&view=invoice&layout=create&towerId=' . $tower->id );
+	$create_invoice_link = JRoute::_ ( 'index.php?option=com_memberdatabase&view=invoice&layout=create&list_view=invoice&towerId=' . $tower->id );
 	
 	?>
 	

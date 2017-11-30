@@ -37,15 +37,17 @@ class MemberDatabaseControllerMembers extends JControllerAdmin
 	public function requestlink()
 	{
 		$model = $this->getModel ();
+		$app = JFactory::getApplication();
 		
-		$email = $this->input->post->get ( 'email' );
+		$email = $this->input->get ( 'email', '', 'STRING');
 		
-		$model->generateAndSendLink($email);
+		if (!$model->generateAndSendLink($email)) {
+			$app->enqueueMessage("Can't send link:" . $model->getError(), "error");
+			return false;
+		}
 		
-		error_log("requestlink - got email - $email");
-		
-		echo "requestlink - got email - $email";
-		
+		$app->enqueueMessage("Link has been sent to your email account. ", "success");
+		return true;
 		//$this->setRedirect ( JRoute::_ ( 'index.php?option=' . $this->option . '&view=requestlink', false ) );
 	}
 }

@@ -326,34 +326,138 @@ class MemberDatabaseModelMembers extends JModelList {
 		
 	}
 	
-	public function generateAndSendLink($email) {
+	protected function emailAddressExistsInDB($email) {
+		// Find the user id for the given email address.
+		$db = JFactory::getDbo ();
+		$query = $db->getQuery(true)
+		->select('count(*)')
+		->from($db->quoteName('#__md_member'))
+		->where($db->quoteName('email') . ' = ' . $db->quote($email));
 		
-		$data = strtotime("now") . $email;
+		// Get the user object.
+		$db->setQuery($query);
 		
-		$hash = hash ( "md5" , $data , false );
+		try
+		{
+			$memberCount = $db->loadResult();
+		}
+		catch (RuntimeException $e)
+		{
+			$this->setError(JText::sprintf('Error searching for email address', $e->getMessage()), 500);
+			
+			return false;
+		}
 		
-		echo "data is $data;  hash is $hash";
-		error_log ("data is $data;  hash is $hash");
+		// Check for a user.
+		if (empty($memberCount) || $memberCount == 0) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+	
+	protected function storeToken($email, $hashedToken) {
+		$db = JFactory::getDbo ();
+		$currentDate = date ( 'Y-m-d H:i:s' );
+		//$expiryDate = $currentDate;
+		//date_add($expiryDate, new DateInterval("P5D"));
 		
-		$mailer = JFactory::getMailer();
+		//$currentDate = new DateTime();
+		$expiryDate = new DateTime();
+		$expiryDate->add(new DateInterval("P5D"));
 		
-		$sender = array(
-				'membership@scacr.org',
-				'Membership Coordinator'
+		$expiryDateText = $expiryDate->format('Y-m-d H:i:s');
+		
+		// Create a new query object.
+		$query = $db->getQuery ( true );
+		
+		// Insert columns.
+		$columns = array (
+				'email',
+				'hash_token',
+				'expiry_date',
+				'created_date'
 		);
 		
-		$mailer->setSender($sender);
-		$mailer->addRecipient( $email);
+		// Insert values.
+		$values = array (
+				$db->quote ( $email ),
+				$db->quote ( $hashedToken ),
+				$db->quote ( $expiryDateText ),
+				$db->quote ( $currentDate )
+		);
 		
-		$body   = "Use this link to access your SCACR membership account record : index.php?hash=$hash";
-		$subject = 'Link to your SCACR membership record';
+		// Prepare the insert query.
+		$query->insert ( $db->quoteName ( '#__md_member_token' ) )->columns ( $db->quoteName ( $columns ) )->values ( implode ( ',', $values ) );
 		
+		// Set the query using our newly populated query object and execute it.
+		$db->setQuery ( $query );
+		$result = $db->execute ();
 		
-		$send = $mailer->sendMail('membership@scacr.org', 'Membership Coordinator', "$email", $subject, $body);
+		return true;
+	}
+	
+	public function generateAndSendLink($email) {
+		
+		// 1) check that email exists in database
+		if (!$this->emailAddressExistsInDB($email)) {
+			echo "Can't find member with that email address";
+			$this->setError(JText::sprintf('No member has been found with email address ' . $email), 500);
+			return false;
+		}
+		
+		// 2) store the hash and email address
+		// 3) send the email
+		
+/* 		$data = strtotime("now") . $email;
+		$hash = hash ( "md5" , $data , false );
+ */		
+		// Set the confirmation token.
+		$token = JApplicationHelper::getHash(JUserHelper::genRandomPassword());
+		//$hashedToken = JUserHelper::hashPassword($token);
+		
+		error_log("Token generated = $token");
+		//error_log("Hashed Token is generated = $hashedToken");
+		
+		if (!$this->storeToken($email, $token)) {
+			// To Do: Raise error
+			$this->setError(JText::sprintf('Could not store unique token'), 500);
+			return false;
+		}
+		
+		$mailer = JFactory::getMailer();
+		$config = JFactory::getConfig();
+		
+		$link = 'index.php?option=com_memberdatabase&view=members&token=' . $token;
+		$mode = $config->get('force_ssl', 0) == 2 ? 1 : (-1);
+		
+		$site = $config->get('sitename');
+		
+		$link_text = JRoute::_($link, false, $mode);
+		$body = JText::sprintf(
+				'%s: Use this link %s to access your SCACR membership account record',
+				$site,
+				$link_text
+				);
+
+		$subject = $site . ' - Your Membership Record';
+		
+		echo "email = $email<br>";
+		echo "subject = $subject<br>";
+		echo "body = $body<br>";
+		
+		$fromname = $config->get('fromname');
+		$mailfrom = $config->get('mailfrom');
+		
+		$send = $mailer->sendMail($mailfrom, $fromname, $email, $subject, $body);
 		if ( $send !== true ) {
+			// To Do: Raise Error
 			echo "\n\nError sending email to $email";
+			$this->setError(JText::sprintf('Could not send email to %s', $email), 500);
+			return false;
 		} else {
 			echo '\n\nMail sent';
+			return true;
 		}
 		
 	}

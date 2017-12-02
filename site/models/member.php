@@ -39,6 +39,33 @@ class MemberDatabaseModelMember extends JModelAdmin {
 		return JTable::getInstance ( $type, $prefix, $config );
 	}
 	
+	protected function anonymousUserHasPrivilages($memberId) {
+		$jinput = JFactory::getApplication ()->input;
+		$token = $jinput->get ( 'token', null, 'STRING' );
+		
+		if (isset ( $token )) {
+			$db = JFactory::getDbo ();
+			
+			$currentDate = date ( 'Y-m-d H:i:s' );
+			// Build the database query to get the rules for the asset.
+			$query = $db->getQuery ( true )
+			->select ( 'count(*)' )
+			->from ( $db->quoteName ( '#__md_member', 'm' ) )
+			->join ( 'INNER', $db->quoteName ( '#__md_member_token', 'memt' ) . ' ON (' . $db->quoteName ( 'm.email' ) . ' = ' . $db->quoteName ( 'memt.email' ) . ')' )
+			->where ( 'memt.hash_token = ' . $db->quote($token) . ' and memt.expiry_date >= ' . $db->quote ( $currentDate ) )
+			->where ( 'm.id = ' . (int) $memberId);
+			
+			// Execute the query and load the rules from the result.
+			$db->setQuery ( $query );
+			$result = $db->loadResult ();
+			
+			if ($result > 0) {
+				return true;
+			}
+			
+			return false;
+		}
+	}
 	
 	public function getItem($pk = null)
 	{
@@ -66,9 +93,12 @@ class MemberDatabaseModelMember extends JModelAdmin {
 				
 		if ($result > 0) {
 			return $item;
-		} else {
-			return false;
-		}
+		} 
+		
+		if ($this->anonymousUserHasPrivilages($item->id)) return $item;
+		
+		return false;
+		
 		
 	}	
 	
@@ -87,7 +117,30 @@ class MemberDatabaseModelMember extends JModelAdmin {
 	
 	public function getForm($data = array(), $loadData = true) {
 		// Get the form.
-		$form = $this->loadForm ( 'com_memberdatabase.member', 'member', array (
+		
+		$jinput = JFactory::getApplication ()->input;
+		$token = $jinput->get ( 'token', null, 'STRING' );
+		
+		if (isset ( $token )) {
+			$user_editing = true;
+		} else {
+			$user_editing = false;
+		}
+		
+		// Get an appropriate set of fields to display
+		if (JFactory::getUser ()->authorise ( 'core.admin', 'com_memberdatabase' )) {
+			$form_name = 'com_memberdatabase.member';
+			$form_file = 'member';
+		} elseif ( $user_editing ) {
+			$form_name = 'com_memberdatabase.member_user_edit';
+			$form_file = 'member_user_edit';
+		} else {
+			$form_name = 'com_memberdatabase.member_minimal';
+			$form_file = 'member_minimal';
+		}
+		
+		
+		$form = $this->loadForm ( $form_name, $form_file, array (
 				'control' => 'jform',
 				'load_data' => $loadData 
 		) );

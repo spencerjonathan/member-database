@@ -37,6 +37,14 @@ class MemberDatabaseControllerMember extends JControllerForm {
 		$cid = $this->input->post->get ( 'cid', array (), 'array' );
 		$context = "$this->option.edit.$this->context";
 		
+		$jinput = JFactory::getApplication ()->input;
+		$token = $jinput->get ( 'token', null, 'STRING' );
+		$token_text = "";
+		
+		if (isset ( $token )) {
+			$token_text = "&token=" . $token;
+		}
+		
 		// Determine the name of the primary key for the data.
 		if (empty ( $key )) {
 			$key = $table->getKeyName ();
@@ -60,7 +68,7 @@ class MemberDatabaseControllerMember extends JControllerForm {
 			 * $this->setMessage($this->getError(), 'error');
 			 */
 			
-			$this->setRedirect ( JRoute::_ ( 'index.php?option=' . $this->option . '&view=member&layout=view&id=' . $recordId, false ) );
+			$this->setRedirect ( JRoute::_ ( 'index.php?option=' . $this->option . '&view=member&layout=view&id=' . $recordId . $token_text, false ) );
 			
 			return false;
 		}
@@ -69,10 +77,39 @@ class MemberDatabaseControllerMember extends JControllerForm {
 		$this->holdEditId ( $context, $recordId );
 		JFactory::getApplication ()->setUserState ( $context . '.data', null );
 		
-		$this->setRedirect ( JRoute::_ ( 'index.php?option=' . $this->option . '&view=' . $this->view_item . $this->getRedirectToItemAppend ( $recordId, $urlVar ), false ) );
+		$this->setRedirect ( JRoute::_ ( 'index.php?option=' . $this->option . '&view=' . $this->view_item . $this->getRedirectToItemAppend ( $recordId, $urlVar ) . $token_text, false ) );
 		
 		return true;
 	}
+	
+	protected function anonymousUserHasPrivilages($memberId) {
+		$jinput = JFactory::getApplication ()->input;
+		$token = $jinput->get ( 'token', null, 'STRING' );
+		
+		if (isset ( $token )) {
+			$db = JFactory::getDbo ();
+			
+			$currentDate = date ( 'Y-m-d H:i:s' );
+			// Build the database query to get the rules for the asset.
+			$query = $db->getQuery ( true )
+			->select ( 'count(*)' )
+			->from ( $db->quoteName ( '#__md_member', 'm' ) )
+			->join ( 'INNER', $db->quoteName ( '#__md_member_token', 'memt' ) . ' ON (' . $db->quoteName ( 'm.email' ) . ' = ' . $db->quoteName ( 'memt.email' ) . ')' )
+			->where ( 'memt.hash_token = ' . $db->quote($token) . ' and memt.expiry_date >= ' . $db->quote ( $currentDate ) )
+			->where ( 'm.id = ' . (int) $memberId);
+			
+			// Execute the query and load the rules from the result.
+			$db->setQuery ( $query );
+			$result = $db->loadResult ();
+			
+			if ($result > 0) {
+				return true;
+			}
+			
+			return false;
+		}
+	}
+	
 	protected function allowEdit($data = array(), $key = 'id') {
 		jimport ( 'joomla.application.component.helper' );
 		
@@ -110,10 +147,15 @@ class MemberDatabaseControllerMember extends JControllerForm {
 		}
 		;
 		
+		if ($this->anonymousUserHasPrivilages($memberId)) {
+			return true;
+		}
+		
 		error_log ( "User with id " . $userId . " does not have authorisation to modify member with id " . $memberId, 0 );
 		
 		return false;
 	}
+	
 	protected function allowSave($data = array(), $key = 'id') {
 		$db_locked = JComponentHelper::getParams ( 'com_memberdatabase' )->get ( 'db_locked' );
 		
@@ -180,6 +222,14 @@ class MemberDatabaseControllerMember extends JControllerForm {
 		$table = $model->getTable ();
 		$memberId = $this->input->get->get ( 'id' );
 		
+		$jinput = JFactory::getApplication ()->input;
+		$token = $jinput->get ( 'token', null, 'STRING' );
+		$token_text = "";
+		
+		if (isset ( $token )) {
+			$token_text = "&token=" . $token;
+		}
+		
 		error_log ( "member.verify function called with id = " . $memberId );
 		
 		// Determine the name of the primary key for the data.
@@ -194,7 +244,7 @@ class MemberDatabaseControllerMember extends JControllerForm {
 		
 		error_log ( "member.verify controller has determined that key is " . $key . ".  About to call allowEdit..." );
 		
-		$this->setRedirect ( JRoute::_ ( 'index.php?option=' . $this->option . '&view=' . $this->view_list . $this->getRedirectToListAppend (), false ) );
+		$this->setRedirect ( JRoute::_ ( 'index.php?option=' . $this->option . '&view=' . $this->view_list . $this->getRedirectToListAppend () . $token_text, false ) );
 		
 		// Access check.
 		if (! $this->allowEdit ( array (
@@ -267,6 +317,14 @@ class MemberDatabaseControllerMember extends JControllerForm {
 		$table = $model->getTable ();
 		$memberId = ( int ) $this->input->get->get ( 'id' );
 		
+		$jinput = JFactory::getApplication ()->input;
+		$token = $jinput->get ( 'token', null, 'STRING' );
+		$token_text = "";
+		
+		if (isset ( $token )) {
+			$token_text = "&token=" . $token;
+		}
+		
 		error_log ( "member.addattachment function called with id = " . $memberId );
 		
 		$file = JRequest::getVar ( 'jform', array (), 'files', 'array' );
@@ -284,7 +342,7 @@ class MemberDatabaseControllerMember extends JControllerForm {
 		 * error_log ("Name: " . $file['tmp_name']['a_file']);
 		 */
 		
-		$this->setRedirect ( JRoute::_ ( 'index.php?option=' . $this->option . '&view=member&layout=edit&id=' . $memberId, false ) );
+		$this->setRedirect ( JRoute::_ ( 'index.php?option=' . $this->option . '&view=member&layout=edit&id=' . $memberId . $token_text, false ) );
 		
 		// Access check.
 		if ($this->allowEdit ( array (

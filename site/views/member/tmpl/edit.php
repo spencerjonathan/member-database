@@ -16,6 +16,16 @@ if ($this->item->id) {
 	$task = "member.add";
 }
 
+$jinput = JFactory::getApplication ()->input;
+$token = $jinput->get ( 'token', null, 'STRING' );
+$token_text = "";
+$user_editing = false;
+
+if (isset ( $token )) {
+	$token_text = "&token=" . $token;
+	$user_editing = true;
+}
+
 ?>
 <legend><?php echo JText::_('Member Database - Member Details'); ?></legend>
 
@@ -28,15 +38,20 @@ if ($this->item->id) {
 		id="saveandverify_button" class="btn btn-small btn-success">
 		<span class="icon-ok"></span> Save & Verify
 	</button>
+	
+	<?php if (!$user_editing) : ?>
 	<button onclick="Joomla.submitbutton('member.save')" id="save_button"
 		class="btn btn-small">
 		<span class="icon-save"></span> Save & Close
 	</button>
+	<?php endif; ?>
+	
 	<button onclick="Joomla.submitbutton('member.cancel')"
 		class="btn btn-small">
 		<span class="icon-cancel"></span> Close
 	</button>
 
+	<?php if (!$user_editing) : ?>
 	<a
 		href="<?php echo JRoute::_('index.php/?option=com_memberdatabase&view=memberhistory&memberId=' . (int) $this->item->id); ?>"
 		class="btn btn-small"><span class="icon-eye-open"></span> View History</a>
@@ -46,14 +61,15 @@ if ($this->item->id) {
 	<a
 		href="<?php echo JRoute::_('index.php/?option=com_memberdatabase&view=annualreport&layout=memberdetails&memberId=' . (int) $this->item->id); ?>"
 		class="btn btn-small"><span class="icon-eye-open"></span> Annual Report View</a>
-
+	<?php endif; ?>
+	
 </div>
 <hr>
 
 <?php $list_view_parameter = ""; if ($this->list_view != "") { $list_view_parameter = "&list_view=" . $this->list_view; }; ?>
 
 <form class="form-validate"
-	action="<?php echo JRoute::_('index.php?option=com_memberdatabase&view=member&layout=edit&id=' . (int) $this->item->id . $list_view_parameter); ?>"
+	action="<?php echo JRoute::_('index.php?option=com_memberdatabase&view=member&layout=edit&id=' . (int) $this->item->id . $list_view_parameter . $token_text); ?>"
 	method="post" name="adminForm" id="adminForm">
 	<div class="form-horizontal">
 		<fieldset class="adminform">
@@ -61,12 +77,7 @@ if ($this->item->id) {
                     <?php 
                     
                     // Get an appropriate set of fields to display
-                    if (JFactory::getUser ()->authorise ( 'core.admin', 'com_memberdatabase' ) ) {
-                    	$fieldset = $this->form->getFieldset('detail');
-                    } else {
-                    	$fieldset = $this->form->getFieldset('minimal');
-                    }
-                    
+                    $fieldset = $this->form->getFieldset('main');
                     
                     foreach ($fieldset as $field):?>
                         <div class="control-group">
@@ -104,7 +115,7 @@ if ($this->item->id) :
 		<?php
 	
 foreach ( $this->attachments as $attachment ) {
-		$viewLink = JRoute::_ ( 'index.php/?option=com_memberdatabase&view=memberattachment&attachmentId=' . ( int ) $attachment->id );
+	$viewLink = JRoute::_ ( 'index.php/?option=com_memberdatabase&view=memberattachment&attachmentId=' . ( int ) $attachment->id . $token_text);
 		
 		echo "<tr>";
 		echo "<td>$attachment->mod_user</td>";
@@ -122,7 +133,7 @@ foreach ( $this->attachments as $attachment ) {
 <hr>
 <form class="form-horizontal" name="attachmentAdminForm"
 	id="attachmentAdminForm" enctype="multipart/form-data" method="post"
-	action="<?php echo JRoute::_('index.php?option=com_memberdatabase&view=member&layout=edit&id=' . (int) $this->item->id); ?>">
+	action="<?php echo JRoute::_('index.php?option=com_memberdatabase&view=member&layout=edit&id=' . (int) $this->item->id . $token_text); ?>">
 	<h2>Add Attachment</h2>
 
 	<fieldset class="adminform">
@@ -139,6 +150,7 @@ foreach ( $this->attachments as $attachment ) {
     <?php echo JHtml::_('form.token'); ?>
 </form>
 
+<?php if(!$user_editing) : ?>
 <div>
 	<button
 		onclick="Joomla.submitbutton('member.addattachment', document.getElementById('attachmentAdminForm') );"
@@ -146,6 +158,7 @@ foreach ( $this->attachments as $attachment ) {
 		<span class="icon-new icon-white"></span> Add Attachment
 	</button>
 </div>
+<?php endif; ?>
 <hr>
 
 <?php

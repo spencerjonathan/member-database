@@ -70,7 +70,7 @@ class MemberDatabaseViewMember extends JViewLegacy
 		}
  
 		$jinput = JFactory::getApplication ()->input;
-		$this->list_view = $jinput->get ( 'list_view', "", STRING );
+		$this->list_view = $jinput->get ( 'list_view', "", "STRING" );
 		
 		// Set the toolbar
 		$this->addToolBar();

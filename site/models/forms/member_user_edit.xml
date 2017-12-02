@@ -1,19 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <form>
-	<fieldset name="main" addrulepath="components/com_memberdatabase/models/rules" addfieldpath="administrator/components/com_memberdatabase/models/fields">
+		<fieldset name="main" addrulepath="components/com_memberdatabase/models/rules" addfieldpath="administrator/components/com_memberdatabase/models/fields">
 		<field
 				name="id"
 				type="hidden"
 				/>
 		<field
 				name="tower_id"
-				type="towers"
-				class="required"
-				label="Tower ID"
-				validate="towerid"
-				message="Please select a valid tower for the memeber"
+				type="sql"
+				label="Tower"
+				description="The tower that the member is associated with"
 				required="true"
-				/>
+				default=""
+				query="SELECT id AS value, concat_ws(',', place, designation) AS tower_id FROM #__md_tower" />
 		<field
 				name="forenames"
 				type="text"
@@ -71,7 +70,7 @@
 				required="true"
 				default=""
 				query="SELECT id AS value, name AS member_type_id FROM #__md_member_type"
-				
+				readonly="true"
 				/>
 				
 		<field

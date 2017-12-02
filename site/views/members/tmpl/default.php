@@ -18,6 +18,16 @@ JHtml::_ ( 'formbehavior.chosen', 'select' );
 $listOrder = $this->escape ( $this->filter_order );
 $listDirn = $this->escape ( $this->filter_order_Dir );
 
+$jinput = JFactory::getApplication ()->input;
+$token = $jinput->get ( 'token', null, 'STRING' );
+$token_text = "";
+$user_editing = false;
+
+if (isset ( $token )) {
+	$token_text = "&token=" . $token;
+	$user_editing = true;
+}
+
 ?>
 
 
@@ -52,7 +62,7 @@ $listDirn = $this->escape ( $this->filter_order_Dir );
 </div>
 
 
-<form action="index.php?option=com_memberdatabase&view=members"
+<form action="index.php?option=com_memberdatabase&view=members<?php echo $token_text; ?>"
 	method="post" id="adminForm" name="adminForm">
 	<div class="row-fluid">
 		<div class="span6">
@@ -102,8 +112,8 @@ $listDirn = $this->escape ( $this->filter_order_Dir );
 				$verification_required_since_time = strtotime ( $verification_required_since );
 				
 				foreach ( $this->items as $i => $row ) :
-					$link = JRoute::_ ( 'index.php?option=com_memberdatabase&task=member.edit&id=' . $row->id );
-					$verify = JRoute::_ ( 'index.php?option=com_memberdatabase&task=member.verify&id=' . $row->id );
+					$link = JRoute::_ ( 'index.php?option=com_memberdatabase&task=member.edit&id=' . $row->id . $token_text );
+					$verify = JRoute::_ ( 'index.php?option=com_memberdatabase&task=member.verify&id=' . $row->id . $token_text);
 					
 					$verified_time = strtotime ( $row->verified_date );
 					?>

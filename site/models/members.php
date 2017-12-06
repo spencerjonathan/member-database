@@ -97,7 +97,7 @@ class MemberDatabaseModelMembers extends JModelList {
 		}
 		
 		$query->where( 'm.newsletters in ("Postal", "Both")');
-		$query->where( 'm.member_type_id not in (4, 7)');
+		$query->where( 'm.member_type_id not in (4, 7, 8)');
 		$query->order('m.postcode, m.address1, m.address2, m.address3');
 		
 		$db->setQuery ( $query );
@@ -141,7 +141,7 @@ class MemberDatabaseModelMembers extends JModelList {
 		}
 		
 		$query->where( 'm.newsletters in ("Email", "Both")');
-		$query->where( 'm.member_type_id not in (4, 7)');
+		$query->where( 'm.member_type_id not in (4, 7, 8)');
 		$query->order('d.name, t.place, m.surname, m.email');
 		
 		$db->setQuery ( $query );

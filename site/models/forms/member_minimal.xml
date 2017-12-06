@@ -164,12 +164,14 @@
             type="hidden"
 			default=""
 		/>
+		
 		<field
-            name="mod_user_id"
-            type="user"
-            label="Last Modified By"
-            description="The user who most last edited/saved this member record"
-            readonly="true"
+			name="mod_user_id"
+			type="text"
+			label="Last Modified By"
+			description="The user who most last edited/saved this member record"
+			class="inputbox"
+			readonly="true"
 		/>
 		<field
             name="mod_date"

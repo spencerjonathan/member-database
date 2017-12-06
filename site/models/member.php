@@ -71,6 +71,8 @@ class MemberDatabaseModelMember extends JModelAdmin {
 	{
 		$item = parent::getItem($pk);
 		
+		error_log("Item loaded is " . json_encode($item));
+		
 		// If the user has privilages to edit any member then return the item.
 		if (JFactory::getUser ()->authorise ( 'member.edit', 'com_memberdatabase' )) {
 			return $item;
@@ -371,5 +373,30 @@ class MemberDatabaseModelMember extends JModelAdmin {
 		$db->setQuery($query);
 		
 		return $db->loadAssoc();
+	}
+	
+	public function getCurrentUserId() {
+		
+		$jinput = JFactory::getApplication ()->input;
+		$token = $jinput->get ( 'token', null, 'STRING' );
+		$token_text = "";
+		$user_editing = false;
+		
+		if (isset ( $token )) {
+			$db = JFactory::getDbo ();
+			$query = $db->getQuery(true);
+			
+			$query->select('id as id')
+			->from("#__md_member_token memt")
+			->where("memt.hash_token = " . $db->quote($token));
+			
+			$db->setQuery ( $query );
+			$id = $db->loadResult ();
+			
+			return $id * -1;
+			
+		} else {
+			return $this->mod_user_id = JFactory::getUser ()->id;
+		}
 	}
 }

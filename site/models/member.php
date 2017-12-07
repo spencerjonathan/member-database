@@ -236,11 +236,12 @@ class MemberDatabaseModelMember extends JModelAdmin {
 		where id = $memberId 
 		) mh";
 		
-		$query->select ( 'mh.*, concat_ws(", ", t.place, t.designation) as tower, mt.name as member_type, u.name as mod_user' );
+		$query->select ( 'mh.*, concat_ws(", ", t.place, t.designation) as tower, mt.name as member_type, IFNULL(u.name, memt.email) as mod_user' );
 		$query->from ( $query_string );
 		$query->join ( 'LEFT', $db->quoteName ( '#__md_tower', 't' ) . 'ON (mh.tower_id = t.id)' );
 		$query->join ( 'LEFT', $db->quoteName ( '#__md_member_type', 'mt' ) . 'ON (mh.member_type_id = mt.id)' );
 		$query->join ( 'LEFT', $db->quoteName ( '#__users', 'u' ) . 'ON (mh.mod_user_id = u.id)' );
+		$query->join ( 'LEFT', $db->quoteName ( '#__md_member_token', 'memt' ) . 'ON (ABS(mh.mod_user_id) = memt.id)' );
 		
 		/*
 		 * $query->select ( $query_string );

@@ -33,17 +33,13 @@ defined ( '_JEXEC' ) or die ( 'Restricted access' );
 		<span class="icon-cancel"></span> Close
 	</button>
 
-	<a
-		href="<?php echo JRoute::_('index.php/?option=com_memberdatabase&view=memberhistory&memberId=' . (int) $this->item->id); ?>"
-		class="btn btn-small"><span class="icon-eye-open"></span> View History</a>
-
 </div>
 <hr>
 
 	<div class="form-horizontal">
 		<fieldset class="adminform">
 			
-                    <?php foreach ($this->form->getFieldset('detail') as $field):
+                    <?php foreach ($this->form->getFieldset('main') as $field):
                     	//var_dump($field);
                     	if ($field->type != "Hidden") :?>
                         <div class="control-group">

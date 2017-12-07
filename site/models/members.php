@@ -406,25 +406,16 @@ class MemberDatabaseModelMembers extends JModelList {
 			return false;
 		}
 		
-		// 2) store the hash and email address
-		// 3) send the email
-		
-/* 		$data = strtotime("now") . $email;
-		$hash = hash ( "md5" , $data , false );
- */		
 		// Set the confirmation token.
 		$token = JApplicationHelper::getHash(JUserHelper::genRandomPassword());
-		//$hashedToken = JUserHelper::hashPassword($token);
 		
-		error_log("Token generated = $token");
-		//error_log("Hashed Token is generated = $hashedToken");
-		
+		// 2) store the hash and email address
 		if (!$this->storeToken($email, $token)) {
-			// To Do: Raise error
 			$this->setError(JText::sprintf('Could not store unique token'), 500);
 			return false;
 		}
 		
+		// 3) send the email
 		$mailer = JFactory::getMailer();
 		$config = JFactory::getConfig();
 		
@@ -435,12 +426,11 @@ class MemberDatabaseModelMembers extends JModelList {
 		
 		$link_text = JRoute::_($link, false, $mode);
 		$body = JText::sprintf(
-				'%s: Use this link %s to access your SCACR membership account record',
-				$site,
+				'Use this link %s to access your SCACR membership account record',
 				$link_text
 				);
 
-		$subject = $site . ' - Your Membership Record';
+		$subject = $site . ' - Link To Your Membership Record';
 		
 		echo "email = $email<br>";
 		echo "subject = $subject<br>";

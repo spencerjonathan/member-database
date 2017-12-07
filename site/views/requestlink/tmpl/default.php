@@ -12,11 +12,12 @@ defined ( '_JEXEC' ) or die ( 'Restricted access' );
 
 ?>
 <h1>Request Link</h1>
+To view/modify your membership record enter your email address in the box below and click submit.  An email will be sent to you containing a link which will give you access to your membership record.  The link will be enabled for 5 days.<br><br>
 <form class="form-validate"
 	action="<?php echo JRoute::_('index.php?option=com_memberdatabase&view=requestlink'); ?>"
 	method="post" name="adminForm" id="adminForm">
 	<div class="control-group">
-		<div class="control-label">Enter your email address</div>
+		<div class="control-label">Please enter your email address:</div>
 		<div class="controls">
 			<input name="email" class="validate-email inputbox required"
 				id="email" value="" size="40" type="email">

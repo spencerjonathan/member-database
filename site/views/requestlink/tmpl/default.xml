@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+	<layout title="Request Link">
+		<message>Request token that enables user to view and modify their own details</message>
+	</layout>
+</metadata>

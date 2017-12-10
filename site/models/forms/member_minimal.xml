@@ -2,6 +2,12 @@
 <form>
 		<fieldset name="main" addrulepath="components/com_memberdatabase/models/rules" addfieldpath="administrator/components/com_memberdatabase/models/fields">
 		<field
+        	name="accept_privicy_policy"
+            type="hidden"
+            default="0"
+        />
+            
+		<field
 				name="id"
 				type="hidden"
 				/>
@@ -92,7 +98,7 @@
 		<field
 			name="newsletters"
 			type="hidden"
-			default="0"
+			default=""
 		/>
 		<field
 			name="district_newsletters"
@@ -144,11 +150,7 @@
             type="hidden"
 			default=""
 		/>
-        <field
-            name="databaseform"
-            type="hidden"
-			default="0"
-		/>
+        
         <field
             name="notes"
             type="hidden"
@@ -163,6 +165,11 @@
             name="dbs_update"
             type="hidden"
 			default=""
+		/>
+		<field
+			name="db_form_received"
+			type="hidden"
+			default="0"
 		/>
 		
 		<field

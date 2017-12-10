@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <form>
 		<fieldset name="main" addrulepath="components/com_memberdatabase/models/rules" addfieldpath="administrator/components/com_memberdatabase/models/fields">
+		
 		<field
 				name="id"
 				type="hidden"
@@ -107,7 +108,7 @@
 		<field
 				name="newsletters"
 				type="list"
-				label="Newsletters"
+				label="Receive Newsletters By"
 				description="How does the member want to receive newsletters?"
 				required="true"
 				default="">
@@ -120,7 +121,7 @@
 		<field
 				name="district_newsletters"
 				type="list"
-				label="Receive District Comms"
+				label="Receive Newsletters For"
 				description="Which districts' communications to receive?"
 				required="true"
 				default="0">
@@ -130,8 +131,8 @@
                 <field
                                 name="date_elected"
                                 type="calendar"
-                                label="Date Elected"
-                                description="The date that the member was elected"
+                                label="Association Member Since"
+                                description="The date that the member joined the association."
                                 class="inputbox"
                                 default="" 
 				/>
@@ -200,17 +201,6 @@
 				class="inputbox"
                 		/>
                 <field
-                	name="databaseform"
-                    type="radio"
-                    label="Databaseform?"
-                    description="Has a 'Database form' been received for the member?  (redundant field)"
-                    class="btn-group btn-group-yesno"
-                    default="0"
-                    filter="integer">
-                    	<option value="1">JYES</option>
-                    	<option value="0">JNO</option>
-                </field>
-                <field
                 	name="notes"
                 	type="textarea"
                 	label="Notes"
@@ -238,6 +228,19 @@
 				/>
 				
 				<field
+					name="db_form_received"
+					type="radio"
+					label="New Member Form Received?"
+					description="Has the Membership Coordinator received a New-Member form for this member?"
+					class="btn-group btn-group-yesno"
+					default="0"
+					readonly="true"
+					filter="integer">
+						<option value="1">JYES</option>
+						<option value="0">JNO</option>
+				</field>
+				
+				<field
                                 name="mod_user_id"
                                 type="text"
                                 label="Last Modified By"
@@ -254,27 +257,21 @@
                                 readonly="true"
 				/>
 	</fieldset>
+	<fieldset name="privacy" addrulepath="components/com_memberdatabase/models/rules" addfieldpath="administrator/components/com_memberdatabase/models/fields">
+	<field
+        	name="accept_privicy_policy"
+            type="radio"
+            label="Accept Privacy Policy?"
+            description="Does the member accept the terms of the association's Privacy Policy?"
+            class="btn-group btn-group-yesno"
+            default="0"
+            filter="integer">
+            	<option value="1">JYES</option>
+            	<option value="0">JNO</option>
+        </field>
+	</fieldset>
 		<fieldset name="attachment" addrulepath="components/com_memberdatabase/models/rules" addfieldpath="administrator/components/com_memberdatabase/models/fields">
-		<field
-				name="id"
-				type="hidden"
-                
-				/>
-				<field
-				name="a_description"
-				type="textarea"
-				label="Description"
-				description="Description"
-				class="inputbox"
-				cols="60"
-				rows="3"
-				/>
-				<field
-				name="a_file"
-				type="file"
-				label="File"
-				description="File"
-				/>
+		
 
 		</fieldset>
 </form>

@@ -2,6 +2,17 @@
 <form>
 	<fieldset name="main" addrulepath="components/com_memberdatabase/models/rules" addfieldpath="administrator/components/com_memberdatabase/models/fields">
 		<field
+        	name="accept_privicy_policy"
+            type="radio"
+            label="Accept Privicy Policy?"
+            description="Does the member accept the terms of the association's Privicy Policy?"
+            class="btn-group btn-group-yesno"
+            default="0"
+            filter="integer">
+            	<option value="1">JYES</option>
+            	<option value="0">JNO</option>
+        </field>
+		<field
 				name="id"
 				type="hidden"
 				/>
@@ -108,7 +119,7 @@
 		<field
 				name="newsletters"
 				type="list"
-				label="Newsletters"
+				label="Receive newsletters by"
 				description="How does the member want to receive newsletters?"
 				required="true"
 				default="">
@@ -200,17 +211,7 @@
                                 description="Country"
 				class="inputbox"
                 		/>
-                <field
-                	name="databaseform"
-                    type="radio"
-                    label="Databaseform?"
-                    description="Has a 'Database form' been received for the member?  (redundant field)"
-                    class="btn-group btn-group-yesno"
-                    default="0"
-                    filter="integer">
-                    	<option value="1">JYES</option>
-                    	<option value="0">JNO</option>
-                </field>
+                
                 <field
                 	name="notes"
                 	type="textarea"
@@ -239,6 +240,18 @@
 				/>
 				
 				<field
+					name="db_form_received"
+					type="radio"
+					label="New Member Form Received?"
+					description="Has the Membership Coordinator received a New-Member form for this member?"
+					class="btn-group btn-group-yesno"
+					default="0"
+					filter="integer">
+						<option value="1">JYES</option>
+						<option value="0">JNO</option>
+				</field>
+				
+				<field
 					name="mod_user_id"
 					type="text"
 					label="Last Modified By"
@@ -254,6 +267,7 @@
                                 class="inputbox"
                                 readonly="true"
 				/>
+				
 	</fieldset>
 		<fieldset name="attachment" addrulepath="components/com_memberdatabase/models/rules" addfieldpath="administrator/components/com_memberdatabase/models/fields">
 		<field

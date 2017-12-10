@@ -34,8 +34,8 @@ if (isset ( $token )) {
 <div class="container-fluid">
 	<div class="row-fluid">
 		<div class="span12">
-			<!-- <div class="btn-toolbar" id="toolbar" role="btn-toolbar">
-				<div class="btn-group"> -->
+			
+			<?php if (!$user_editing) : ?>
 			<button onclick="Joomla.submitbutton('member.add')"
 				class="btn btn-success">
 				<span class="icon-new icon-white"></span> New
@@ -53,16 +53,17 @@ if (isset ( $token )) {
 			<button
 				onclick="if (document.adminForm.boxchecked.value==0){alert('Please first make a selection from the list.');}else{ Joomla.submitbutton('members.verify')}"
 				class="btn btn-success">
-				<span class="icon-ok icon-white"></span> Verify
+				<span class="icon-ok icon-white"></span> Everything Here Is Correct
 			</button>
-			<!-- </div>
-			</div> -->
+			<?php endif; ?>
+			
 		</div>
 	</div>
 </div>
 
 
-<form action="index.php?option=com_memberdatabase&view=members<?php echo $token_text; ?>"
+<form
+	action="index.php?option=com_memberdatabase&view=members<?php echo $token_text; ?>"
 	method="post" id="adminForm" name="adminForm">
 	<div class="row-fluid">
 		<div class="span6">
@@ -90,7 +91,7 @@ if (isset ( $token )) {
 				<th width="25%">
 				<?php echo JHtml::_('grid.sort', 'Verified Date', 'verified_date', $listDirn, $listOrder) ;?>
 			</th>
-				<th width="22%">Verfify</th>
+				<th width="22%">Verify</th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -113,7 +114,7 @@ if (isset ( $token )) {
 				
 				foreach ( $this->items as $i => $row ) :
 					$link = JRoute::_ ( 'index.php?option=com_memberdatabase&task=member.edit&id=' . $row->id . $token_text );
-					$verify = JRoute::_ ( 'index.php?option=com_memberdatabase&task=member.verify&id=' . $row->id . $token_text);
+					$verify = JRoute::_ ( 'index.php?option=com_memberdatabase&task=member.verify&id=' . $row->id . $token_text );
 					
 					$verified_time = strtotime ( $row->verified_date );
 					?>
@@ -146,20 +147,30 @@ if (isset ( $token )) {
 					
 					?>
 						</td>
-				<td><button class="btn btn-success"
+				<td>
+				
+				<?php if (!$user_editing) : ?>
+				<button class="btn btn-success"
 						onclick="if (confirm('Are you sure you want to verify that the information held about this member is correct?')) { document.getElementById('v<?php echo $row->id ?>').click(); }">
-						<span class="icon-ok"></span> Verify
+						<span class="icon-ok"></span> This Record Is Correct
 					</button> <a id='v<?php echo $row->id ?>'
-					href='<?php echo $verify; ?>' /a></td>
+					href='<?php echo $verify; ?>' /a>
+				<?php endif; ?>
+				
+				
+				
+				
+				
+				
+				</td>
 			</tr>
 				<?php endforeach; ?>
 			<?php endif; ?>
 		</tbody>
 	</table>
-	<input type="hidden" name="task" value="" /> 
-	<input type="hidden"
-		name="boxchecked" value="0" /> 
-	<input type="hidden" name="filter_order" value="<?php echo $listOrder; ?>" /> 
-	<input type="hidden" name="filter_order_Dir" value="<?php echo $listDirn; ?>" />
+	<input type="hidden" name="task" value="" /> <input type="hidden"
+		name="boxchecked" value="0" /> <input type="hidden"
+		name="filter_order" value="<?php echo $listOrder; ?>" /> <input
+		type="hidden" name="filter_order_Dir" value="<?php echo $listDirn; ?>" />
 	<?php echo JHtml::_('form.token'); ?>
 </form>

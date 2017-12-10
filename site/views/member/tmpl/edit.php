@@ -33,11 +33,6 @@ if (isset ( $token )) {
 <?php echo JHtml::_('bootstrap.addTab', 'myTab', 'details', 'Member Details'); ?>
 
 <div>
-	<button
-		onclick="if (confirm('Are you sure you want to verify that the information held about this member is correct?')) { Joomla.submitbutton('member.saveandverify'); }"
-		id="saveandverify_button" class="btn btn-small btn-success">
-		<span class="icon-ok"></span> Save & Verify
-	</button>
 	
 	<?php if (!$user_editing) : ?>
 	<button onclick="Joomla.submitbutton('member.save')" id="save_button"
@@ -60,7 +55,8 @@ if (isset ( $token )) {
 		class="btn btn-small"><span class="icon-eye-open"></span> View Only</a>
 	<a
 		href="<?php echo JRoute::_('index.php/?option=com_memberdatabase&view=annualreport&layout=memberdetails&memberId=' . (int) $this->item->id); ?>"
-		class="btn btn-small"><span class="icon-eye-open"></span> Annual Report View</a>
+		class="btn btn-small"><span class="icon-eye-open"></span> Annual
+		Report View</a>
 	<?php endif; ?>
 	
 </div>
@@ -74,13 +70,42 @@ if (isset ( $token )) {
 	<div class="form-horizontal">
 		<fieldset class="adminform">
 			
-                    <?php 
-                    
-                    // Get an appropriate set of fields to display
-                    $fieldset = $this->form->getFieldset('main');
-                    
-                    foreach ($fieldset as $field):?>
+                    <?php
+																				
+																				// Get an appropriate set of fields to display
+																				$fieldset = $this->form->getFieldset ( 'main' );
+																				
+																				foreach ( $fieldset as $field ) :
+																					?>
                         <div class="control-group">
+				<div class="control-label"><?php echo $field->label; ?></div>
+				<div class="controls"><?php echo $field->input; ?></div>
+			</div>
+                    <?php endforeach; ?>
+                
+                
+                <?php
+																
+																// Get an appropriate set of fields to display
+																$fieldset = $this->form->getFieldset ( 'privacy' );
+																
+																foreach ( $fieldset as $field ) :
+																	?>
+				
+				<hr>
+			General Data Protection Regulation (GDPR) requires that<br> 1) We
+			document in the Association's Privicy Policy the lawful basis for
+			processing your personal information, and <br> 2) That you concent to
+			us processing your personal data for the reasons set out in the
+			Association Privicy Policy.<br>
+			<br> <a
+				href="https://scacr.org/documents/membership/SCACR_Data_Protection_Policy.pdf">Read
+				the Association Privicy Policy Here</a><br>
+			<br> Concenting to the SCACR processing your personal data for the
+			reasons set out in the Association's Privicy Policy is a requirement
+			for membership to the SCACR.<br>
+			<br>
+			<div class="control-group">
 				<div class="control-label"><?php echo $field->label; ?></div>
 				<div class="controls"><?php echo $field->input; ?></div>
 			</div>
@@ -93,6 +118,15 @@ if (isset ( $token )) {
 	<input type="hidden" name="task" value="<?php echo $task?>" />
     <?php echo JHtml::_('form.token'); ?>
 </form>
+
+<div>
+	<hr>
+	<button
+		onclick="if (confirm('Are you sure you want to verify that the information held about this member is correct?')) { Joomla.submitbutton('member.saveandverify'); }"
+		id="saveandverify_button" class="btn btn-small btn-success">
+		<span class="icon-ok"></span> Everything Here Is Correct
+	</button>
+</div>
 
 <?php echo JHtml::_('bootstrap.endTab'); ?>
 
@@ -114,8 +148,8 @@ if ($this->item->id) :
 		
 		<?php
 	
-foreach ( $this->attachments as $attachment ) {
-	$viewLink = JRoute::_ ( 'index.php/?option=com_memberdatabase&view=memberattachment&attachmentId=' . ( int ) $attachment->id . $token_text);
+	foreach ( $this->attachments as $attachment ) {
+		$viewLink = JRoute::_ ( 'index.php/?option=com_memberdatabase&view=memberattachment&attachmentId=' . ( int ) $attachment->id . $token_text );
 		
 		echo "<tr>";
 		echo "<td>$attachment->mod_user</td>";
@@ -130,7 +164,12 @@ foreach ( $this->attachments as $attachment ) {
 		
 		</table>
 </div>
+
+
+<?php if(!$user_editing) : ?>
+
 <hr>
+
 <form class="form-horizontal" name="attachmentAdminForm"
 	id="attachmentAdminForm" enctype="multipart/form-data" method="post"
 	action="<?php echo JRoute::_('index.php?option=com_memberdatabase&view=member&layout=edit&id=' . (int) $this->item->id . $token_text); ?>">
@@ -150,7 +189,7 @@ foreach ( $this->attachments as $attachment ) {
     <?php echo JHtml::_('form.token'); ?>
 </form>
 
-<?php if(!$user_editing) : ?>
+
 <div>
 	<button
 		onclick="Joomla.submitbutton('member.addattachment', document.getElementById('attachmentAdminForm') );"
@@ -163,7 +202,7 @@ foreach ( $this->attachments as $attachment ) {
 
 <?php
 	
-echo JHtml::_ ( 'bootstrap.endTabSet' ); 
+	echo JHtml::_ ( 'bootstrap.endTabSet' ); 
 endif;
 
 ?>

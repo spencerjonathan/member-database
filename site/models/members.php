@@ -432,21 +432,15 @@ class MemberDatabaseModelMembers extends JModelList {
 
 		$subject = $site . ' - Link To Your Membership Record';
 		
-		echo "email = $email<br>";
-		echo "subject = $subject<br>";
-		echo "body = $body<br>";
 		
 		$fromname = $config->get('fromname');
 		$mailfrom = $config->get('mailfrom');
 		
 		$send = $mailer->sendMail($mailfrom, $fromname, $email, $subject, $body);
 		if ( $send !== true ) {
-			// To Do: Raise Error
-			echo "\n\nError sending email to $email";
 			$this->setError(JText::sprintf('Could not send email to %s', $email), 500);
 			return false;
 		} else {
-			echo '\n\nMail sent';
 			return true;
 		}
 		

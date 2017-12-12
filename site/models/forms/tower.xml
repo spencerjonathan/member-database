@@ -18,8 +18,8 @@
 		<field
 				name="designation"
 				type="text"
-				label="Designation"
-				description="The designation of the church"
+				label="Dedication"
+				description="The church's dedication"
 				size="40"
 				class="inputbox"
 				default=""
@@ -30,6 +30,7 @@
 				label="District"
 				description="Which disctrict does the tower belong to"
 				default=""
+				readonly="true"
 				query="SELECT id AS value, name AS district_id FROM #__md_district"
 				/>
 		<field
@@ -44,25 +45,17 @@
 		<field
 				name="tenor"
 				type="text"
-				label="Tenor"
+				label="Tenor Weight"
 				description="The weight of the tenor"
 				size="20"
 				class="inputbox"
 				default=""
 				/>
-		<field
-				name="grid_ref"
-				type="text"
-				label="Grid Ref"
-				description="O/S Grid Reference"
-				size="8"
-				class="inputbox"
-				default=""
-				/>
+		
 		<field
 				name="ground_floor"
 				type="radio"
-				label="Ground Floor?"
+				label="Ground Floor Ring?"
 				description="Is the ringing chamber on the ground floor?"
 				class="btn-group btn-group-yesno"
 				default="0"
@@ -73,7 +66,7 @@
 		<field
 				name="anti_clockwise"
 				type="radio"
-				label="Anti-Clockwise?"
+				label="Anti-Clockwise Ringing Circle?"
 				description="Is the ringing circle anti-clockwise?"
 				class="btn-group btn-group-yesno"
 				default="0"
@@ -95,7 +88,7 @@
 		<field
 				name="email"
 				type="text"
-				label="Email Address"
+				label="Correspondance Email Address"
 				description="Tower correspondance email address"
 				size="100"
 				class="inputbox"
@@ -149,9 +142,18 @@
 				default=""
 				/>
 		<field
+				name="grid_ref"
+				type="text"
+				label="Location - O/S Grid Ref"
+				description="O/S Grid Reference"
+				size="8"
+				class="inputbox"
+				default=""
+				/>
+		<field
 				name="longitude"
 				type="number"
-				label="Longitude"
+				label="Location - Longitude"
 				description="Degrees Longitude"
 				size="35"
 				class="inputbox"
@@ -161,7 +163,7 @@
 		<field
 				name="latitude"
 				type="number"
-				label="Latitude"
+				label="Location - Latitude"
 				description="Degrees Latitude"
 				size="35"
 				class="inputbox"
@@ -236,7 +238,7 @@
 		<field
 				name="sunday_ringing"
 				type="text"
-				label="Sunday Ringing"
+				label="Sunday Ringing Times"
 				description="Sunday ringing times"
 				size="100"
 				class="inputbox"
@@ -249,6 +251,7 @@
 				description="Is this record active?"
 				class="btn-group btn-group-yesno"
 				default="0"
+				readonly="true"
 				filter="integer">
 					<option value="1">JYES</option>
 					<option value="0">JNO</option>
@@ -261,19 +264,9 @@
 				size="3"
 				class="inputbox"
 				default=""
+				readonly="true"
 				validate="number"
 				/>
-		<!-- <field
-				name="multi_towers"
-				type="hidden"
-				label="Multi Towers?"
-				description="Multi Tosers (better description needed)?"
-				class="btn-group btn-group-yesno"
-				default="0"
-				filter="integer">
-					<option value="1">JYES</option>
-					<option value="0">JNO</option>
-		</field> -->
 		<field
 				name="practice_night"
 				type="text"
@@ -293,21 +286,19 @@
 				default=""
 				/>
 		<field
+				name="captain_id"
+				type="members"
+				class="required"
+				label="Tower Captain"
+				description="Tower Captain"
+				message="Please select a Tower Captain"
+				required="true	"
+				/>
+		<field
 				name="incl_capt"
 				type="radio"
-				label="Incl Capt?"
-				description="Incl Capt (better description needed)?"
-				class="btn-group btn-group-yesno"
-				default="0"
-				filter="integer">
-					<option value="1">JYES</option>
-					<option value="0">JNO</option>
-		</field>
-		<field
-				name="incl_corresp"
-				type="radio"
-				label="Incl Corresp?"
-				description="Incl Corresp (better description needed)?"
+				label="Publish Captain's Contact Details?"
+				description="Publish the Captain's name and phone number on the website and in the Association Handbook?"
 				class="btn-group btn-group-yesno"
 				default="0"
 				filter="integer">
@@ -324,14 +315,18 @@
 				required="true"
 				/>
 		<field
-				name="captain_id"
-				type="members"
-				class="required"
-				label="Tower Captain"
-				description="Tower Captain"
-				message="Please select a Tower Captain"
-				required="true	"
-				/>
+				name="incl_corresp"
+				type="radio"
+				label="Publish Correspondant's Contact Details?"
+				description="Publish the Tower Correspondant's name and phone number on the website and in the Association Handbook?"
+				class="btn-group btn-group-yesno"
+				default="0"
+				filter="integer">
+					<option value="1">JYES</option>
+					<option value="0">JNO</option>
+		</field>
+		
+		
 		<field
 				name="mod_user_id"
 				type="user"

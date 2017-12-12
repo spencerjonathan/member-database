@@ -45,6 +45,13 @@ class MemberDatabaseControllerMember extends JControllerForm {
 			$token_text = "&token=" . $token;
 		}
 		
+		$list_view = $jinput->get ( 'list_view', null, 'STRING' );
+		$list_view_text = "";
+		
+		if (isset ( $list_view )) {
+			$list_view_text = "&list_view=" . $list_view;
+		}
+		
 		// Determine the name of the primary key for the data.
 		if (empty ( $key )) {
 			$key = $table->getKeyName ();
@@ -77,7 +84,7 @@ class MemberDatabaseControllerMember extends JControllerForm {
 		$this->holdEditId ( $context, $recordId );
 		JFactory::getApplication ()->setUserState ( $context . '.data', null );
 		
-		$this->setRedirect ( JRoute::_ ( 'index.php?option=' . $this->option . '&view=' . $this->view_item . $this->getRedirectToItemAppend ( $recordId, $urlVar ) . $token_text, false ) );
+		$this->setRedirect ( JRoute::_ ( 'index.php?option=' . $this->option . '&view=' . $this->view_item . $this->getRedirectToItemAppend ( $recordId, $urlVar ) . $token_text . $list_view_text, false ) );
 		
 		return true;
 	}
@@ -380,6 +387,8 @@ class MemberDatabaseControllerMember extends JControllerForm {
 		error_log ( "validData = " . json_encode ( $validData ) );
 		
 		$jinput = JFactory::getApplication ()->input;
+		
+		error_log("Member - Controller - In postSaveHook");
 		
 		// If the user has created an new member from the create invoice screen, then send them back there after the new member has been saved.
 		if ($jinput->get ( 'list_view', "", STRING ) == "invoice") {

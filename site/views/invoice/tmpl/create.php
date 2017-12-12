@@ -81,11 +81,14 @@ Remember, if you add a new member you also need to complete a New Member Nominat
 			
 			foreach ( $members as $member ) :
 				$total_fee = $total_fee + $member->fee;
+				$link = JRoute::_ ( 'index.php?option=com_memberdatabase&task=member.edit&list_view=invoice&id=' . $member->id);
 			
 				?>
 					<tr>
 						<td><input id="checkbox-<?php echo $id; ?>" fee="<?php echo $member->fee; ?>" onchange="recalculate(<?php echo $id; ?>)" type="checkbox" class="excl-checkbox" name="cid[]" value="<?php echo $member->id; ?>" checked></td>
-						<td><?php echo $member->name; ?></td>
+						<td><a href="<?php echo $link; ?>"
+					title="<?php echo JText::_('Edit Member'); ?>">
+							<?php echo $member->name; ?></a></td>
 						<td><?php echo $member->member_type; ?></td>
 						<td id="fee-<?php echo $id; ?>" style="text-align: right"><?php echo number_format((float)$member->fee, 2, '.', ''); ?></td>
 					</tr>

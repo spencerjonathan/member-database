@@ -134,6 +134,21 @@ class MemberDatabaseModelAnnualreport extends JModelList {
 		return $results;
 	}
 	
+	public function getTowerDetails() {
+		// Initialize variables.
+		$db = JFactory::getDbo ();
+		
+		$query = $this->getTowersQuery($db);
+		
+		$query->where("t.id not in (select tower_id from #__md_usertower ut)");
+		
+		$db->setQuery ( $query );
+		
+		$results = $db->loadObjectList ();
+		
+		return $results;
+	}
+	
 	private function getTowersQuery($db) {
 		// Initialize variables.
 		

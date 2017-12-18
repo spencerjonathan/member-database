@@ -40,11 +40,13 @@ if (isset ( $token )) {
 				class="btn btn-success">
 				<span class="icon-new icon-white"></span> New
 			</button>
+			<?php endif; ?>
 			<button
 				onclick="if (document.adminForm.boxchecked.value==0){alert('Please first make a selection from the list.');}else{ Joomla.submitbutton('member.edit')}"
 				class="btn">
 				<span class="icon-edit"></span> Edit
 			</button>
+			<?php if (JFactory::getUser ()->authorise ( 'core.admin', 'com_memberdatabase' )) :?>
 			<button
 				onclick="if (document.adminForm.boxchecked.value==0){alert('Please first make a selection from the list.');}else{ Joomla.submitbutton('members.delete')}"
 				class="btn">
@@ -149,7 +151,7 @@ if (isset ( $token )) {
 						</td>
 				<td>
 				
-				<?php if (!$user_editing) : ?>
+				<?php if (JFactory::getUser ()->authorise ( 'core.admin', 'com_memberdatabase' )) :?>
 				<button class="btn btn-success"
 						onclick="if (confirm('Are you sure you want to verify that the information held about this member is correct?')) { document.getElementById('v<?php echo $row->id ?>').click(); }">
 						<span class="icon-ok"></span> This Record Is Correct

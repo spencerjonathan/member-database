@@ -119,6 +119,8 @@ if (isset ( $token )) {
     <?php echo JHtml::_('form.token'); ?>
 </form>
 
+<?php if (JFactory::getUser ()->authorise ( 'core.admin', 'com_memberdatabase' ) ||
+		$user_editing) :?>
 <div>
 	<hr>
 	<button
@@ -127,6 +129,8 @@ if (isset ( $token )) {
 		<span class="icon-ok"></span> Everything Here Is Correct
 	</button>
 </div>
+
+<?php endif; ?>
 
 <?php echo JHtml::_('bootstrap.endTab'); ?>
 

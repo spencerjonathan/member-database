@@ -24,7 +24,7 @@ $invoice_data = $this->getModel()->getInvoiceData();
 
 			<h1><?php echo $this->year; ?> Invoice for SCACR Membership Fees</h1>
 
-			<p><strong>Invoice #:</strong> Invoice-<?php echo $invoice_data->id; ?></p>
+			<p><strong>Invoice #:</strong> <?php echo "$invoice_data->place/$invoice_data->id"; ?></p>
 			<p><strong>Tower:</strong> <?php echo $invoice_data->tower_name; ?></p>
 			
 			<table class="table table-bordered" width="100%">

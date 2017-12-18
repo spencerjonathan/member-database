@@ -54,9 +54,7 @@ class MemberDatabaseViewAnnualreport extends JViewLegacy {
 		
 		$jinput = JFactory::getApplication ()->input;
 		$memberId = $jinput->get ( 'memberId', 0, 'INT' );
-		
-		$this->towers = $this->get ( 'Towers' );
-		//$this->members = $this->getModel ()->getMembers ( $memberId );
+
 		if ($memberId) {
 			$this->members = $this->getModel ( "Members" )->getMembers ( $memberId );
 		} else {

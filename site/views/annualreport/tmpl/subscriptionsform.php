@@ -8,7 +8,9 @@
 // No direct access to this file
 defined ( '_JEXEC' ) or die ( 'Restricted Access' );
 
-foreach ( $this->towers as $tower ) : ?>
+$towers = $this->get ( "TowerDetails" );
+
+foreach ( $towers as $tower ) : ?>
 <div class="page-break-inside-avoid page-break-after-always">
 <h3 align="center">Sussex County Association of Change Ringers</h3>
 <h3 align="center">Registered Charity No. 268588</h3>

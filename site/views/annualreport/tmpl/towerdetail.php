@@ -49,12 +49,15 @@ Please check and amend if necessary.
 	</tr>
 	<tr>
 		<th>Captain:</th>
-		<td><?php echo "$tower->captain_title $tower->captain_forenames $tower->captain_surname";?></td>
+		<td><?php echo "$tower->captain_title $tower->captain_forenames $tower->captain_surname, $tower->captain_telephone"?><br><br>
+		<input type="checkbox" />  I am happy to have my name and telephone number published in the annual report and on the association website<br><br>
+		Signature: __________________</td>
+	
 	</tr>
 	<tr>
 		<th>Correspondent:</th>
-		<td><?php echo "$tower->corresp_title $tower->corresp_forenames $tower->corresp_surname, $tower->corresp_telephone. $tower->email"?><br>
-		<input type="checkbox" /> I am happy to have my name and telephone number published in the annual report and on the association website<br><br>
+		<td><?php echo "$tower->corresp_title $tower->corresp_forenames $tower->corresp_surname, $tower->corresp_telephone. $tower->email"?><br><br>
+		<input type="checkbox" />  I am happy to have my name and telephone number published in the annual report and on the association website<br><br>
 		Signature: __________________</td>
 	</tr>
 	

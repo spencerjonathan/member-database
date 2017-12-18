@@ -65,6 +65,7 @@ class MemberDatabaseModelInvoice extends JModelAdmin {
 		$data->members = $this->getInvoiceMembers($invoiceId);
 		
 		$data->tower_name = $this->getTowerById($data->tower_id)->name;
+		$data->place = $this->getTowerById($data->tower_id)->place;
 		
 		return $data;
 	}
@@ -165,7 +166,7 @@ class MemberDatabaseModelInvoice extends JModelAdmin {
 		$query = $db->getQuery ( true );
 		
 		// Create the base select statement.
-		$query->select ( 't.id, concat_ws(", ", place, designation) as name' )->from ( $db->quoteName ( '#__md_tower', 't' ) );
+		$query->select ( 't.id, concat_ws(", ", place, designation) as name, t.place' )->from ( $db->quoteName ( '#__md_tower', 't' ) );
 		
 		if (! JFactory::getUser ()->authorise ( 'invoice.manage', 'com_memberdatabase' )) {
 			$query->join ( 'INNER', $db->quoteName ( '#__md_usertower', 'ut' ) . ' ON (' . $db->quoteName ( 't.id' ) . ' = ' . $db->quoteName ( 'ut.tower_id' ) . ')' );
@@ -222,6 +223,7 @@ class MemberDatabaseModelInvoice extends JModelAdmin {
 			$query->where ( 'ut.user_id = ' . $userid );
 		}
 		
+		$query->where ( 'mt.include_in_reports = 1' );
 		$query->where ( 'm.tower_id = ' . $towerId );
 		$query->where ( 'im.id is null' );
 		

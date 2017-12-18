@@ -1,6 +1,6 @@
 <?php
 abstract class QueryHelper {
-	public function addDataPermissionConstraints($db, $query) {
+	public static function addDataPermissionConstraints($db, $query) {
 		$jinput = JFactory::getApplication ()->input;
 		$token = $jinput->get ( 'token', null, 'STRING' );
 		
@@ -26,19 +26,25 @@ abstract class QueryHelper {
 		
 		return $query;
 	}
-	public function addMemberTypeJoin($db, $query) {
+	public static function addMemberTypeJoin($db, $query) {
 		$query->select ( 'mt.name as member_type, mt.fee' );
 		$query->join ( 'INNER', $db->quoteName ( '#__md_member_type', 'mt' ) . ' ON (' . $db->quoteName ( 'm.member_type_id' ) . ' = ' . $db->quoteName ( 'mt.id' ) . ')' );
 		
 		return $query;
 	}
-	public function addDistrictJoin($db, $query) {
+	public static function addDistrictJoin($db, $query) {
 		$query->select ( 't.district_id, d.name as district' );
 		$query->join ( 'INNER', $db->quoteName ( '#__md_district', 'd' ) . ' ON (' . $db->quoteName ( 't.district_id' ) . ' = ' . $db->quoteName ( 'd.id' ) . ')' );
 		
 		return $query;
 	}
-	public function pivot($table, $pivotColumn, $groupByColumns, $aggregationColumns) {
+	public static function addOnlineCorrespondentsExclusion($db, $query) {
+		$query->where("t.id not in (select tower_id from #__md_usertower ut)");
+		
+		return $query;
+	}
+	
+	public static function pivot($table, $pivotColumn, $groupByColumns, $aggregationColumns) {
 		$db = JFactory::getDbo ();
 		$userid = JFactory::getUser ()->id;
 		$query = $db->getQuery ( true );

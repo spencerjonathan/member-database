@@ -28,7 +28,9 @@ defined ( '_JEXEC' ) or die ( 'Restricted Access' );
 	$currentdistrictid = 0;
 	$firstdistrict = 1;
 	
-	foreach ( $this->towers as $tower ) :
+	$towers = $this->get ( 'Towers' );
+	
+	foreach ( $towers as $tower ) :
 		if ($currentdistrictid != $tower->district_id) :
 			$currentdistrictid = $tower->district_id;
 			?>

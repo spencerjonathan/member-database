@@ -150,7 +150,7 @@ foreach ( $this->invoices as $invoice ) :
 	?>
 	<tr style="text-align: left">
 				<td><a href="<?php echo $view_invoice_link; ?>"
-					title="<?php echo JText::_('Edit Invoice'); ?>">Invoice-<?php echo $invoice->id; ?>
+					title="<?php echo JText::_('Edit Invoice'); ?>"><?php echo "$invoice->place/$invoice->id"; ?>
 						</td>
 				<td> <?php echo $invoice->tower_name; ?> </td>
 				<td> <?php echo $invoice->created_by_user; ?> </td>

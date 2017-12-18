@@ -219,16 +219,12 @@ class MemberDatabaseModelMembers extends JModelList {
 		return $results;
 	}
 	
-	public function getMembers($memberId) {
+	public function getMembers($memberId = NULL) {
 		// Initialize variables.
 		$db = JFactory::getDbo ();
-		$userid = JFactory::getUser ()->id;
+		//$userid = JFactory::getUser ()->id;
 		$query = $this->getExtendedQuery($db);
-		
-/* 		$query->select('mt.name as member_type, mt.fee, t.district_id, d.name as district');
-		$query->join('INNER', $db->quoteName ( '#__md_member_type', 'mt' ) . ' ON (' . $db->quoteName ( 'm.member_type_id' ) . ' = ' . $db->quoteName ( 'mt.id' ) . ')');
-		$query->join('INNER', $db->quoteName ( '#__md_district', 'd' ) . ' ON (' . $db->quoteName ( 't.district_id' ) . ' = ' . $db->quoteName ( 'd.id' ) . ')');
- */		
+			
 		if ($memberId) {
 			$query->where( "m.id = $memberId");
 		}

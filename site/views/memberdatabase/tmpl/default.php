@@ -10,6 +10,17 @@
 // No direct access to this file
 defined ( '_JEXEC' ) or die ( 'Restricted access' );
 
+// Check that the user is logged-in
+if (JFactory::getUser()->get('id') == 0)
+{
+	$app = JFactory::getApplication();
+	$app->setUserState('users.login.form.data', array('return' => JUri::getInstance()->toString()));
+	
+	$url = JRoute::_('index.php?option=com_users&view=login', false);
+	
+	$app->redirect($url);
+}
+
 if ($this->status ['unverified_members'] > 0) {
 	$member_status = '<span class="label label-warning">Pending <span class="badge">' . $this->status ['unverified_members'] . '</span></span>';
 	$member_explanation = $this->status ['unverified_members'] . ' members have not been verified since ' . $this->verification_required_since . '.  Further action required!';
@@ -31,7 +42,7 @@ if (count ( $this->status ['towers_no_invoices'] ) > 0) {
 
 <h1>Status for <?php echo $this->year?></h1>
 
-
+<?php if (JFactory::getUser ()->authorise ( 'core.admin', 'com_memberdatabase' )) :?>
 <div class="panel panel-default">
 	<div class="panel-heading">
 		<table width="100%">
@@ -51,6 +62,7 @@ if (count ( $this->status ['towers_no_invoices'] ) > 0) {
 
 	</div>
 </div>
+<?php endif; ?>
 
 <!-- -------------------------Members without Invoice------------------ -->
 

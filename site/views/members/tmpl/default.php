@@ -13,16 +13,7 @@
 // No direct access to this file
 defined ( '_JEXEC' ) or die ( 'Restricted Access' );
 
-// Check that the user is logged-in
-if (JFactory::getUser()->get('id') == 0)
-{
-	$app = JFactory::getApplication();
-	$app->setUserState('users.login.form.data', array('return' => JUri::getInstance()->toString()));
-	
-	$url = JRoute::_('index.php?option=com_users&view=login', false);
-	
-	$app->redirect($url);
-}
+
 
 JHtml::_ ( 'formbehavior.chosen', 'select' );
 
@@ -37,6 +28,17 @@ $user_editing = false;
 if (isset ( $token )) {
 	$token_text = "&token=" . $token;
 	$user_editing = true;
+} else {
+	// Check that the user is logged-in
+	if (JFactory::getUser()->get('id') == 0)
+	{
+		$app = JFactory::getApplication();
+		$app->setUserState('users.login.form.data', array('return' => JUri::getInstance()->toString()));
+		
+		$url = JRoute::_('index.php?option=com_users&view=login', false);
+		
+		$app->redirect($url);
+	}
 }
 
 ?>

@@ -13,11 +13,11 @@ defined ( '_JEXEC' ) or die ( 'Restricted access' );
 ?>
 <legend>Member Database - Tower Details</legend>
 <div>
-	<button
+	<!-- <button
 		onclick="if (confirm('Are you sure you want to verify that the information held about this member is correct?')) { Joomla.submitbutton('member.saveandverify'); }"
 		id="saveandverify_button" class="btn btn-small btn-success">
 		<span class="icon-ok"></span> Save & Verify
-	</button>
+	</button>   -->
 	<button onclick="Joomla.submitbutton('tower.save')" id="save_button"
 		class="btn btn-small">
 		<span class="icon-save"></span> Save & Close

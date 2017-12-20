@@ -125,15 +125,11 @@ foreach ( $this->status ['towers_no_invoices'] as $tower ) :
 			<col width="50%">
 			<tr>
 				<td><h2>Invoices To Be Paid</h2></td>
-				<td style="text-align: right"><strong>Status: </strong><?php echo $invoice_status; ?></td>
+				<td style="text-align: right"><strong>Status: </strong></td>
 			</tr>
 		</table>
 	</div>
 	<div class="panel-body">
-
-
-
-<?php echo $invoice_explanation?>
 
 <table width='100%'>
 			<tr style="text-align: left">

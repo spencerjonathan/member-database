@@ -148,6 +148,7 @@
 				description="O/S Grid Reference"
 				size="8"
 				class="inputbox"
+				readonly="true"
 				default=""
 				/>
 		<field
@@ -159,6 +160,7 @@
 				class="inputbox"
 				default=""
 				validate="number"
+				readonly="true"
 				/>
 		<field
 				name="latitude"
@@ -169,6 +171,7 @@
 				class="inputbox"
 				default=""
 				validate="number"
+				readonly="true"
 				/>
 		<field
 				name="website"
@@ -246,7 +249,7 @@
 				/>
 		<field
 				name="active"
-				type="radio"
+				type="hidden"
 				label="Active?"
 				description="Is this record active?"
 				class="btn-group btn-group-yesno"
@@ -317,8 +320,8 @@
 		<field
 				name="incl_corresp"
 				type="radio"
-				label="Publish Correspondant's Contact Details?"
-				description="Publish the Tower Correspondant's name and phone number on the website and in the Association Handbook?"
+				label="Publish Correspondent's Contact Details?"
+				description="Publish the Tower Correspondent's name and phone number on the website and in the Association Handbook?"
 				class="btn-group btn-group-yesno"
 				default="0"
 				filter="integer">

@@ -370,7 +370,7 @@ class MemberDatabaseModelInvoice extends JModelAdmin {
 		
 	}
 	
-	public function delete($invoiceId) {
+	public function delete(&$invoiceId) {
 		
 		error_log("In invoice.delete: invoiceId = " . $invoiceId);
 		

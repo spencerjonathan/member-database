@@ -61,7 +61,7 @@ class MemberDatabaseViewTowers extends JViewLegacy
 		parent::display($tpl);
 
 		// Set the document
-		$this->setDocument();
+		// $this->setDocument();
 	}
 
 	protected function addToolBar()
@@ -84,12 +84,12 @@ class MemberDatabaseViewTowers extends JViewLegacy
 	 *
 	 * @return void
 	 */
-	protected function setDocument() 
+	/* protected function setDocument() 
 	{
 		$isNew = ($this->item->id < 1);
 		$document = JFactory::getDocument();
 		$document->setTitle($isNew ? JText::_('Creating Tower') :
                 JText::_('Editing Tower'));
-	}
+	} */
 
 }

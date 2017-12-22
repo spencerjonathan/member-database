@@ -16,6 +16,8 @@ $document = JFactory::getDocument ();
 // $document->addStyleSheet ( './media/jui/css/bootstrap.min.css' );
 $document->addStyleSheet ( './components/com_memberdatabase/css/print.css' );
 
+
+
 /**
  * MembersDatabase View
  *

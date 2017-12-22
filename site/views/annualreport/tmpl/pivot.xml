@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+	<layout title="Report - Pivot member data">
+		<message>Dynamic creation of pivot reports
+		</message>
+	</layout>
+	<fields name="request">
+		<fieldset name="request">
+			<field name="print" type="list" label="Print Layout"
+				description="Don't show other content on page" default="1">
+				<option value="0">No</option>
+				<option value="1">Yes</option>
+			</field>
+			<field name="tmpl" type="list" label="Template"
+				description="Template" default="com_memberdatabase">
+				<option value="com_memberdatabase">Default</option>
+			</field>
+		</fieldset>
+	</fields>
+</metadata>

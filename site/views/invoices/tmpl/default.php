@@ -109,7 +109,7 @@ $listDirn = $this->escape ( $this->filter_order_Dir );
 				<td> <?php echo $this->pagination->getRowOffset($i); ?> </td>
 				<td> <?php echo JHtml::_('grid.id', $i, $row->id); ?> </td>
 				<td><a href="<?php echo $link; ?>"
-					title="<?php echo JText::_('Edit Invoice'); ?>"><?php echo "$invoice->place/$invoice->id"; ?>
+					title="<?php echo JText::_('Edit Invoice'); ?>"><?php echo "$row->place/$row->id"; ?>
 						</td>
 				<td> <?php echo $row->tower_name; ?> </td>
 				<td> <?php echo $row->created_by_user; ?> </td>

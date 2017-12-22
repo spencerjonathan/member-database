@@ -290,12 +290,13 @@
 				/>
 		<field
 				name="captain_id"
-				type="members"
+				type="sql"
 				class="required"
 				label="Tower Captain"
 				description="Tower Captain"
 				message="Please select a Tower Captain"
-				required="true	"
+				required="true"
+				query="SELECT id AS value, concat(forenames, ' ', surname) AS captain_id FROM #__md_member"
 				/>
 		<field
 				name="incl_capt"
@@ -310,12 +311,13 @@
 		</field>
 		<field
 				name="correspondent_id"
-				type="members"
+				type="sql"
 				class="required"
 				label="Tower Correspondent"
 				description="Tower Correspondent"
 				message="Please select a Tower Correspondent"
 				required="true"
+				query="SELECT id AS value, concat(forenames, ' ', surname) AS correspondent_id FROM #__md_member"
 				/>
 		<field
 				name="incl_corresp"

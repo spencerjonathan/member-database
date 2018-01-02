@@ -342,3 +342,80 @@ set #__md_tower.wc = true where wc_delete is not null;
 
 ALTER TABLE `#__md_tower`
 DROP `wc_delete`;
+
+DROP PROCEDURE `#__md_MemberStatusChanges`;
+CREATE PROCEDURE `#__md_MemberStatusChanges`(IN `p_since` TIMESTAMP) NOT DETERMINISTIC NO SQL SQL SECURITY DEFINER BEGIN
+
+create TEMPORARY table `prev_join` as
+select m.id, m.history_id, max(prev_m.history_id) prev_history_id FROM
+  (
+  SELECT
+    id,
+    4294967295 AS 'history_id',
+    member_type_id
+  FROM
+    thtb0_md_member
+  UNION ALL
+SELECT
+  id,
+  history_id,
+  member_type_id
+FROM
+  thtb0_md_member_history
+) m,
+(SELECT
+  id,
+  history_id,
+  member_type_id
+FROM
+  thtb0_md_member_history) prev_m
+where m.id = prev_m.id
+and m.history_id > prev_m.history_id
+group by m.id, m.history_id;
+
+
+select prev_join.*, m.forenames, m.surname, mt.name member_type, u.username mod_username, u.name mod_name, m.mod_date, mt2.name prev_member_type from prev_join
+
+inner join (
+  SELECT
+    id,
+    4294967295 AS 'history_id',
+    forenames,
+    surname,
+    member_type_id,
+    mod_user_id,
+    mod_date
+  FROM
+    thtb0_md_member
+  UNION ALL
+SELECT
+  id,
+  history_id,
+  forenames,
+  surname,
+  member_type_id,
+  mod_user_id,
+  mod_date
+FROM
+  thtb0_md_member_history
+) m on (m.id = prev_join.id and m.history_id = prev_join.history_id)
+inner join thtb0_md_member_type mt on mt.id = m.member_type_id
+left join thtb0_users u on u.id = m.mod_user_id
+
+
+inner join (SELECT
+  id,
+  history_id,
+  forenames,
+  surname,
+  member_type_id
+FROM
+  thtb0_md_member_history
+) m2 on prev_join.id = m2.id and prev_history_id = m2.history_id
+inner join thtb0_md_member_type mt2 on mt2.id = m2.member_type_id
+
+where m.member_type_id != m2.member_type_id
+and m.mod_date > p_since
+order by m.mod_date;
+
+END

@@ -13,6 +13,7 @@
 				description="The town, village or city of the tower"
 				size="40"
 				class="inputbox"
+				readonly="true"
 				default=""
 				/>
 		<field

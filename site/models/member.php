@@ -104,6 +104,67 @@ class MemberDatabaseModelMember extends JModelAdmin {
 		
 	}	
 	
+	public function save($data) {
+		
+		// Need to check before the record is updated in the database
+		$emailAddressUpdated = $this->emailAddressUpdated($data);
+		
+		$saveResult = parent::save($data);
+		
+		if ($saveResult) {
+			$this->emailUpdatedHandler($data);
+		}
+		
+		return $saveResult;
+	}
+	
+	private function emailAddressUpdated($data) {
+		
+		$db = JFactory::getDbo ();
+		$query = $db->getQuery ( true );
+		
+		$query->select("count(*)");
+		$query->from("#__md_member");
+		$query->where("id = " . (INT) $data[id] . " and email != " . $db->quote($data[email]) );
+		
+		$db->setQuery ( $query );
+		return $db->loadResult ();
+		
+	}
+	
+	private function emailUpdatedHandler($data) {
+		
+		$mailer = JFactory::getMailer();
+		$config = JFactory::getConfig();
+		
+		$email = "membership@scacr.org";
+		
+		$link = 'index.php?option=com_memberdatabase&view=members&token=' . $token;
+		$site = $config->get('sitename');
+		
+		$body = JText::sprintf(
+				'Email address for %s, %s has been updated to %s',
+				$data[surname],
+				$data[forenames],
+				$data[email]
+				);
+		
+		$subject = $site . ' - Member\'s Email Address Updated';
+		
+		
+		$fromname = $config->get('fromname');
+		$mailfrom = $config->get('mailfrom');
+		
+		$send = $mailer->sendMail($mailfrom, $fromname, $email, $subject, $body);
+		if ( $send !== true ) {
+			$this->setError(JText::sprintf('Could not send email to %s', $email), 500);
+			return false;
+		} else {
+			return true;
+		}
+		
+	}
+	
 	/**
 	 * Method to get the record form.
 	 *

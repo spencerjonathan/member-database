@@ -24,6 +24,10 @@
 			label="Member Attachment Location"
 			description="Location on file system where the member attachments are stored"
 			class="inputbox" default="" />
+		
+		<field name="email_change_dist" type="text"
+			label="Email Change Distribution List" description="The ; separated list of email addresses to notify of a members' change of email address"
+			default="" />
 
 	</fieldset>
 	<fieldset name="permissions" label="JCONFIG_PERMISSIONS_LABEL"

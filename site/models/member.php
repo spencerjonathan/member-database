@@ -111,7 +111,7 @@ class MemberDatabaseModelMember extends JModelAdmin {
 		
 		$saveResult = parent::save($data);
 		
-		if ($saveResult) {
+		if ($saveResult && $emailAddressUpdated) {
 			$this->emailUpdatedHandler($data);
 		}
 		
@@ -125,10 +125,11 @@ class MemberDatabaseModelMember extends JModelAdmin {
 		
 		$query->select("count(*)");
 		$query->from("#__md_member");
-		$query->where("id = " . (INT) $data[id] . " and email != " . $db->quote($data[email]) );
+		$query->where("id = " . (INT) $data['id'] . " and email != " . $db->quote($data['email']) );
 		
 		$db->setQuery ( $query );
-		return $db->loadResult ();
+		error_log($query->__toString());
+		return $db->loadResult () == 1;
 		
 	}
 	
@@ -137,32 +138,31 @@ class MemberDatabaseModelMember extends JModelAdmin {
 		$mailer = JFactory::getMailer();
 		$config = JFactory::getConfig();
 		
-		$email = "membership@scacr.org";
+		$email_change_dist = JComponentHelper::getParams ( 'com_memberdatabase' )->get ( 'email_change_dist' );
+		$email = explode ( ";" , $email_change_dist);
 		
-		$link = 'index.php?option=com_memberdatabase&view=members&token=' . $token;
 		$site = $config->get('sitename');
 		
 		$body = JText::sprintf(
 				'Email address for %s, %s has been updated to %s',
-				$data[surname],
-				$data[forenames],
-				$data[email]
+				$data['surname'],
+				$data['forenames'],
+				$data['email']
 				);
 		
 		$subject = $site . ' - Member\'s Email Address Updated';
 		
+		$sender = array(
+				$config->get( 'mailfrom' ),
+				$config->get( 'fromname' )
+		);
 		
-		$fromname = $config->get('fromname');
-		$mailfrom = $config->get('mailfrom');
+		$mailer->setSender($sender);
+		$mailer->addRecipient($email);
+		$mailer->setSubject($subject);
+		$mailer->setBody($body);
 		
-		$send = $mailer->sendMail($mailfrom, $fromname, $email, $subject, $body);
-		if ( $send !== true ) {
-			$this->setError(JText::sprintf('Could not send email to %s', $email), 500);
-			return false;
-		} else {
-			return true;
-		}
-		
+		return $mailer->Send();
 	}
 	
 	/**

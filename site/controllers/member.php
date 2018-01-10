@@ -391,7 +391,7 @@ class MemberDatabaseControllerMember extends JControllerForm {
 		error_log("Member - Controller - In postSaveHook");
 		
 		// If the user has created an new member from the create invoice screen, then send them back there after the new member has been saved.
-		if ($jinput->get ( 'list_view', "", STRING ) == "invoice") {
+		if ($jinput->get ( 'list_view', "", 'STRING' ) == "invoice") {
 			
 			$this->setRedirect ( JRoute::_ ( 'index.php?option=' . $this->option . '&view=invoice&layout=create&towerId=' . $validData ['tower_id'], false ) );
 		}

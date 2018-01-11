@@ -238,6 +238,23 @@ class MemberDatabaseModelMembers extends JModelList {
 		return $results;
 	}
 	
+	public function getMembersInclInvoices($year = NULL) {
+		// Initialize variables.
+		$db = JFactory::getDbo ();
+		//$userid = JFactory::getUser ()->id;
+		$query = $this->getExtendedQuery($db);
+		
+		QueryHelper::addInvoiceOuterJoin($db, $query, $year);
+		
+		$query->order ( 'surname, forenames asc' );
+		
+		$db->setQuery ( $query );
+		
+		$results = $db->loadObjectList ();
+		
+		return $results;
+	}
+	
 	/**
 	 * Method to build an SQL query to load the list data.
 	 *

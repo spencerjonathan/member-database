@@ -38,6 +38,26 @@ abstract class QueryHelper {
 		
 		return $query;
 	}
+	
+	public static function addInvoiceOuterJoin($db, $query, $year) {
+		$query->select ( 'inv.id as invoice_id, inv.paid as invoice_paid' );
+		$subquery = "
+  SELECT
+    i.id,
+    im.member_id,
+    i.paid
+  FROM
+    `#__md_invoicemember` AS `im`
+  INNER JOIN
+    `#__md_invoice` AS `i` ON(`im`.`invoice_id` = `i`.`id`)
+  WHERE
+    i.year = $year";
+		
+		$query->join ( 'LEFT', "($subquery) as `inv` ON (" . $db->quoteName ( 'm.id' ) . ' = ' . $db->quoteName ( 'inv.member_id' ) . ')' );
+		
+		return $query;
+	}
+	
 	public static function addOnlineCorrespondentsExclusion($db, $query) {
 		$query->where("t.id not in (select tower_id from #__md_usertower ut)");
 		

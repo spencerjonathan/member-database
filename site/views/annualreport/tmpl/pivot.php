@@ -14,7 +14,7 @@ $document->addStyleSheet ( './components/com_memberdatabase/css/orb.min.css' );
 $document->addScript('./components/com_memberdatabase/js/react.js');
 $document->addScript('./components/com_memberdatabase/js/orb.min.js');
 
-$members = $this->getModel ( "Members" )->getMembers();
+$members = $this->getModel ( "Members" )->getMembersInclInvoices($this->year);
 
 $data = [];
 
@@ -24,7 +24,10 @@ foreach ($members as $member) {
 	$accept_privacy_policy = "N"; if ($member->accept_privicy_policy) $accept_privacy_policy = "Y";
 	$member_link = "index.php/component/memberdatabase/?view=member&layout=edit&id=" . $member->id;
 	$tower_link = "index.php/towers?view=tower&layout=edit&id=" . $member->tower_id;
-	$record = [ $member->id, $member->member_type, "<a href='$tower_link'>$member->tower</a>", "<a href='$member_link'>$member->name</a>", $member->newsletters, $dbs, $member->mod_user_id, $db_form_received, $accept_privacy_policy, $member->district ];
+	$invoice_id = $member->invoice_id;
+	$invoice_paid = $member->invoice_paid;
+	$record = [ $member->id, $member->member_type, "<a href='$tower_link'>$member->tower</a>", "<a href='$member_link'>$member->name</a>", $member->newsletters, $dbs, $member->mod_user_id, $db_form_received, $accept_privacy_policy, $member->district, $invoice_id, $invoice_paid ];
+	
 	array_push($data, $record);
 }
 
@@ -65,7 +68,9 @@ $document->addScriptDeclaration("var data = $data_json;
 		{ name: '6', caption: 'Mod User' },
 		{ name: '7', caption: 'DB Form' },
 		{ name: '8', caption: 'Privacy Policy' },
-		{ name: '9', caption: 'District' }
+		{ name: '9', caption: 'District' },
+		{ name: '10', caption: 'Inv #' },
+		{ name: '11', caption: 'Inv Status' }
         
     ],
     rows    : [ 'Member Type' ],

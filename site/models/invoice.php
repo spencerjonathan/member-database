@@ -85,7 +85,7 @@ class MemberDatabaseModelInvoice extends JModelAdmin {
 		$query->join ( 'INNER', $db->quoteName ( '#__md_member', 'm' ) . ' ON (' . $db->quoteName ( 'm.id' ) . ' = ' . $db->quoteName ( 'im.member_id' ) . ')' );
 		$query->join ( 'INNER', $db->quoteName ( '#__md_member_type', 'mt' ) . ' ON (' . $db->quoteName ( 'im.member_type_id' ) . ' = ' . $db->quoteName ( 'mt.id' ) . ')' );
 				
-		if (! JFactory::getUser ()->authorise ( 'invoice.manage', 'com_memberdatabase' )) {
+		if (! JFactory::getUser ()->authorise ( 'invoice.view', 'com_memberdatabase' )) {
 			$query->join ( 'INNER', $db->quoteName ( '#__md_invoice', 'i' ) . ' ON (' . $db->quoteName ( 'im.invoice_id' ) . ' = ' . $db->quoteName ( 'i.id' ) . ')' );
 			$query->join ( 'INNER', $db->quoteName ( '#__md_usertower', 'ut' ) . ' ON (' . $db->quoteName ( 'i.tower_id' ) . ' = ' . $db->quoteName ( 'ut.tower_id' ) . ')' );
 			$query->where ( 'ut.user_id = ' . $userid );
@@ -168,7 +168,7 @@ class MemberDatabaseModelInvoice extends JModelAdmin {
 		// Create the base select statement.
 		$query->select ( 't.id, concat_ws(", ", place, designation) as name, t.place' )->from ( $db->quoteName ( '#__md_tower', 't' ) );
 		
-		if (! JFactory::getUser ()->authorise ( 'invoice.manage', 'com_memberdatabase' )) {
+		if (! JFactory::getUser ()->authorise ( 'invoice.view', 'com_memberdatabase' )) {
 			$query->join ( 'INNER', $db->quoteName ( '#__md_usertower', 'ut' ) . ' ON (' . $db->quoteName ( 't.id' ) . ' = ' . $db->quoteName ( 'ut.tower_id' ) . ')' );
 			$query->where ( 'ut.user_id = ' . $userid );
 		}
@@ -218,7 +218,7 @@ class MemberDatabaseModelInvoice extends JModelAdmin {
 		$query->join ( 'INNER', $db->quoteName ( '#__md_member_type', 'mt' ) . ' ON (' . $db->quoteName ( 'm.member_type_id' ) . ' = ' . $db->quoteName ( 'mt.id' ) . ')' );
 		$query->join ( 'LEFT', '(select imsub.id, member_id, year from #__md_invoicemember imsub INNER JOIN #__md_invoice AS i ON (imsub.invoice_id = i.id) where year = ' . $year . ') as im on m.id = im.member_id' );
 		
-		if (! JFactory::getUser ()->authorise ( 'invoice.manage', 'com_memberdatabase' )) {
+		if (! JFactory::getUser ()->authorise ( 'invoice.view', 'com_memberdatabase' )) {
 			$query->join ( 'INNER', $db->quoteName ( '#__md_usertower', 'ut' ) . ' ON (' . $db->quoteName ( 'm.tower_id' ) . ' = ' . $db->quoteName ( 'ut.tower_id' ) . ')' );
 			$query->where ( 'ut.user_id = ' . $userid );
 		}

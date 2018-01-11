@@ -4,8 +4,8 @@
 		<field
 			name="search"
 			type="text"
-			label="Search in Tower"
-			hint="Search in Tower"
+			label="Search in Invoice"
+			hint="Search in Invoice"
 			class="js-stools-search-string"
 		/>
 	</fields>

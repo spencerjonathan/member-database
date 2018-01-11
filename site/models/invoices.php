@@ -83,7 +83,7 @@ class MemberDatabaseModelInvoices extends JModelList
 		if (!empty($search))
 		{
 			$like = $db->quote('%' . $search . '%');
-			$query->where('concat_ws(\', \', t.place, t.designation) LIKE ' . $like);
+			$query->where('concat_ws(\'/\', t.place, inv.id) LIKE ' . $like);
 		}
 
 		// Add the list ordering clause.

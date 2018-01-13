@@ -2,10 +2,10 @@
 <form>
 	<fieldset addrulepath="components/com_memberdatabase/models/rules">
 		<field name="id" type="number" label="Invoice Number"
-			message="Please select a valid tower for the memeber" readonly="true" />
+			message="Please select a valid invoice id" readonly="true" />
 			
 		<field name="tower_id" type="number" class="required" label="Tower ID"
-			validate="towerid" message="Please select a valid tower for the memeber"
+			validate="invoicetowerid" message="Please select a valid tower for the invoice"
 			required="true" readonly="true" />
 			
 		<field name="year" type="number" label="Year"

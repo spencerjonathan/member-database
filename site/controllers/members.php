@@ -50,4 +50,32 @@ class MemberDatabaseControllerMembers extends JControllerAdmin
 		return true;
 		//$this->setRedirect ( JRoute::_ ( 'index.php?option=' . $this->option . '&view=requestlink', false ) );
 	}
+	
+	public function delete($key = null, $urlVar = null) {
+		$model = $this->getModel ( 'Members', 'MemberDatabaseModel', array () );
+		
+		$jinput = JFactory::getApplication ()->input;
+		$cids = $jinput->post->get ( 'cid', null, array () );
+		
+		error_log ( "Members Controller delete cids = " . json_encode ( $cids ) );
+		
+		if (isset ( $cids )) {
+			$key = null;
+			foreach ( $cids as $memberId ) {
+				if ($model->allowDelete ( $memberId )) {
+					if (! $model->delete ( $memberId )) {
+						$this->setError ( "One or more members were not deleted due to processing failure" );
+						$this->setMessage ( $this->getError (), 'error' );
+					} else {
+						$this->setMessage ( 'Members successfully deleted' );
+					}
+				} else {
+					$this->setError ( "One or more members were not deleted because you are not permitted to delete them" );
+					$this->setMessage ( $this->getError (), 'error' );
+				}
+			}
+		}
+		
+		$this->setRedirect ( JRoute::_ ( 'index.php?option=' . $this->option . '&view=' . $this->view_list, false ) );
+	}
 }

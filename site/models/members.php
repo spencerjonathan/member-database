@@ -459,4 +459,26 @@ class MemberDatabaseModelMembers extends JModelList {
 		
 	}
 	
+	public function allowDelete($memberId) {
+		return JFactory::getUser ()->authorise ( 'member.delete', 'com_memberdatabase' );
+	}
+	
+	public function delete(&$memberId) {
+		
+		error_log("In member.delete: memberId = " . $memberId);
+		
+		// Initialize variables.
+		$db    = JFactory::getDbo();
+		$query = $db->getQuery(true);
+		
+		$query->delete($db->quoteName('#__md_member'));
+		$query->where ( 'id = ' . $memberId );
+		
+		$db->setQuery($query);
+		$db->execute();
+		
+		return true;
+		
+	}
+	
 }

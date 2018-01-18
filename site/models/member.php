@@ -461,4 +461,7 @@ class MemberDatabaseModelMember extends JModelAdmin {
 			return $this->mod_user_id = JFactory::getUser ()->id;
 		}
 	}
+	
+	
+	
 }

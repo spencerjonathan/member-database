@@ -48,7 +48,9 @@ $document->addScriptDeclaration ( '
 			</button>
 
 			<hr>
-			<h1> <?php echo $this->year; ?> Invoice for <?php echo $this->tower->name; ?></h1>
+			<h1> <?php echo $this->year; ?> Invoice for <?php echo $this->tower->name; ?> <a
+				href="<?php echo JRoute::_('index.php/component/memberdatabase/?view=tower&layout=edit&list_view=invoice&id=' . $this->tower->id); ?>"
+				class="btn btn-small btn-info"><span class="icon-edit icon-white"></span> Edit Tower Record</a></h1>
 			Want to include a new member on the invoice? <a
 				href="<?php echo JRoute::_('index.php/component/memberdatabase/?view=member&layout=edit&list_view=invoice'); ?>"
 				class="btn btn-small btn-success"><span class="icon-new icon-white"></span>

@@ -13,7 +13,7 @@
 				description="The tower that the member is associated with"
 				required="true"
 				default=""
-				query="SELECT id AS value, concat_ws(',', place, designation) AS tower_id FROM #__md_tower" />
+				query="SELECT id AS value, concat_ws(', ', place, designation) AS tower_id FROM #__md_tower" />
 		<field
 				name="forenames"
 				type="text"

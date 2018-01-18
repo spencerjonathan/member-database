@@ -4,17 +4,17 @@
 		<field name="id" type="number" label="Invoice Number"
 			message="Please select a valid invoice id" readonly="true" />
 			
-		<field name="tower_id" type="number" class="required" label="Tower ID"
+		<field name="tower_id" type="sql" class="required" label="Tower ID"
 			validate="invoicetowerid" message="Please select a valid tower for the invoice"
-			required="true" readonly="true" />
+			required="true" readonly="true" query="SELECT id AS value, concat_ws(', ', place, designation) AS tower_id FROM #__md_tower" />/>
 			
 		<field name="year" type="number" label="Year"
 			description="Which period the invoice is for" size="4"
 			class="inputbox required" required="true" default="" readonly="true" />
 			
-		<field name="created_by_user_id" type="number" label="Created By User"
-			description="The name of the user who created the invoice" size="3"
-			class="inputbox required" required="true" default="" readonly="true" />
+		<field name="created_by_user_id" type="user" label="Created By User"
+			description="The name of the user who created the invoice"
+			class="inputbox required" required="true" readonly="true" />
 			
 		<field name="created_date" type="text" label="Created Date"
 			description="The date that the invoice was created" class="inputbox"

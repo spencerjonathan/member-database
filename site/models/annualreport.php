@@ -153,18 +153,14 @@ class MemberDatabaseModelAnnualreport extends JModelList {
 		$query = $db->getQuery ( true );
 		
 		// Create the base select statement.
-		$query->select ( 't.*, cor.title as corresp_title, cor.surname as corresp_surname, cor.forenames as corresp_forenames, cor.telephone as corresp_telephone, cap.title as captain_title, cap.surname as captain_surname, cap.forenames as captain_forenames, cap.telephone as captain_telephone, concat_ws(\', \', place, designation) as name' );
+		$query->select ( 't.*, cor.title as corresp_title, cor.surname as corresp_surname, cor.forenames as corresp_forenames, cor.telephone as corresp_telephone, cor.email as corresp_email, cap.title as captain_title, cap.surname as captain_surname, cap.forenames as captain_forenames, cap.telephone as captain_telephone, concat_ws(\', \', place, designation) as name' );
 		$query->from ( $db->quoteName ( '#__md_tower', 't' ) );
 		$query->join ( 'LEFT', $db->quoteName ( '#__md_member', 'cor' ) . ' ON (' . $db->quoteName ( 't.correspondent_id' ) . ' = ' . $db->quoteName ( 'cor.id' ) . ')' );
 		$query->join ( 'LEFT', $db->quoteName ( '#__md_member', 'cap' ) . ' ON (' . $db->quoteName ( 't.captain_id' ) . ' = ' . $db->quoteName ( 'cap.id' ) . ')' );
+		$query->where ('t.active = 1');
 		
 		QueryHelper::addDistrictJoin($db, $query);
 		QueryHelper::addDataPermissionConstraints($db, $query);
-		
-		/* if (! JFactory::getUser ()->authorise ( 'member.view', 'com_memberdatabase' )) {
-			$query->join ( 'INNER', $db->quoteName ( '#__md_usertower', 'ut' ) . ' ON (' . $db->quoteName ( 't.id' ) . ' = ' . $db->quoteName ( 'ut.tower_id' ) . ')' );
-			$query->where ( 'ut.user_id = ' . $userid );
-		} */
 		
 		$query->order ( 'district_id, place, designation asc' );
 		

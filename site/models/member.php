@@ -104,15 +104,31 @@ class MemberDatabaseModelMember extends JModelAdmin {
 		
 	}	
 	
+	protected function getDistrictFromTowerID($towerId) {
+		$db = JFactory::getDbo ();
+		
+		$query = $db->getQuery ( true )
+		->select ( 'd.name' )
+		->from ( $db->quoteName ( '#__md_district', 'd' ) )
+		->join ( 'INNER', $db->quoteName ( '#__md_tower', 't' ) . ' ON (' . $db->quoteName ( 't.district_id' ) . ' = ' . $db->quoteName ( 'd.id' ) . ')' )
+		->where ( 't.id = ' . (int) $towerId);
+		
+		// Execute the query and return the result.
+		$db->setQuery ( $query );
+		return $db->loadResult ();
+	}
+	
 	public function save($data) {
 		
 		// Need to check before the record is updated in the database
 		$emailAddressUpdated = $this->emailAddressUpdated($data);
+		$commsPreferenceUpdated = $this->commsPreferenceUpdated($data);
+		$districtCommsUpdated = $this->districtCommsUpdated($data);
 		
 		$saveResult = parent::save($data);
 		
-		if ($saveResult && $emailAddressUpdated) {
-			$this->emailUpdatedHandler($data);
+		if ($saveResult && ($emailAddressUpdated || $commsPreferenceUpdated || $districtCommsUpdated)) {
+			$this->emailUpdatedHandler($data, $emailAddressUpdated, $commsPreferenceUpdated, $districtCommsUpdated);
 		}
 		
 		return $saveResult;
@@ -133,7 +149,37 @@ class MemberDatabaseModelMember extends JModelAdmin {
 		
 	}
 	
-	private function emailUpdatedHandler($data) {
+	private function commsPreferenceUpdated($data) {
+		
+		$db = JFactory::getDbo ();
+		$query = $db->getQuery ( true );
+		
+		$query->select("count(*)");
+		$query->from("#__md_member");
+		$query->where("id = " . (INT) $data['id'] . " and newsletters != " . $db->quote($data['newsletters']) );
+		
+		$db->setQuery ( $query );
+		error_log($query->__toString());
+		return $db->loadResult () == 1;
+		
+	}
+	
+	private function districtCommsUpdated($data) {
+		
+		$db = JFactory::getDbo ();
+		$query = $db->getQuery ( true );
+		
+		$query->select("count(*)");
+		$query->from("#__md_member");
+		$query->where("id = " . (INT) $data['id'] . " and district_newsletters != " . $db->quote($data['district_newsletters']) );
+		
+		$db->setQuery ( $query );
+		error_log($query->__toString());
+		return $db->loadResult () == 1;
+		
+	}
+	
+	private function emailUpdatedHandler($data, $emailAddressUpdated, $commsPreferenceUpdated, $districtCommsUpdated) {
 		
 		$mailer = JFactory::getMailer();
 		$config = JFactory::getConfig();
@@ -144,19 +190,53 @@ class MemberDatabaseModelMember extends JModelAdmin {
 		$site = $config->get('sitename');
 		
 		$body = JText::sprintf(
-				'Email address for %s, %s has been updated to %s',
+				"The following information has been updated for <strong>%s, %s</strong> (%s):<br><ul>",
 				$data['surname'],
 				$data['forenames'],
-				$data['email']
+				$this->getDistrictFromTowerID($data['tower_id'])
 				);
 		
-		$subject = $site . ' - Member\'s Email Address Updated';
+		if ($emailAddressUpdated) {
+		$body = $body . JText::sprintf(
+				"<li>Email address has been updated to <strong>%s</strong></li>",
+				$data['email']
+				);
+		};
+		
+		if ($commsPreferenceUpdated) {
+			$body = $body . JText::sprintf(
+					"<li>Communications method preference has been updated to <strong>%s</strong></li>",
+					$data['newsletters']
+					);
+		};
+		
+		$which_districts = "Own District";
+		if ($data['district_newsletters']) {
+			$which_districts = "All Districts";
+		}
+		
+		if ($districtCommsUpdated) {	
+			$body = $body . JText::sprintf(
+					"<li>Subscription for comms has been updated to <strong>%s</strong></li>",
+					$which_districts
+					);
+		};
+		
+		$body = $body . JText::sprintf(
+				"</ul><br>Comms preference are now:<br><br>Email Address: <strong>%s</strong><br>Communication Method: <strong>%s</strong><br>Which Districts\' comms: <strong>%s</strong>",
+				$data['email'],
+				$data['newsletters'],
+				$which_districts
+				);
+		
+		$subject = $site . ' - Member\'s Communication Preferences Updated';
 		
 		$sender = array(
 				$config->get( 'mailfrom' ),
 				$config->get( 'fromname' )
 		);
 		
+		$mailer->isHtml(true);
 		$mailer->setSender($sender);
 		$mailer->addRecipient($email);
 		$mailer->setSubject($subject);

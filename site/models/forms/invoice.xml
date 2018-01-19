@@ -12,9 +12,9 @@
 			description="Which period the invoice is for" size="4"
 			class="inputbox required" required="true" default="" readonly="true" />
 			
-		<field name="created_by_user_id" type="user" label="Created By User"
+		<field name="created_by_user_id" type="sql" label="Created By User"
 			description="The name of the user who created the invoice"
-			class="inputbox required" required="true" readonly="true" />
+			class="inputbox required" required="true" readonly="true" query="SELECT id AS value, name AS created_by_user_id FROM #__users"/>
 			
 		<field name="created_date" type="text" label="Created Date"
 			description="The date that the invoice was created" class="inputbox"

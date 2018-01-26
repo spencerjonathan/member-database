@@ -130,20 +130,6 @@ class MemberDatabaseControllerInvoice extends JControllerForm {
 		return true;
 	}
 	
-	protected function allowDelete($data = array(), $key = 'id') {
-			
-		$userId = JFactory::getUser ()->id;
-		$invoiceId = $data ['id'];
-		
-		if (JFactory::getUser ()->authorise ( 'invoice.delete', 'com_memberdatabase' )) {
-			return true;
-		}
-		
-		error_log ( "User with id " . $userId . " does not have authorisation to delete invoice with id " . $invoiceId, 0 );
-		return false;
-	}
-	
-	
 	protected function allowEdit($data = array(), $key = 'id') {
 			
 		$userId = JFactory::getUser ()->id;

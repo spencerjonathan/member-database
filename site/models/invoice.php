@@ -91,7 +91,7 @@ class MemberDatabaseModelInvoice extends JModelAdmin {
 			$query->where ( 'ut.user_id = ' . $userid );
 		}
 		
-		$query->where ( 'im.invoice_id = ' . $invoiceId );
+		$query->where ( 'im.invoice_id = ' . (int) $invoiceId );
 		
 		$query->order ( 'm.surname, m.forenames asc' );
 		
@@ -173,7 +173,7 @@ class MemberDatabaseModelInvoice extends JModelAdmin {
 			$query->where ( 'ut.user_id = ' . $userid );
 		}
 		
-		$query->where ( 't.id = ' . $towerId );
+		$query->where ( 't.id = ' . (int) $towerId );
 		
 		$query->order ( 'place, designation asc' );
 		
@@ -220,11 +220,11 @@ class MemberDatabaseModelInvoice extends JModelAdmin {
 		
 		if (! JFactory::getUser ()->authorise ( 'invoice.view', 'com_memberdatabase' )) {
 			$query->join ( 'INNER', $db->quoteName ( '#__md_usertower', 'ut' ) . ' ON (' . $db->quoteName ( 'm.tower_id' ) . ' = ' . $db->quoteName ( 'ut.tower_id' ) . ')' );
-			$query->where ( 'ut.user_id = ' . $userid );
+			$query->where ( 'ut.user_id = ' . (int) $userid );
 		}
 		
 		$query->where ( 'mt.include_in_reports = 1' );
-		$query->where ( 'm.tower_id = ' . $towerId );
+		$query->where ( 'm.tower_id = ' . (int) $towerId );
 		$query->where ( 'im.id is null' );
 		
 		$query->order ( 'surname, forenames asc' );
@@ -254,9 +254,9 @@ class MemberDatabaseModelInvoice extends JModelAdmin {
 		
 		// Insert values.
 		$values = array (
-				$towerId,
-				$year,
-				$userId,
+				(int) $towerId,
+				(int) $year,
+				(int) $userId,
 				$db->quote ( $currentDate ) 
 		);
 		
@@ -277,7 +277,7 @@ class MemberDatabaseModelInvoice extends JModelAdmin {
 		
 		$query->select ( 'LAST_INSERT_ID()' );
 		$db->setQuery ( $query );
-		$invoiceId = $db->loadResult ();
+		$invoiceId = (int) $db->loadResult ();
 		
 		error_log ( "Result from getting last insert id: " . $invoiceId );
 		
@@ -299,10 +299,10 @@ class MemberDatabaseModelInvoice extends JModelAdmin {
 		// Insert values.
 		
 		$dml = '#__md_invoicemember (invoice_id, member_id, member_type_id, fee) 
-		SELECT ' . $invoiceId . ', m.id, m.member_type_id, mt.fee 
+		SELECT ' . (int) $invoiceId . ', m.id, m.member_type_id, mt.fee 
 		from #__md_member m 
 		INNER JOIN #__md_member_type mt on m.member_type_id = mt.id 
-		where m.id = ' . $memberId;
+		where m.id = ' . (int) $memberId;
 		
 		$query->insert ( $dml );
 		
@@ -329,7 +329,7 @@ class MemberDatabaseModelInvoice extends JModelAdmin {
 		
 		$query->select('count(*)');
 		$query->from('#__md_invoice i');
-		$query->where ( 'invoice_id = ' . $invoiceId );
+		$query->where ( 'invoice_id = ' . (int) $invoiceId );
 		$query->where( 'paid = true' );
 		
 		$db->setQuery($query);
@@ -355,8 +355,8 @@ class MemberDatabaseModelInvoice extends JModelAdmin {
 		$query->select('count(*)');
 		$query->from('#__md_invoice i');
 		$query->join('INNER', $db->quoteName ( '#__md_usertower', 'ut' ) . ' ON (i.tower_id = ut.tower_id)');
-		$query->where ( 'i.invoice_id = ' . $invoiceId );
-		$query->where( 'ut.user_id = ' . $userid );
+		$query->where ( 'i.invoice_id = ' . (int) $invoiceId );
+		$query->where( 'ut.user_id = ' . (int) $userid );
 		
 		$db->setQuery($query);
 		$result = $db->getResult();
@@ -380,7 +380,7 @@ class MemberDatabaseModelInvoice extends JModelAdmin {
 		$query = $db->getQuery(true);
 		
 		$query->delete($db->quoteName('#__md_invoicemember'));
-		$query->where ( 'invoice_id = ' . $invoiceId );
+		$query->where ( 'invoice_id = ' . (int) $invoiceId );
 		
 		$db->setQuery($query);
 		$db->execute();
@@ -388,7 +388,7 @@ class MemberDatabaseModelInvoice extends JModelAdmin {
 		$query = $db->getQuery(true);
 		
 		$query->delete($db->quoteName('#__md_invoice'));
-		$query->where ( 'id = ' . $invoiceId );
+		$query->where ( 'id = ' . (int) $invoiceId );
 		
 		$db->setQuery($query);
 		$db->execute();
@@ -397,25 +397,4 @@ class MemberDatabaseModelInvoice extends JModelAdmin {
 		
 	}
 	
-	public function allowAdd($towerId) {
-		$userId = JFactory::getUser ()->id;
-		$memberId = $data ['id'];
-		
-		$db = JFactory::getDbo ();
-		
-		// Build the database query to get the rules for the asset.
-		$query = $db->getQuery ( true )->select ( 'count(*)' )->from ( $db->quoteName ( '#__md_usertower', 'ut' ) )->where ( 'ut.user_id = ' . ( int ) $userId . ' and t.tower_id = ' . ( int ) $towerId );
-		
-		error_log ( "value of \$query in InvoiceModel allowAdd:" . json_encode ( $query ), 0 );
-		// Execute the query and load the rules from the result.
-		$db->setQuery ( $query );
-		$result = $db->loadResult ();
-		
-		if ($result == 1) {
-			return true;
-		}
-		
-		error_log ( "User with id " . $userId . " does not have authorisation to add an invoice for towerwith id " . $towerId, 0 );
-		return false;
-	}
 }

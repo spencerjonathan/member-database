@@ -38,7 +38,7 @@ class MemberDatabaseControllerInvoices extends JControllerAdmin {
 		$model = $this->getModel ( 'Invoice', 'MemberDatabaseModel', array () );
 		
 		$jinput = JFactory::getApplication ()->input;
-		$cids = $jinput->post->get ( 'cid', null, array () );
+		$cids = $jinput->post->get ( 'cid', null, "ARRAY" );
 		
 		error_log ( "Invoices Controller delete cids = " . json_encode ( $cids ) );
 		

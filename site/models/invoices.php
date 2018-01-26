@@ -68,8 +68,7 @@ class MemberDatabaseModelInvoices extends JModelList
 		->join('INNER', $db->quoteName('#__users', 'u') . ' ON (' . $db->quoteName('inv.created_by_user_id') . ' = ' . $db->quoteName('u.id') . ')')
 		->join('INNER', $db->quoteName('#__md_invoicemember', 'im') . ' ON (' . $db->quoteName('inv.id') . ' = ' . $db->quoteName('im.invoice_id') . ')')
 		->join('INNER', $db->quoteName('#__md_tower', 't') . ' ON (' . $db->quoteName('inv.tower_id') . ' = ' . $db->quoteName('t.id') . ')');
-		// $query->where('ut.user_id = ' . $userid);
-		
+
 		if (! JFactory::getUser ()->authorise ( 'invoice.view', 'com_memberdatabase' )) {
 			$query->join ( 'INNER', $db->quoteName ( '#__md_usertower', 'ut' ) . ' ON (' . $db->quoteName ( 'inv.tower_id' ) . ' = ' . $db->quoteName ( 'ut.tower_id' ) . ')' );
 			$query->where ( 'ut.user_id = ' . $userid );
@@ -82,8 +81,8 @@ class MemberDatabaseModelInvoices extends JModelList
  
 		if (!empty($search))
 		{
-			$like = $db->quote('%' . $search . '%');
-			$query->where('concat_ws(\'/\', t.place, inv.id) LIKE ' . $like);
+			$like = $db->quote('%' . $db->escape($search, true) . '%');
+			$query->where('concat_ws(\'/\', t.place, inv.id, inv.payment_reference) LIKE ' . $like);
 		}
 
 		// Add the list ordering clause.

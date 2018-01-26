@@ -28,4 +28,5 @@ To view/modify your membership record enter your email address in the box below 
 		</button>
 	</div>
 	<input type="hidden" name="task" value="members.requestlink" />
+	<?php echo JHtml::_('form.token'); ?>
 </form>

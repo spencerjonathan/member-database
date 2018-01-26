@@ -36,6 +36,8 @@ class MemberDatabaseControllerMembers extends JControllerAdmin
 	
 	public function requestlink()
 	{
+		JSession::checkToken() or die( JText::_('Invalid Token'));
+		
 		$model = $this->getModel ();
 		$app = JFactory::getApplication();
 		

@@ -38,7 +38,7 @@ class MemberDatabaseControllerMember extends JControllerForm {
 		$context = "$this->option.edit.$this->context";
 		
 		$jinput = JFactory::getApplication ()->input;
-		$token = $jinput->get ( 'token', null, 'STRING' );
+		$token = $jinput->get ( 'token', null, 'ALNUM' );
 		$token_text = "";
 		
 		if (isset ( $token )) {
@@ -91,7 +91,7 @@ class MemberDatabaseControllerMember extends JControllerForm {
 	
 	protected function anonymousUserHasPrivilages($memberId) {
 		$jinput = JFactory::getApplication ()->input;
-		$token = $jinput->get ( 'token', null, 'STRING' );
+		$token = $jinput->get ( 'token', null, 'ALNUM' );
 		
 		if (isset ( $token )) {
 			$db = JFactory::getDbo ();
@@ -230,7 +230,7 @@ class MemberDatabaseControllerMember extends JControllerForm {
 		$memberId = $this->input->get->get ( 'id' );
 		
 		$jinput = JFactory::getApplication ()->input;
-		$token = $jinput->get ( 'token', null, 'STRING' );
+		$token = $jinput->get ( 'token', null, 'ALNUM' );
 		$token_text = "";
 		
 		if (isset ( $token )) {
@@ -325,7 +325,7 @@ class MemberDatabaseControllerMember extends JControllerForm {
 		$memberId = ( int ) $this->input->get->get ( 'id' );
 		
 		$jinput = JFactory::getApplication ()->input;
-		$token = $jinput->get ( 'token', null, 'STRING' );
+		$token = $jinput->get ( 'token', null, 'ALNUM' );
 		$token_text = "";
 		
 		if (isset ( $token )) {

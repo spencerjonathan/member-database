@@ -299,7 +299,7 @@ class MemberDatabaseModelInvoice extends JModelAdmin {
 		// Insert values.
 		
 		$dml = '#__md_invoicemember (invoice_id, member_id, member_type_id, long_service, fee) 
-		SELECT ' . (int) $invoiceId . ', m.id, m.member_type_id, m.long_service, mt.fee 
+		SELECT ' . (int) $invoiceId . ', m.id, m.member_type_id, m.long_service, if(m.long_service="No", mt.fee, 0) as fee 
 		from #__md_member m 
 		INNER JOIN #__md_member_type mt on m.member_type_id = mt.id 
 		where m.id = ' . (int) $memberId;

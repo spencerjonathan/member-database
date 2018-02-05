@@ -44,7 +44,7 @@ $invoice_data = $this->getModel()->getInvoiceData();
 				?>
 					<tr>
 					<td><?php echo $member->name; ?></td>
-					<td><?php echo $member->member_type; ?></td>
+					<td><?php echo $member->member_type; if ($member->long_service != 'No') echo " (Long Service)"; ?></td>
 					<td style="text-align: right">£<?php echo number_format((float)$member->fee, 2, '.', ''); ?></td>
 				</tr>
 

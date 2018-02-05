@@ -81,7 +81,7 @@ class MemberDatabaseModelInvoice extends JModelAdmin {
 		$query = $db->getQuery ( true );
 		
 		// Create the base select statement.
-		$query->select ( 'concat_ws(", ", m.surname, m.forenames) as name, mt.name as member_type, im.fee' )->from ( $db->quoteName ( '#__md_invoicemember', 'im' ) );
+		$query->select ( 'concat_ws(", ", m.surname, m.forenames) as name, mt.name as member_type, im.long_service, im.fee' )->from ( $db->quoteName ( '#__md_invoicemember', 'im' ) );
 		$query->join ( 'INNER', $db->quoteName ( '#__md_member', 'm' ) . ' ON (' . $db->quoteName ( 'm.id' ) . ' = ' . $db->quoteName ( 'im.member_id' ) . ')' );
 		$query->join ( 'INNER', $db->quoteName ( '#__md_member_type', 'mt' ) . ' ON (' . $db->quoteName ( 'im.member_type_id' ) . ' = ' . $db->quoteName ( 'mt.id' ) . ')' );
 				
@@ -214,7 +214,7 @@ class MemberDatabaseModelInvoice extends JModelAdmin {
 		$query = $db->getQuery ( true );
 		
 		// Create the base select statement.
-		$query->select ( 'm.id, mt.name as member_type, concat_ws(\', \',m.surname, m.forenames) as name, mt.fee' )->from ( $db->quoteName ( '#__md_member', 'm' ) );
+		$query->select ( 'm.id, m.long_service, mt.name as member_type, concat_ws(\', \',m.surname, m.forenames) as name, mt.fee' )->from ( $db->quoteName ( '#__md_member', 'm' ) );
 		$query->join ( 'INNER', $db->quoteName ( '#__md_member_type', 'mt' ) . ' ON (' . $db->quoteName ( 'm.member_type_id' ) . ' = ' . $db->quoteName ( 'mt.id' ) . ')' );
 		$query->join ( 'LEFT', '(select imsub.id, member_id, year from #__md_invoicemember imsub INNER JOIN #__md_invoice AS i ON (imsub.invoice_id = i.id) where year = ' . $year . ') as im on m.id = im.member_id' );
 		
@@ -298,8 +298,8 @@ class MemberDatabaseModelInvoice extends JModelAdmin {
 		
 		// Insert values.
 		
-		$dml = '#__md_invoicemember (invoice_id, member_id, member_type_id, fee) 
-		SELECT ' . (int) $invoiceId . ', m.id, m.member_type_id, mt.fee 
+		$dml = '#__md_invoicemember (invoice_id, member_id, member_type_id, long_service, fee) 
+		SELECT ' . (int) $invoiceId . ', m.id, m.member_type_id, m.long_service, mt.fee 
 		from #__md_member m 
 		INNER JOIN #__md_member_type mt on m.member_type_id = mt.id 
 		where m.id = ' . (int) $memberId;

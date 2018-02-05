@@ -70,10 +70,20 @@
 				description="The type of member"
 				required="true"
 				default=""
-				query="SELECT id AS value, name AS member_type_id FROM #__md_member_type"
+				query="SELECT id AS value, name AS member_type_id FROM #__md_member_type where enabled = 1"
 				readonly="true"
 				/>
-				
+		<field
+				name="long_service"
+				type="list"
+				label="Long Service?"
+				description="Has this person been a member of the association for over 50 years?"
+				default="No">
+				<option value="No">No</option>
+				<option value="50 Years">50 Years</option>
+				<option value="60 Years">60 Years</option>
+				<option value="70 Years">70 Years</option>
+		</field>
 		<field
 				name="insurance_group"
 				type="list"

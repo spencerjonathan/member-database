@@ -76,7 +76,14 @@ $document->addScriptDeclaration ( '
 			$id = 1;
 			
 			foreach ( $members as $member ) :
+			
+				if ($member->long_service != 'No') {
+					$member->member_type = $member->member_type . " (Long Service)";
+					$member->fee = 0;
+				}
+				
 				$total_fee = $total_fee + $member->fee;
+				
 				$link = JRoute::_ ( 'index.php?option=com_memberdatabase&task=member.edit&list_view=invoice&id=' . $member->id );
 				
 				?>
@@ -107,13 +114,12 @@ $document->addScriptDeclaration ( '
 					value="<?php echo $this->tower->id; ?>" /> <input type="hidden"
 					name="year" value="<?php echo $this->year; ?>" />
 					<?php echo JHtml::_('form.token'); ?>
-			</form>
-			<hr>
-			When you're satisfied that the draft invoice above is correct, click here on the "Save Invoice & Close" button to save it and get your invoice number: 
-			<button onclick="Joomla.submitbutton('invoice.add')" id="add_button"
-				class="btn btn-success">
+				<hr>When you're satisfied that the draft invoice above is correct, click here on the "Save Invoice & Close" button to save it and get your invoice number:
+			<button type="submit" id="add_button" name="add_button"
+				class="btn btn-success btn-create-invoice">
 				<span class="icon-new icon-white"></span> Save Invoice & Close
 			</button>
+			</form>
 		</div>
 	</div>
 </div>

@@ -48,17 +48,25 @@ defined ( '_JEXEC' ) or die ( 'Restricted Access' );
 	<div class="tower">
 					
 						<tr>
-							<td COLSPAN=2><strong><?php echo $tower->place ?>, <?php echo $tower->designation ?></strong></td>
+							<td COLSPAN=2><strong><?php 
+								echo $tower->place; 
+								if ($tower->designation) { echo ", " . $tower->designation; } ?></strong></td>
 							<td align="center"><?php if ($tower->bells > 0) { echo $tower->bells; } ?></td>
 							<td align="centre"><?php echo $tower->tenor ?></td>
 							<td align="centre"><?php if ($tower->ground_floor) { echo 'GF'; } ?></td>
-							<td COLSPAN=2 align="right">OS: <?php echo $tower->grid_ref . ' / ' . $tower->post_code ?></td>
+							<td COLSPAN=2 align="right"><?php if ($tower->post_code) { echo "OS: " . $tower->grid_ref . ' / ' . $tower->post_code; } ?></td>
 						</tr>
+						
+						<?php if ($tower->practice_night || $tower->sunday_ringing) : ?>						
 						<tr>
 							<td COLSPAN=3>Practice: <?php echo $tower->practice_night . ' ' . $tower->practice_details?></td>
-							<td COLSPAN=4 align="right"><?php if ($tower->sunday_ringing) { echo "Sunday: " + $tower->sunday_ringing; } ?></td>
+							<td COLSPAN=4 align="right"><?php if ($tower->sunday_ringing) { echo "Sunday: " . $tower->sunday_ringing; } ?></td>
 						</tr>
+						<?php endif ?>
+						
+						<?php if ($tower->email) :?>
 						<tr>
+							
 							<td COLSPAN=7>Corresp: <?php 
 							if ($tower->incl_corresp && $tower->corresp_surname) {
 								echo $tower->corresp_title . ' ' . substr($tower->corresp_forenames, 0, 1) . ' ' . $tower->corresp_surname . ', ' . $tower->corresp_telephone . ' - ';
@@ -66,6 +74,7 @@ defined ( '_JEXEC' ) or die ( 'Restricted Access' );
 							echo $tower->email; 
 							?></td>
 						</tr>
+						<?php endif ?>
 						
 						<?php if ($tower->incl_capt && $tower->captain_surname) :?>
 						<tr>

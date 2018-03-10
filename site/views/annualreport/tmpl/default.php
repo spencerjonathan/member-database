@@ -15,7 +15,8 @@ defined ( '_JEXEC' ) or die ( 'Restricted Access' );
 		<div class="span12">
 
 			<table style="table-layout: fixed;">
-				<col width="29%" />
+				<col width="5%" />
+				<col width="24%" />
 				<col width="5%" />
 				<col width="17%" />
 				<col width="17%" />
@@ -34,31 +35,31 @@ defined ( '_JEXEC' ) or die ( 'Restricted Access' );
 			$currentdistrictid = $tower->district_id;
 			?>
 			<tr>
-					<td colspan=6>
+					<td colspan=7>
 						<h1
 							<?php if ($firstdistrict) { echo 'class="page-break-before-avoid"'; $firstdistrict=0; } else { echo 'class="page-break-before-always"'; } ?>
 							align="center"><?php echo $this->districts[$tower->district_id] ?></h1>
 					</td>
 				</tr>
 				<tr>
-					<td colspan=6><h2 align="center">TOWER DETAILS AND MEMBERS FOR <?php echo $this->year?></h2></td>
+					<td colspan=7><h2 align="center">TOWER DETAILS AND MEMBERS FOR <?php echo $this->year?></h2></td>
 				</tr>
 		<?php endif ?>
 	<div class="tower">
-					<tbody>
+					
 						<tr>
-							<td><strong><?php echo $tower->place ?>, <?php echo $tower->designation ?></strong></td>
-							<td align="center"><?php echo $tower->bells ?></td>
+							<td COLSPAN=2><strong><?php echo $tower->place ?>, <?php echo $tower->designation ?></strong></td>
+							<td align="center"><?php if ($tower->bells > 0) { echo $tower->bells; } ?></td>
 							<td align="centre"><?php echo $tower->tenor ?></td>
 							<td align="centre"><?php if ($tower->ground_floor) { echo 'GF'; } ?></td>
 							<td COLSPAN=2 align="right">OS: <?php echo $tower->grid_ref . ' / ' . $tower->post_code ?></td>
 						</tr>
 						<tr>
 							<td COLSPAN=3>Practice: <?php echo $tower->practice_night . ' ' . $tower->practice_details?></td>
-							<td COLSPAN=3 align="right">Sunday: <?php echo $tower->sunday_ringing ?></td>
+							<td COLSPAN=4 align="right"><?php if ($tower->sunday_ringing) { echo "Sunday: " + $tower->sunday_ringing; } ?></td>
 						</tr>
 						<tr>
-							<td COLSPAN=6>Corresp: <?php 
+							<td COLSPAN=7>Corresp: <?php 
 							if ($tower->incl_corresp && $tower->corresp_surname) {
 								echo $tower->corresp_title . ' ' . substr($tower->corresp_forenames, 0, 1) . ' ' . $tower->corresp_surname . ', ' . $tower->corresp_telephone . ' - ';
 							}
@@ -68,7 +69,7 @@ defined ( '_JEXEC' ) or die ( 'Restricted Access' );
 						
 						<?php if ($tower->incl_capt && $tower->captain_surname) :?>
 						<tr>
-							<td COLSPAN=6>Captain: <?php echo $tower->captain_title . ' ' . substr($tower->captain_forenames, 0, 1) . ' ' . $tower->captain_surname . ', ' . $tower->captain_telephone ?></td>
+							<td COLSPAN=7>Captain: <?php echo $tower->captain_title . ' ' . substr($tower->captain_forenames, 0, 1) . ' ' . $tower->captain_surname . ', ' . $tower->captain_telephone ?></td>
 						</tr>
 						<?php endif ?>
 						
@@ -76,9 +77,9 @@ defined ( '_JEXEC' ) or die ( 'Restricted Access' );
 			<?php if ($member->tower_id == $tower->id) : ?>
 				<?php if ($member->tower_id == $tower->id) : ?>
 				<?php if ($i == 1) : ?>
-					<tr>
+					<tr><td></td>
 					<?php endif ?>
-					<td align="center" COLSPAN=2><?php echo $member->name ?></td>
+					<td align="left" COLSPAN=2><?php echo $member->name ?></td>
 						<?php if ($i == 3) : $i = 1; ?>
 					</tr>
 					<?php else : $i = $i + 1; endif ?>
@@ -93,7 +94,7 @@ defined ( '_JEXEC' ) or die ( 'Restricted Access' );
 				
 				</tr> 
 		<?php endif ?>
-		</tbody>
+		<tr><td><br></td></tr>
 				
 	<?php endforeach; ?>
 </table>

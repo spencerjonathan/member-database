@@ -4,9 +4,9 @@
 		<field name="id" type="number" label="Invoice Number"
 			message="Please select a valid invoice id" readonly="true" />
 			
-		<field name="tower_id" type="sql" class="required" label="Tower ID"
+		<field name="tower_id" type="sql" label="Tower ID"
 			validate="invoicetowerid" message="Please select a valid tower for the invoice"
-			required="true" readonly="true" query="SELECT id AS value, concat_ws(', ', place, designation) AS tower_id FROM #__md_tower" />/>
+		 	readonly="true" query="SELECT id AS value, concat_ws(', ', place, designation) AS tower_id FROM #__md_tower" />/>
 			
 		<field name="year" type="number" label="Year"
 			description="Which period the invoice is for" size="4"
@@ -14,7 +14,7 @@
 			
 		<field name="created_by_user_id" type="sql" label="Created By User"
 			description="The name of the user who created the invoice"
-			class="inputbox required" required="true" readonly="true" query="SELECT id AS value, name AS created_by_user_id FROM #__users"/>
+			class="inputbox required" readonly="true" query="SELECT id AS value, name AS created_by_user_id FROM #__users"/>
 			
 		<field name="created_date" type="text" label="Created Date"
 			description="The date that the invoice was created" class="inputbox"
@@ -28,8 +28,7 @@
 		</field>
 		
 		<field name="paid_date" type="calendar" label="Payment Received Date"
-			description="The date that the payment for the invoice was received" class="inputbox"
-			default=""/>
+			description="The date that the payment for the invoice was received" class="inputbox" />
 
 		<field name="payment_method" type="list" label="Payment Method"
 			description="The method of payment used" default="">

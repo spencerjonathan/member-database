@@ -10,36 +10,14 @@
 // No direct access
 defined ( '_JEXEC' ) or die ( 'Restricted access' );
 
-$document = JFactory::getDocument ();
-
-$document->addScriptDeclaration ( '
-	function updateTowerId() {
-		var towername = document.getElementById("tower_name");
-		var towerid = document.getElementById("jform_tower_id");
-		var savebutton = document.getElementById("save_button");
-		towerid.value = towername.value;
-	};
-' );
-
-
-
 ?>
+
 <legend><?php echo JText::_('Member Database - Invoice Details'); ?></legend>
 
 
 <!-- Add the toolbar at the top  -->
 
-<div>
-<button onclick="Joomla.submitbutton('invoice.save')" id="save_button"
-	class="btn btn-small btn-success">
-	<span class="icon-save"></span> Save & Close
-</button>
-<button onclick="Joomla.submitbutton('invoice.cancel')"
-	class="btn btn-small">
-	<span class="icon-cancel"></span> Close
-</button>
-</div>
-<hr>
+
 
 
 <!-- The form itself -->
@@ -47,22 +25,34 @@ $document->addScriptDeclaration ( '
 <form class="form-validate"
 	action="<?php echo JRoute::_('index.php?option=com_memberdatabase&view=invoice&layout=edit&id=' . (int) $this->item->id); ?>"
 	method="post" name="adminForm" id="adminForm">
+	<div>
+		<button type="submit" id="save_button" name="save_button"
+			class="btn btn-small btn-success btn-save-invoice">
+			<span class="icon-save"></span> Save & Close
+		</button>
+		<button onclick="Joomla.submitbutton('invoice.cancel')"
+			class="btn btn-small">
+			<span class="icon-cancel"></span> Close
+		</button>
+	</div>
+	<hr>
+
 	<div class="form-horizontal">
 		<fieldset class="adminform">
 			<div class="row-fluid">
 				<div class="span6">
 					<?php foreach ($this->form->getFieldset() as $field): ?>
 						<div class="control-group">
-							<div class="control-label"><?php echo $field->label; ?></div>
-							<div class="controls"><?php echo $field->input; ?></div>
-						</div>
+						<div class="control-label"><?php echo $field->label; ?></div>
+						<div class="controls"><?php echo $field->input; ?></div>
+					</div>
                     			<?php endforeach; ?>
                 		</div>
 			</div>
-			
+
 		</fieldset>
 	</div>
-	
-	<input type="hidden" name="task" value="invoice.edit" />
+
+	<input type="hidden" name="task" value="invoice.save" />
     <?php echo JHtml::_('form.token'); ?>
 </form>

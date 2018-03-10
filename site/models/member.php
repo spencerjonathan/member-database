@@ -41,7 +41,7 @@ class MemberDatabaseModelMember extends JModelAdmin {
 	
 	protected function anonymousUserHasPrivilages($memberId) {
 		$jinput = JFactory::getApplication ()->input;
-		$token = $jinput->get ( 'token', null, 'STRING' );
+		$token = $jinput->get ( 'token', null, 'ALNUM' );
 		
 		if (isset ( $token )) {
 			$db = JFactory::getDbo ();
@@ -370,11 +370,11 @@ class MemberDatabaseModelMember extends JModelAdmin {
 		
 		$query_string = "(select null as history_id, #__md_member.* 
 		from #__md_member 
-		where id = $memberId 
-		UNION ALL 
+		where id = " . (int) $memberId . 
+		" UNION ALL 
 		select #__md_member_history.* 
 		from #__md_member_history 
-		where id = $memberId 
+		where id = " . (int) $memberId . " 
 		) mh";
 		
 		$query->select ( 'mh.*, concat_ws(", ", t.place, t.designation) as tower, mt.name as member_type, IFNULL(u.name, memt.email) as mod_user' );
@@ -417,7 +417,7 @@ class MemberDatabaseModelMember extends JModelAdmin {
 		
 		// Insert values.
 		$values = array (
-				$memberId,
+				(int) $memberId,
 				$userId,
 				$db->quote ( $currentDate ) 
 		);
@@ -456,7 +456,7 @@ class MemberDatabaseModelMember extends JModelAdmin {
 		// Insert values.
 		// $values = array($memberId, $filename, $type, mysql_real_escape_string(file_get_contents($tmp_name)) ,$userId, $db->quote($currentDate) );
 		$values = array (
-				$memberId,
+				(int) $memberId,
 				$db->quote ( $filename ),
 				$db->quote ( $type ),
 				$db->quote( $description ),
@@ -511,7 +511,7 @@ class MemberDatabaseModelMember extends JModelAdmin {
 		$query->join("LEFT", "#__md_member_type mt on (mt.id = m.member_type_id)");
 		$query->join("LEFT", "#__md_tower t on (t.id = m.tower_id)");
 		$query->join("LEFT", "#__users u on (u.id = m.mod_user_id)");
-		$query->where("m.id = $id");
+		$query->where("m.id = " . (int) $id);
 		$db->setQuery($query);
 		
 		return $db->loadAssoc();
@@ -520,7 +520,7 @@ class MemberDatabaseModelMember extends JModelAdmin {
 	public function getCurrentUserId() {
 		
 		$jinput = JFactory::getApplication ()->input;
-		$token = $jinput->get ( 'token', null, 'STRING' );
+		$token = $jinput->get ( 'token', null, 'ALNUM' );
 		$token_text = "";
 		$user_editing = false;
 		

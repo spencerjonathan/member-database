@@ -12,7 +12,7 @@
 defined ( '_JEXEC' ) or die ( 'Restricted Access' );
 
 $jinput = JFactory::getApplication ()->input;
-$this->since = $jinput->get ( 'since', '2017-01-01' );
+$this->since = $jinput->get ( 'since', '2017-01-01', 'CMD' );
 
 $this->items = $this->getModel ( "Members" )->getMemberTypeChanges ( $this->since );
 

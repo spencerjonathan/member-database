@@ -162,7 +162,7 @@ class MemberDatabaseModelAnnualreport extends JModelList {
 		QueryHelper::addDistrictJoin($db, $query);
 		QueryHelper::addDataPermissionConstraints($db, $query);
 		
-		$query->order ( 'district_id, place, designation asc' );
+		$query->order ( 'district_id, if(place like "Unattached%", 1, 0), place, designation asc' );
 		
 		return $query;
 	}

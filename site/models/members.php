@@ -59,9 +59,6 @@ class MemberDatabaseModelMembers extends JModelList {
 		
 		QueryHelper::addMemberTypeJoin($db, $query);
 		QueryHelper::addDistrictJoin($db, $query);
-		/* $query->select('mt.name as member_type, mt.fee, t.district_id, d.name as district');
-		$query->join('INNER', $db->quoteName ( '#__md_member_type', 'mt' ) . ' ON (' . $db->quoteName ( 'm.member_type_id' ) . ' = ' . $db->quoteName ( 'mt.id' ) . ')');
-		$query->join('INNER', $db->quoteName ( '#__md_district', 'd' ) . ' ON (' . $db->quoteName ( 't.district_id' ) . ' = ' . $db->quoteName ( 'd.id' ) . ')'); */
 		
 		$query = QueryHelper::addDataPermissionConstraints($db, $query);
 		
@@ -93,7 +90,7 @@ class MemberDatabaseModelMembers extends JModelList {
 		$query->select('t.place');
 		
 		if ($districtId) {
-			$query->where( "t.district_id = $districtId");
+			$query->where( "t.district_id = " . (int) $districtId);
 		}
 		
 		$query->where( 'm.newsletters in ("Postal", "Both")');
@@ -137,7 +134,7 @@ class MemberDatabaseModelMembers extends JModelList {
 		$query->select('t.place, t.district_id, d.name as district');
 		
 		if ($districtId) {
-			$query->where( "d.id = $districtId");
+			$query->where( "d.id = " . (int) $districtId);
 		}
 		
 		$query->where( 'm.newsletters in ("Email", "Both")');
@@ -183,7 +180,7 @@ class MemberDatabaseModelMembers extends JModelList {
 		$query->join('INNER', $db->quoteName ( '#__md_district', 'd' ) . ' ON (' . $db->quoteName ( 't.district_id' ) . ' = ' . $db->quoteName ( 'd.id' ) . ')');
 		
 		if ($districtId) {
-			$query->where( "t.district_id = $districtId");
+			$query->where( "t.district_id = " . (int) $districtId);
 		}
 		
 		$query = QueryHelper::addDataPermissionConstraints($db, $query);
@@ -226,7 +223,7 @@ class MemberDatabaseModelMembers extends JModelList {
 		$query = $this->getExtendedQuery($db);
 			
 		if ($memberId) {
-			$query->where( "m.id = $memberId");
+			$query->where( "m.id = " . (int) $memberId);
 		}
 		
 		$query->order ( 'surname, forenames asc' );
@@ -244,7 +241,7 @@ class MemberDatabaseModelMembers extends JModelList {
 		//$userid = JFactory::getUser ()->id;
 		$query = $this->getExtendedQuery($db);
 		
-		QueryHelper::addInvoiceOuterJoin($db, $query, $year);
+		QueryHelper::addInvoiceOuterJoin($db, $query, (int) $year);
 		
 		$query->order ( 'surname, forenames asc' );
 		
@@ -329,7 +326,7 @@ class MemberDatabaseModelMembers extends JModelList {
 		$db = JFactory::getDbo ();
 		$query = $db->getQuery($db);
 		
-		$query->setQuery("call #__md_MemberStatusChanges('$since')");
+		$query->setQuery("call #__md_MemberStatusChanges(" . $db->quote($since) . ")");
 		
 		$db->setQuery ( $query );
 		
@@ -472,7 +469,7 @@ class MemberDatabaseModelMembers extends JModelList {
 		$query = $db->getQuery(true);
 		
 		$query->delete($db->quoteName('#__md_member'));
-		$query->where ( 'id = ' . $memberId );
+		$query->where ( 'id = ' . (int) $memberId );
 		
 		$db->setQuery($query);
 		$db->execute();

@@ -77,7 +77,7 @@ if (count ( $this->status ['towers_no_invoices'] ) > 0) {
 			</tr>
 		</table>
 	</div>
-	<div class="panel-body">
+	<div class="panel-body members-without-invoice">
 
 
 <?php echo $tower_invoice_explanation?>
@@ -129,7 +129,7 @@ foreach ( $this->status ['towers_no_invoices'] as $tower ) :
 			</tr>
 		</table>
 	</div>
-	<div class="panel-body">
+	<div class="panel-body invoices-to-be-paid">
 
 <table width='100%'>
 			<tr style="text-align: left">

@@ -99,16 +99,13 @@ $listDirn = $this->escape ( $this->filter_order_Dir );
 				$verification_required_since_time = strtotime ( $verification_required_since );
 				
 				foreach ( $this->items as $i => $row ) :
-					$link = JRoute::_ ( 'index.php?option=com_memberdatabase&task=invoice.edit&id=' . $row->id );
-					$view = JRoute::_ ( 'index.php?option=com_memberdatabase&view=invoice&layout=view&id=' . $row->id );
-					$verify = JRoute::_ ( 'index.php?option=com_memberdatabase&task=invoice.verify&id=' . $row->id );
-					
-					//$created_time = strtotime ( $row->created_date );
+					$link = JRoute::_ ( 'index.php?option=com_memberdatabase&task=invoice.edit&id=' . $row->id, false );
+					$view = JRoute::_ ( 'index.php?option=com_memberdatabase&view=invoice&layout=view&id=' . $row->id, false );
 					?>
 					<tr>
 				<td> <?php echo $this->pagination->getRowOffset($i); ?> </td>
 				<td> <?php echo JHtml::_('grid.id', $i, $row->id); ?> </td>
-				<td><a href="<?php echo $link; ?>"
+				<td><a href="<?php echo $link; ?>" name="<?php echo "$row->place/$row->id"; ?>"
 					title="<?php echo JText::_('Edit Invoice'); ?>"><?php echo "$row->place/$row->id"; ?></a></td>
 				<td> <?php echo $row->tower_name; ?> </td>
 				<td> <?php echo $row->created_by_user; ?> </td>

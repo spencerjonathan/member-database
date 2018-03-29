@@ -238,8 +238,9 @@ class MemberDatabaseModelMembers extends JModelList {
 	public function getMembersInclInvoices($year = NULL) {
 		// Initialize variables.
 		$db = JFactory::getDbo ();
-		//$userid = JFactory::getUser ()->id;
+		
 		$query = $this->getExtendedQuery($db);
+		$query->select('insurance_group');
 		
 		QueryHelper::addInvoiceOuterJoin($db, $query, (int) $year);
 		

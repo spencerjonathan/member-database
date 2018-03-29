@@ -26,7 +26,8 @@ foreach ($members as $member) {
 	$tower_link = "index.php/towers?view=tower&layout=edit&id=" . $member->tower_id;
 	$invoice_id = $member->invoice_id;
 	$invoice_paid = $member->invoice_paid;
-	$record = [ $member->id, $member->member_type, "<a href='$tower_link'>$member->tower</a>", "<a href='$member_link'>$member->name</a>", $member->newsletters, $dbs, $member->mod_user_id, $db_form_received, $accept_privacy_policy, $member->district, $invoice_id, $invoice_paid ];
+	$insurance_group = $member->insurance_group;
+	$record = [ $member->id, $member->member_type, "<a href='$tower_link'>$member->tower</a>", "<a href='$member_link'>$member->name</a>", $member->newsletters, $dbs, $member->mod_user_id, $db_form_received, $accept_privacy_policy, $member->district, $invoice_id, $invoice_paid, $insurance_group ];
 	
 	array_push($data, $record);
 }
@@ -70,7 +71,8 @@ $document->addScriptDeclaration("var data = $data_json;
 		{ name: '8', caption: 'Privacy Policy' },
 		{ name: '9', caption: 'District' },
 		{ name: '10', caption: 'Inv #' },
-		{ name: '11', caption: 'Inv Status' }
+		{ name: '11', caption: 'Inv Status' },
+		{ name: '12', caption: 'Ins Grp' }
         
     ],
     rows    : [ 'Member Type' ],

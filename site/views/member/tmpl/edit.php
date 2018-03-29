@@ -68,51 +68,39 @@ if (isset ( $token )) {
 	action="<?php echo JRoute::_('index.php?option=com_memberdatabase&view=member&layout=edit&id=' . (int) $this->item->id . $list_view_parameter . $token_text); ?>"
 	method="post" name="adminForm" id="adminForm">
 	<div class="form-horizontal">
-		<fieldset class="adminform">
 			
                     <?php
-																				
-																				// Get an appropriate set of fields to display
-																				$fieldset = $this->form->getFieldset ( 'main' );
-																				
-																				foreach ( $fieldset as $field ) :
+						$sections = array(
+							array("main", "Membership Details"),
+							array("privacy", "Privacy"),
+							array("safeguarding", "Safeguarding"),
+							array("communication_preferences", "Communication Preferences"),
+							array("contact_details", "Contact Details")
+							
+						);											
+						
+					foreach ($sections as $section) :	
+					// Get an appropriate set of fields to display
+					$fieldset = $this->form->getFieldset ( $section[0] );
+					
+					if ($fieldset) : 
+					echo '<div class="span6"><fieldset class="form-horizontal"><legend>' . $section[1] . '</legend>';
+					
+					if ($section[0] == 'privacy') {
+						echo 'General Data Protection Regulation (GDPR) requires that<br> 1) We document in the Association\'s Privicy Policy the lawful basis for processing your personal information, and <br> 2) That you concent to us processing your personal data for the reasons set out in the Association Privicy Policy.<br><br> <a	href="https://scacr.org/documents/membership/SCACR_Data_Protection_Policy.pdf">Read the Association Privicy Policy Here</a><br><br> Concenting to the SCACR processing your personal data for the reasons set out in the Association\'s Privicy Policy is a requirement for membership to the SCACR.<br><br>';
+					}
+					
+					foreach ( $fieldset as $field ) :
 																					?>
                         <div class="control-group">
-				<div class="control-label"><?php echo $field->label; ?></div>
-				<div class="controls"><?php echo $field->input; ?></div>
-			</div>
-                    <?php endforeach; ?>
-                
-                
-                <?php
-																
-																// Get an appropriate set of fields to display
-																$fieldset = $this->form->getFieldset ( 'privacy' );
-																
-																foreach ( $fieldset as $field ) :
-																	?>
-				
-				<hr>
-			General Data Protection Regulation (GDPR) requires that<br> 1) We
-			document in the Association's Privicy Policy the lawful basis for
-			processing your personal information, and <br> 2) That you concent to
-			us processing your personal data for the reasons set out in the
-			Association Privicy Policy.<br>
-			<br> <a
-				href="https://scacr.org/documents/membership/SCACR_Data_Protection_Policy.pdf">Read
-				the Association Privicy Policy Here</a><br>
-			<br> Concenting to the SCACR processing your personal data for the
-			reasons set out in the Association's Privicy Policy is a requirement
-			for membership to the SCACR.<br>
-			<br>
-			<div class="control-group">
-				<div class="control-label"><?php echo $field->label; ?></div>
-				<div class="controls"><?php echo $field->input; ?></div>
-			</div>
-                    <?php endforeach; ?>
-                
-
-		</fieldset>
+						<div class="control-label"><?php echo $field->label; ?></div>
+						<div class="controls"><?php echo $field->input; ?></div>
+						</div>
+                    <?php endforeach; 
+                    echo '</fieldset></div>';
+                    endif;
+                    endforeach;
+                    ?>                
 	</div>
 
 	<input type="hidden" name="task" value="<?php echo $task?>" />
@@ -121,7 +109,8 @@ if (isset ( $token )) {
 
 <?php if (JFactory::getUser ()->authorise ( 'core.admin', 'com_memberdatabase' ) ||
 		$user_editing) :?>
-<div>
+		
+<div class="span12">
 	<hr>
 	<button
 		onclick="if (confirm('Are you sure you want to verify that the information held about this member is correct?')) { Joomla.submitbutton('member.saveandverify'); }"
@@ -202,10 +191,11 @@ if ($this->item->id) :
 	</button>
 </div>
 <?php endif; ?>
-<hr>
 
+<?php echo JHtml::_('bootstrap.endTab'); ?>
+<div class="span12"><hr></div>
 <?php
-	
+
 	echo JHtml::_ ( 'bootstrap.endTabSet' ); 
 endif;
 

@@ -67,15 +67,17 @@ if (isset ( $token )) {
 <form class="form-validate"
 	action="<?php echo JRoute::_('index.php?option=com_memberdatabase&view=member&layout=edit&id=' . (int) $this->item->id . $list_view_parameter . $token_text); ?>"
 	method="post" name="adminForm" id="adminForm">
-	<div class="form-horizontal">
+	<div class="row-fluid">
 			
                     <?php
 						$sections = array(
 							array("main", "Membership Details"),
-							array("privacy", "Privacy"),
-							array("safeguarding", "Safeguarding"),
-							array("communication_preferences", "Communication Preferences"),
-							array("contact_details", "Contact Details")
+							array("contact_details", "Contact Details"),
+								array("communication_preferences", "Communication Preferences"),
+								array("safeguarding", "Safeguarding"),
+							
+							
+								array("privacy", "Privacy")
 							
 						);											
 						
@@ -84,7 +86,7 @@ if (isset ( $token )) {
 					$fieldset = $this->form->getFieldset ( $section[0] );
 					
 					if ($fieldset) : 
-					echo '<div class="span6"><fieldset class="form-horizontal"><legend>' . $section[1] . '</legend>';
+					echo '<div><fieldset class="form-horizontal"><legend>' . $section[1] . '</legend>';
 					
 					if ($section[0] == 'privacy') {
 						echo 'General Data Protection Regulation (GDPR) requires that<br> 1) We document in the Association\'s Privicy Policy the lawful basis for processing your personal information, and <br> 2) That you concent to us processing your personal data for the reasons set out in the Association Privicy Policy.<br><br> <a	href="https://scacr.org/documents/membership/SCACR_Data_Protection_Policy.pdf">Read the Association Privicy Policy Here</a><br><br> Concenting to the SCACR processing your personal data for the reasons set out in the Association\'s Privicy Policy is a requirement for membership to the SCACR.<br><br>';
@@ -176,8 +178,7 @@ if ($this->item->id) :
 		</div>				
     <?php endforeach; ?>
 	</fieldset>
-	<input type="hidden" name="jform[id]"
-		value="<?php echo (int) $this->item->id; ?>"> <input type="hidden"
+	<input type="hidden"
 		name="task" value="member.addattachment" />
     <?php echo JHtml::_('form.token'); ?>
 </form>

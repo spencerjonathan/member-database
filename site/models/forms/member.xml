@@ -1,50 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <form>
-	<fieldset name="main" addrulepath="components/com_memberdatabase/models/rules" addfieldpath="administrator/components/com_memberdatabase/models/fields">
-		<field
-        	name="accept_privicy_policy"
-            type="radio"
-            label="Accept Privicy Policy?"
-            description="Does the member accept the terms of the association's Privicy Policy?"
-            class="btn-group btn-group-yesno"
-            default="0"
-            filter="integer">
-            	<option value="1">JYES</option>
-            	<option value="0">JNO</option>
-        </field>
+		<fieldset name="main" addrulepath="components/com_memberdatabase/models/rules" addfieldpath="administrator/components/com_memberdatabase/models/fields">
+		
 		<field
 				name="id"
 				type="hidden"
 				/>
 		<field
 				name="tower_id"
-				type="towers"
-				class="required"
-				label="Tower ID"
-				validate="towerid"
-				message="Please select a valid tower for the memeber"
-				required="true"
-				/>
-		<field
-				name="forenames"
-				type="text"
-				label="Forenames"
-				description="The forename(s) of the member"
-				size="50"
-				class="inputbox required"
+				type="sql"
+				label="Tower"
+				description="The tower that the member is associated with"
 				required="true"
 				default=""
-				/>
-		<field
-				name="surname"
-				type="text"
-				label="Surname"
-				description="The Surname of the member"
-				size="50"
-				class="inputbox required"
-				required="true"
-				default=""
-				/>
+				query="SELECT id AS value, concat_ws(', ', place, designation) AS tower_id FROM #__md_tower" />
 		<field
 				name="title"
 				type="list"
@@ -65,15 +34,26 @@
 				<option value="Rev Canon Dr">Rev Canon Dr</option>
 		</field>
 		<field
-				name="email"
-				type="email"
-				label="Email Address"
-				description="Email Address of the member"
-				size="40"
+				name="forenames"
+				type="text"
+				label="Forenames"
+				description="The forename(s) of the member"
+				size="50"
 				class="inputbox required"
-				validate="email"
+				required="true"
 				default=""
 				/>
+		<field
+				name="surname"
+				type="text"
+				label="Surname"
+				description="The Surname of the member"
+				size="50"
+				class="inputbox required"
+				required="true"
+				default=""
+				/>
+
 		<field
 				name="member_type_id"
 				type="sql"
@@ -82,8 +62,9 @@
 				required="true"
 				default=""
 				query="SELECT id AS value, name AS member_type_id FROM #__md_member_type where enabled = 1"
-				
+				readonly="true"
 				/>
+		
 		<field
 				name="long_service"
 				type="list"
@@ -96,6 +77,14 @@
 				<option value="70 Years">70 Years</option>
 		</field>
 		<field
+                                name="date_elected"
+                                type="calendar"
+                                label="Association Member Since"
+                                description="The date that the member joined the association."
+                                class="inputbox"
+                                default="" 
+				/>
+		<field
 				name="insurance_group"
 				type="list"
 				label="Insurance Group"
@@ -106,17 +95,64 @@
 				<option value="16-70">16-70</option>
 				<option value="Over 70">Over 70</option>
 		</field>
-        <field
+		</fieldset>
+		<fieldset name="communication_preferences">
+		<field
         	name="annual_report"
             type="radio"
-            label="Handbook/Annual Report?"
-            description="Does the member want to receive a handbook and annual report?"
+            label="Annual Report?"
+            description="Would you like to receive an annual report (usually published in April)?"
             class="btn-group btn-group-yesno"
             default="0"
             filter="integer">
             	<option value="1">JYES</option>
             	<option value="0">JNO</option>
         </field>
+        <field
+        	name="soudbow_subscriber"
+            type="radio"
+            label="Subscribe to Soundbow?"
+            description="Would you like to subscribe to SoundBow (there is an additional charge for this)?"
+            class="btn-group btn-group-yesno"
+            default="0"
+            filter="integer">
+            	<option value="1">JYES</option>
+            	<option value="0">JNO</option>
+        </field>
+		<field
+				name="newsletters"
+				type="list"
+				label="Receive News"
+				description="Would you like to receive news from the association?"
+				default="">
+					<option value="">Not Specified</option>
+					<option value="Email">Yes - By Email</option>
+					<option value="Postal">Yes - By Post</option>
+					<option value="Both">Yes - By Email and Post</option>
+					<option value="Neither">No</option>
+		</field>
+		<field
+				name="district_newsletters"
+				type="list"
+				label="Receive Newsletters For"
+				description="Which districts' communications to receive?"
+				default="0">
+					<option value="0">Own District</option>
+					<option value="1">All Districts</option>
+		</field>
+		</fieldset>
+		<fieldset name="contact_details">
+		<field
+				name="email"
+				type="email"
+				label="Email Address"
+				description="Email Address of the member"
+				size="40"
+				class="inputbox"
+				validate="email"
+				default=""
+				/>
+        
 		<field
 				name="telephone"
 				type="tel"
@@ -126,37 +162,7 @@
 				class="inputbox"
 				default=""
 				/>
-		<field
-				name="newsletters"
-				type="list"
-				label="Receive newsletters by"
-				description="How does the member want to receive newsletters?"
-				required="true"
-				default="">
-					<option value="">Please Select</option>
-					<option value="Email">Email</option>
-					<option value="Postal">Postal</option>
-					<option value="Both">Both Email and Postal</option>
-					<option value="Neither">Neither</option>
-		</field>
-		<field
-				name="district_newsletters"
-				type="list"
-				label="Receive District Comms"
-				description="Which districts' communications to receive?"
-				required="true"
-				default="0">
-					<option value="0">Own District</option>
-					<option value="1">All Districts</option>
-		</field>
-                <field
-                                name="date_elected"
-                                type="calendar"
-                                label="Date Elected"
-                                description="The date that the member was elected"
-                                class="inputbox"
-                                default="" 
-				/>
+                
                 <field
                                 name="address1"
                                 type="text"
@@ -221,7 +227,8 @@
                                 description="Country"
 				class="inputbox"
                 		/>
-                
+                		</fieldset>
+		<fieldset name="notes">
                 <field
                 	name="notes"
                 	type="textarea"
@@ -232,6 +239,8 @@
 					cols="60"
 					rows="3"
                 />
+                </fieldset>
+		<fieldset name="safeguarding">
                 <field
                                 name="dbs_date"
                                 type="calendar"
@@ -249,57 +258,50 @@
                                 default="" 
 				/>
 				
-				<field
-					name="db_form_received"
-					type="radio"
-					label="New Member Form Received?"
-					description="Has the Membership Coordinator received a New-Member form for this member?"
-					class="btn-group btn-group-yesno"
-					default="0"
-					filter="integer">
-						<option value="1">JYES</option>
-						<option value="0">JNO</option>
-				</field>
-				
-				<field
-					name="mod_user_id"
-					type="text"
-					label="Last Modified By"
-					description="The user who most last edited/saved this member record"
-					class="inputbox"
-					readonly="true"
-				/>
-				<field
-                                name="mod_date"
-                                type="text"
-                                label="Last Modified Date"
-                                description="The date that this member record was last edited/saved"
-                                class="inputbox"
-                                readonly="true"
-				/>
-				
+	</fieldset>
+	<fieldset name="privacy">
+	<field
+        	name="accept_privicy_policy"
+            type="list"
+            label="Accept Privacy Policy?"
+            description="Does the member accept the terms of the association's Privacy Policy?"
+            filter="integer">
+            	<option value="">Not Specified</option>
+            	<option value="1">JYES</option>
+            	<option value="0">JNO</option>
+        </field>
+        <field
+        	name="can_publish_name"
+            type="list"
+            label="Publish My Name?"
+            description="Can the association include your name in newsletter and soundbow articles?"
+            filter="integer">
+            	<option value="">Not Specified</option>
+            	<option value="1">JYES</option>
+            	<option value="0">JNO</option>
+        </field>
 	</fieldset>
 		<fieldset name="attachment" addrulepath="components/com_memberdatabase/models/rules" addfieldpath="administrator/components/com_memberdatabase/models/fields">
-		<field
-				name="id"
-				type="hidden"
-                
-				/>
-				<field
-				name="a_description"
-				type="textarea"
-				label="Description"
-				description="Description"
-				class="inputbox"
-				cols="60"
-				rows="3"
-				/>
-				<field
-				name="a_file"
-				type="file"
-				label="File"
-				description="File"
-				/>
+	<field
+		name="id"
+		type="hidden"
+	/>
 
-		</fieldset>
+	<field
+		name="a_description"
+		type="textarea"
+		label="Description"
+		description="Description"
+		class="inputbox"
+		cols="60"
+		rows="3"
+	/>
+	<field
+		name="a_file"
+		type="file"
+		label="File"
+		description="File"
+	/>
+	
+	</fieldset>
 </form>

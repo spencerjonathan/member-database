@@ -230,18 +230,6 @@
 				class="inputbox"
                 		/>
                 		</fieldset>
-		<fieldset name="notes">
-                <field
-                	name="notes"
-                	type="textarea"
-                	label="Notes"
-					size="200"
-                    description="Notes"
-					class="inputbox"
-					cols="60"
-					rows="3"
-                />
-                </fieldset>
 		<fieldset name="safeguarding">
                 <field
                                 name="dbs_date"

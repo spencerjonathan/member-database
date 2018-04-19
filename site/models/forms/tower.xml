@@ -88,9 +88,9 @@
 		</field>
 		<field
 				name="email"
-				type="text"
-				label="Correspondance Email Address"
-				description="Tower correspondance email address"
+				type="email"
+				label="Association Email Address"
+				description="Association Email Address for the Tower correspondance"
 				size="100"
 				class="inputbox"
 				validate="email"
@@ -331,8 +331,16 @@
 					<option value="1">JYES</option>
 					<option value="0">JNO</option>
 		</field>
-		
-		
+		<field
+				name="corresp_email"
+				type="email"
+				label="Preferred Email Address"
+				description="Specify a preferred email address here if the correspondent wants to use a separate email address to their personal one for Tower correspondance"
+				size="100"
+				class="inputbox"
+				validate="email"
+				default=""
+				/>
 		<field
 				name="mod_user_id"
 				type="user"

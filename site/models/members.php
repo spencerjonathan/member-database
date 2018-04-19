@@ -174,7 +174,7 @@ class MemberDatabaseModelMembers extends JModelList {
 		$query = $db->getQuery ( true );
 		
 		// Create the base select statement.
-		$query->select ( 'm.*, concat_ws(\', \',place, designation) as tower, t.place, d.name as district, concat_ws(", ", surname, forenames) as member_name' );
+		$query->select ( 'm.title, m.surname, if (t.corresp_email > "", t.corresp_email, m.email) as email, concat_ws(\', \',place, designation) as tower, t.place, d.name as district, concat_ws(", ", surname, forenames) as member_name' );
 		$query->from ( $db->quoteName ( '#__md_member', 'm' ) );
 		$query->join ( 'INNER', $db->quoteName ( '#__md_tower', 't' ) . ' ON (' . $db->quoteName ( 'm.id' ) . ' = ' . $db->quoteName ( 't.correspondent_id' ) . ')' );
 		$query->join('INNER', $db->quoteName ( '#__md_district', 'd' ) . ' ON (' . $db->quoteName ( 't.district_id' ) . ' = ' . $db->quoteName ( 'd.id' ) . ')');

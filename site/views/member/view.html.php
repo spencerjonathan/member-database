@@ -52,13 +52,16 @@ class MemberDatabaseViewMember extends JViewLegacy
 		$this->form = $this->get('Form');
 		$this->item = $this->get('Item');
 		
-		
-		
 		$this->attachments = array();
+		$this->invoices = array();
 		
 		if ($this->item->id) {
 			$this->attachments = $this->getModel()->getAttachments($this->item->id);
 			$this->lookups = $this->getModel()->getLookups($this->item->id);
+			
+			JLoader::import('ViewHelper', JPATH_COMPONENT . "/helpers/");
+			ViewHelper::loadModel($this, "Invoices", "MemberDatabaseModel");
+			$this->invoices = $this->getModel("Invoices")->getInvoices($this->item->id);
 		}
  
 		// Check for errors.

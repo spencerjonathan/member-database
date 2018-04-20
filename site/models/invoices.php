@@ -41,9 +41,15 @@ class MemberDatabaseModelInvoices extends JModelList
 	}
 
 	
-	public function getInvoices() {
+	public function getInvoices($memberId = null) {
 		$db    = JFactory::getDbo();
 		$query = $this->getListQuery();
+		
+		if ($memberId) {
+			$query->join('INNER', $db->quoteName('#__md_invoicemember', 'm') . ' ON (' . $db->quoteName('inv.id') . ' = ' . $db->quoteName('m.invoice_id') . ')');
+			$query->where("m.member_id = " . (int) $memberId);
+		}
+		
 		$db->setQuery ( $query );
 		
 		$results = $db->loadObjectList ();

@@ -193,11 +193,60 @@ if ($this->item->id) :
 </div>
 <?php endif; ?>
 
-<?php echo JHtml::_('bootstrap.endTab'); ?>
+<?php echo JHtml::_('bootstrap.endTab'); 
+endif; ?>
+
+<!--  ----------------- Invoices Tab ----------------------------- -->
+
+<?php
+if ($this->item->id && !$user_editing ) :
+	echo JHtml::_ ( 'bootstrap.addTab', 'myTab', 'invoices', 'Invoices' );
+	?>
+
+	<table class="table table-striped table-hover invoice-list">
+		<thead>
+			<tr>
+				<th width="20%">Invoice #</th>
+				<th width="20%">Tower</th>
+				<th width="10%">Created User</th>
+				<th width="10%">Created Date</th>
+				<th width="10%" style="text-align: right">Amount £</th>
+				<th width="10%">Paid?</th>
+				<th width="20%">Action</th>
+			</tr>
+		</thead>
+		<tbody>
+			
+				<?php
+				foreach ( $this->invoices as $i => $row ) :
+					$link = JRoute::_ ( 'index.php?option=com_memberdatabase&task=invoice.edit&id=' . $row->id, false );
+					$view = JRoute::_ ( 'index.php?option=com_memberdatabase&view=invoice&layout=view&id=' . $row->id, false );
+					?>
+					<tr>
+				<td><a href="<?php echo $link; ?>" name="<?php echo "$row->place/$row->id"; ?>"
+					title="<?php echo JText::_('Edit Invoice'); ?>"><?php echo "$row->place/$row->id"; ?></a></td>
+				<td> <?php echo $row->tower_name; ?> </td>
+				<td> <?php echo $row->created_by_user; ?> </td>
+				<td> <?php echo $row->created_date; ?> </td>
+				<td style="text-align: right">£<?php echo number_format((float)$row->fee, 2, '.', ''); ?></td>
+				<td><?php if ($row->paid) { echo '<span class="label label-success"><span class="icon-ok icon-white"></span> Paid</span>'; } ?></td>
+				<td><a class="btn" description="View the Invoice" href="<?php echo $view; ?>"><span class="icon-eye-open"></span></a>
+				<a class="btn" description="Edit the Invoice" href="<?php echo $link; ?>"><span class="icon-edit"></span></a></td>
+			</tr>
+				<?php endforeach; ?>
+			
+		</tbody>
+	</table>
+
+<?php echo JHtml::_('bootstrap.endTab'); 
+endif; ?>
+
+
+
 <div class="span12"><hr></div>
 <?php
 
 	echo JHtml::_ ( 'bootstrap.endTabSet' ); 
-endif;
+
 
 ?>

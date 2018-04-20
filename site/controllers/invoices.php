@@ -29,7 +29,7 @@ class MemberDatabaseControllerInvoices extends JControllerAdmin {
 	 *        
 	 * @since 1.6
 	 */
-	public function getModel($name = 'Invoice', $prefix = 'MemberDatabaseModel', $config = array('ignore_request' => true)) {
+	public function getModel($name = 'Invoices', $prefix = 'MemberDatabaseModel', $config = array('ignore_request' => true)) {
 		$model = parent::getModel ( $name, $prefix, $config );
 		
 		return $model;

@@ -240,7 +240,7 @@ class MemberDatabaseModelMembers extends JModelList {
 		$db = JFactory::getDbo ();
 		
 		$query = $this->getExtendedQuery($db);
-		$query->select('insurance_group');
+		$query->select('insurance_group', 'long_service');
 		
 		QueryHelper::addInvoiceOuterJoin($db, $query, (int) $year);
 		

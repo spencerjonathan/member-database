@@ -27,7 +27,9 @@ foreach ($members as $member) {
 	$invoice_id = $member->invoice_id;
 	$invoice_paid = $member->invoice_paid;
 	$insurance_group = $member->insurance_group;
-	$record = [ $member->id, $member->member_type, "<a href='$tower_link'>$member->tower</a>", "<a href='$member_link'>$member->name</a>", $member->newsletters, $dbs, $member->mod_user_id, $db_form_received, $accept_privacy_policy, $member->district, $invoice_id, $invoice_paid, $insurance_group ];
+	$long_service = "";
+	if ($member->long_service != "No") $long_service = " (" . $member->long_service . ")";
+	$record = [ $member->id, $member->member_type . $long_service, "<a href='$tower_link'>$member->tower</a>", "<a href='$member_link'>$member->name</a>", $member->newsletters, $dbs, $member->mod_user_id, $db_form_received, $accept_privacy_policy, $member->district, $invoice_id, $invoice_paid, $insurance_group ];
 	
 	array_push($data, $record);
 }

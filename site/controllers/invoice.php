@@ -98,7 +98,7 @@ class MemberDatabaseControllerInvoice extends JControllerForm {
 		
 		$model = $this->getModel ();
 		
-		error_log ( "invoice.save function called" );
+		error_log ( "invoice.add function called" );
 		$jinput = JFactory::getApplication ()->input;
 		
 		$towerId = $jinput->post->get ( 'tower-id', null, 'int' );

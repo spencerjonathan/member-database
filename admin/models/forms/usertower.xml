@@ -11,6 +11,12 @@
 				label="Tower"
 				/>
 		<field
+				name="tower_id"
+				type="sql"
+				label="Tower"
+				query="select id as value, concat(place, ' (', designation, ')' ) as tower_id from #__md_tower"
+				/>		
+		<field
 				name="user_id"
 				type="sql"
 				label="User"

@@ -81,10 +81,8 @@ class MemberDatabaseViewUserTowers extends JViewLegacy
 	 */
 	protected function setDocument() 
 	{
-		$isNew = ($this->item->id < 1);
 		$document = JFactory::getDocument();
-		$document->setTitle($isNew ? JText::_('Creating User Tower Authorisation') :
-                JText::_('Editing User Tower Authorisation'));
+		$document->setTitle(JText::_('User Tower Authorisation List'));
 	}
 
 }

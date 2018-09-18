@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+		<fieldset name="main" addrulepath="components/com_memberdatabase/models/rules" addfieldpath="administrator/components/com_memberdatabase/models/fields">
+		
+		<field
+				name="id"
+				type="hidden"
+				/>
+		<field
+				name="title"
+				type="list"
+				label="Title"
+				description="The Title of the member"
+				required="true"
+				default="">
+				<option value="">Please Select</option>
+				<option value="Dr">Dr</option>
+				<option value="Father">Father</option>
+				<option value="Master">Master</option>
+				<option value="Miss">Miss</option>
+				<option value="Mr">Mr</option>
+				<option value="Mrs">Mrs</option>
+				<option value="Ms">Ms</option>
+				<option value="Prof">Prof</option>
+				<option value="Rev">Rev</option>
+				<option value="Rev Canon Dr">Rev Canon Dr</option>
+		</field>
+		<field
+				name="forenames"
+				type="text"
+				label="Forenames"
+				description="The forename(s) of the member"
+				size="50"
+				class="inputbox required"
+				required="true"
+				default=""
+				/>
+		<field
+				name="surname"
+				type="text"
+				label="Surname"
+				description="The Surname of the member"
+				size="50"
+				class="inputbox required"
+				required="true"
+				default=""
+				/>
+		<field
+				name="email"
+				type="email"
+				label="Email Address"
+				description="Email Address of the member"
+				size="40"
+				class="inputbox"
+				validate="email"
+				default=""
+				/>
+		</fieldset>
+</form>

@@ -10,6 +10,7 @@
 defined ( '_JEXEC' ) or die ( 'Restricted access' );
 
 JLoader::import('QueryHelper', JPATH_COMPONENT . "/helpers/");
+JLoader::import('EmailHelper', JPATH_COMPONENT . "/helpers/");
 
 /**
  * MemberDatabaseList Model
@@ -337,81 +338,10 @@ class MemberDatabaseModelMembers extends JModelList {
 		
 	}
 	
-	protected function emailAddressExistsInDB($email) {
-		// Find the user id for the given email address.
-		$db = JFactory::getDbo ();
-		$query = $db->getQuery(true)
-		->select('count(*)')
-		->from($db->quoteName('#__md_member'))
-		->where($db->quoteName('email') . ' = ' . $db->quote($email));
-		
-		// Get the user object.
-		$db->setQuery($query);
-		
-		try
-		{
-			$memberCount = $db->loadResult();
-		}
-		catch (RuntimeException $e)
-		{
-			$this->setError(JText::sprintf('Error searching for email address', $e->getMessage()), 500);
-			
-			return false;
-		}
-		
-		// Check for a user.
-		if (empty($memberCount) || $memberCount == 0) {
-			return false;
-		} else {
-			return true;
-		}
-	}
-	
-	protected function storeToken($email, $hashedToken) {
-		$db = JFactory::getDbo ();
-		$currentDate = date ( 'Y-m-d H:i:s' );
-		//$expiryDate = $currentDate;
-		//date_add($expiryDate, new DateInterval("P5D"));
-		
-		//$currentDate = new DateTime();
-		$expiryDate = new DateTime();
-		$expiryDate->add(new DateInterval("P5D"));
-		
-		$expiryDateText = $expiryDate->format('Y-m-d H:i:s');
-		
-		// Create a new query object.
-		$query = $db->getQuery ( true );
-		
-		// Insert columns.
-		$columns = array (
-				'email',
-				'hash_token',
-				'expiry_date',
-				'created_date'
-		);
-		
-		// Insert values.
-		$values = array (
-				$db->quote ( $email ),
-				$db->quote ( $hashedToken ),
-				$db->quote ( $expiryDateText ),
-				$db->quote ( $currentDate )
-		);
-		
-		// Prepare the insert query.
-		$query->insert ( $db->quoteName ( '#__md_member_token' ) )->columns ( $db->quoteName ( $columns ) )->values ( implode ( ',', $values ) );
-		
-		// Set the query using our newly populated query object and execute it.
-		$db->setQuery ( $query );
-		$result = $db->execute ();
-		
-		return true;
-	}
-	
 	public function generateAndSendLink($email) {
 		
 		// 1) check that email exists in database
-		if (!$this->emailAddressExistsInDB($email)) {
+		if (!EmailHelper::emailAddressExistsInDB($email)) {
 			echo "Can't find member with that email address";
 			$this->setError(JText::sprintf('No member has been found with email address ' . $email), 500);
 			return false;
@@ -421,33 +351,25 @@ class MemberDatabaseModelMembers extends JModelList {
 		$token = JApplicationHelper::getHash(JUserHelper::genRandomPassword());
 		
 		// 2) store the hash and email address
-		if (!$this->storeToken($email, $token)) {
+		if (!EmailHelper::storeToken($email, $token)) {
 			$this->setError(JText::sprintf('Could not store unique token'), 500);
 			return false;
 		}
 		
 		// 3) send the email
-		$mailer = JFactory::getMailer();
-		$config = JFactory::getConfig();
-		
 		$link = 'index.php?option=com_memberdatabase&view=members&token=' . $token;
+		
+		$config = JFactory::getConfig();
 		$mode = $config->get('force_ssl', 0) == 2 ? 1 : (-1);
-		
-		$site = $config->get('sitename');
-		
 		$link_text = JRoute::_($link, false, $mode);
 		$body = JText::sprintf(
 				'Use this link %s to access your SCACR membership account record',
 				$link_text
 				);
 
-		$subject = $site . ' - Link To Your Membership Record';
-		
-		
-		$fromname = $config->get('fromname');
-		$mailfrom = $config->get('mailfrom');
-		
-		$send = $mailer->sendMail($mailfrom, $fromname, $email, $subject, $body);
+		$subject = 'Link To Your Membership Record';
+
+		$send = EmailHelper::sendEmail($email, $subject, $body);
 		if ( $send !== true ) {
 			$this->setError(JText::sprintf('Could not send email to %s', $email), 500);
 			return false;

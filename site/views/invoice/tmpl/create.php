@@ -115,10 +115,10 @@ $document->addScriptDeclaration ( '
 					name="year" value="<?php echo $this->year; ?>" />
 					<?php echo JHtml::_('form.token'); ?>
 				<hr>When you're satisfied that the draft invoice above is correct, click here on the "Save Invoice & Close" button to save it and get your invoice number:
-			<button type="submit" id="add_button" name="add_button"
-				class="btn btn-success btn-create-invoice">
-				<span class="icon-new icon-white"></span> Save Invoice & Close
-			</button>
+				<button type="submit" id="add_button" name="add_button"
+					class="btn btn-success btn-create-invoice">
+					<span class="icon-new icon-white"></span> Save Invoice & Close
+				</button>
 			</form>
 		</div>
 	</div>

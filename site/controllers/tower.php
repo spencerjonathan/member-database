@@ -118,7 +118,6 @@ class MemberDatabaseControllerTower extends JControllerForm {
 		if ($result == 1) {
 			return true;
 		}
-		;
 		
 		error_log ( "User with id " . $userId . " does not have authorisation to modify tower with id " . $towerId, 0 );
 		

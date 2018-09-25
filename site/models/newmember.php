@@ -67,8 +67,8 @@ class MemberDatabaseModelNewmember extends JModelAdmin {
 		
 		// Get an appropriate set of fields to display
 		if (isset ( $token )) {
-			$form_name = 'com_memberdatabase.newmember_final';
-			$form_file = 'newmember_final';
+			$form_name = 'com_memberdatabase.newmember_main';
+			$form_file = 'newmember_main';
 		} else {
 			$form_name = 'com_memberdatabase.newmember_initial';
 			$form_file = 'newmember_initial';
@@ -85,6 +85,15 @@ class MemberDatabaseModelNewmember extends JModelAdmin {
 		
 		return $form;
 	}
+
+	/**
+	 * Method to get the data that should be injected in the form.
+	 *
+	 * @return mixed The data for the form.
+	 *        
+	 * @since 0.1.288
+	 * 
+	 */
 	
 	protected function loadFormData() {
 	    // Check the session for previously entered form data.
@@ -97,24 +106,40 @@ class MemberDatabaseModelNewmember extends JModelAdmin {
 	    return $data;
 	}
 	
-	/**
-	 * Method to get the data that should be injected in the form.
-	 *
-	 * @return mixed The data for the form.
-	 *        
-	 * @since 1.6
-	 * Do we need this?
-	 */
-
-	//protected function loadFormData() {
-		// Check the session for previously entered form data.
-		//$data = JFactory::getApplication ()->getUserState ( 'com_memberdatabase.edit.newmember.data', array () );
-		
-		//if (empty ( $data )) {
-			//$data = $this->getItem ();
-		//}
-		
-		//return $data;
-	//}
-
+	
+	public function generateAndSendLink($email) {
+	        
+	    // Set the confirmation token.
+	    $token = JApplicationHelper::getHash(JUserHelper::genRandomPassword());
+	    
+	    // 2) store the hash and email address
+	    if (!EmailHelper::storeToken($email, $token)) {
+	        $this->setError(JText::sprintf('Could not store unique token'), 500);
+	        return false;
+	    }
+	    
+	    // 3) send the email
+	    $link = 'index.php?option=com_memberdatabase&view=newmember&layout=edit&token=' . $token;
+	    
+	    $config = JFactory::getConfig();
+	    $mode = $config->get('force_ssl', 0) == 2 ? 1 : (-1);
+	    $link_text = JRoute::_($link, false, $mode);
+	    $body = JText::sprintf(
+	        'Use this link %s to access your SCACR membership account record',
+	        $link_text
+	        );
+	    
+	    $subject = 'Link To Your Membership Record';
+	    
+	    //$send = EmailHelper::sendEmail($email, $subject, $body);
+	    //if ( $send !== true ) {
+	    //    $this->setError(JText::sprintf('Could not send email to %s', $email), 500);
+	    //    return false;
+	    //} else {
+	    //    return true;
+	    //}
+	    
+	}
+	
+	
 }

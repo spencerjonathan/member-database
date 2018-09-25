@@ -9,6 +9,8 @@
 // No direct access to this file
 defined ( '_JEXEC' ) or die ( 'Restricted access' );
 
+JLoader::import('EmailHelper', JPATH_COMPONENT . "/helpers/");
+
 /**
  * Newmember Controller
  *
@@ -20,8 +22,50 @@ class MemberDatabaseControllerNewmember extends JControllerForm {
 
     public function add($key = null, $urlVar = null) {
         error_log ( "In Newmember add controller" );
-        parent::add($key, $urlVar);
-        $this->setRedirect ( JRoute::_ ( 'index.php?option=' . $this->option . '&view=newmember&id=' . $recordId . $token_text, false ) );
+        if (!parent::add($key, $urlVar)) return false;
+        
+        error_log("input = " . json_encode($this->input));
+        
+        $email = $this->input->get ( 'email', '', 'STRING');
+        
+        $model = $this->getModel();
+        $model->generateAndSendLink($email);
+        
+        $this->setRedirect ( JRoute::_ ( 'index.php?option=' . $this->option . '&view=newmember&layout=default&email=' . $email, false ) );
+        
+        return true;
     }
     
+    /**
+     * Method to check if you can add a new record.
+     *
+     * Extended classes can override this if necessary.
+     *
+     * @param   array  $data  An array of input data.
+     *
+     * @return  boolean
+     *
+     * @since   1.6
+     */
+    protected function allowAdd($data = array())
+    {
+        return true;
+    }
+    
+    public function save($key = null, $urlVar = null) {
+        
+        error_log ( "In Newmember save controller" );
+        if (!parent::save($key, $urlVar)) return false;
+        
+        error_log("input = " . json_encode($this->input));
+        
+        $email = $this->input->get ( 'email', '', 'STRING');
+        
+        $model = $this->getModel();
+        $model->generateAndSendLink($email);
+        
+        $this->setRedirect ( JRoute::_ ( 'index.php?option=' . $this->option . '&view=newmember&layout=default&email=' . $email, false ) );
+        
+        return true;
+    }
 }

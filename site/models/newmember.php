@@ -57,22 +57,23 @@ class MemberDatabaseModelNewmember extends JModelAdmin {
 		// Get the form.
 		
 		$jinput = JFactory::getApplication ()->input;
-		$token = $jinput->get ( 'token', null, 'STRING' );
+		//$token = $jinput->get ( 'token', null, 'CMD' );
+		$stage = $jinput->get ( 'stage', "initial", 'ALNUM' );
+		//$id = $jinput->get ( 'id', null, 'INT' );
 		
-		if (isset ( $token )) {
-			$user_editing = true;
-		} else {
-			$user_editing = false;
-		}
+		$form_name = 'com_memberdatabase.newmember_' . $stage;
+		$form_file = 'newmember_' . $stage;
 		
-		// Get an appropriate set of fields to display
-		if (isset ( $token )) {
-			$form_name = 'com_memberdatabase.newmember_main';
-			$form_file = 'newmember_main';
+		/* if ($id) {
+		    $form_name = 'com_memberdatabase.newmember_final';
+		    $form_file = 'newmember_final';
+		} elseif ($token) {
+		    $form_name = 'com_memberdatabase.newmember_main';
+		    $form_file = 'newmember_main';
 		} else {
-			$form_name = 'com_memberdatabase.newmember_initial';
-			$form_file = 'newmember_initial';
-		}
+		    $form_name = 'com_memberdatabase.newmember_initial';
+		    $form_file = 'newmember_initial';
+		} */
 		
 		$form = $this->loadForm ( $form_name, $form_file, array (
 				'control' => 'jform',
@@ -100,12 +101,35 @@ class MemberDatabaseModelNewmember extends JModelAdmin {
 	    $data = JFactory::getApplication ()->getUserState ( 'com_memberdatabase.edit.newmember.data', array () );
 	    
 	    if (empty ( $data )) {
-	        $data = $this->getItem ();
+	        $jinput = JFactory::getApplication ()->input;
+	        $token = $jinput->get ( 'token', null, 'ALNUM' );
+	        
+	        $pk = $this->getPK($token);
+	        
+	        $data = $this->getItem ($pk);
 	    }
 	    
 	    return $data;
 	}
 	
+	protected function getPK($token) {
+	    $db = JFactory::getDbo ();
+	    
+	    $query = $db->getQuery ( true )
+	    ->select ( 'm.id' )
+	    ->from ( $db->quoteName ( '#__md_new_member', 'm' ) )
+	    ->join ( 'INNER', $db->quoteName ( '#__md_member_token', 'memt' ) . ' ON (' . $db->quoteName ( 'm.email' ) . ' = ' . $db->quoteName ( 'memt.email' ) . ')' )
+	    ->where ( 'memt.hash_token = ' .  $db->quote ( $token ) );
+	   
+	    $db->setQuery ( $query );
+	    return $db->loadResult ();
+	}
+	
+	public function saveProposers($data) {
+	    error_log("In newmember::saveProposers().  Data = " . json_encode($data));
+	    
+	    
+	}
 	
 	public function generateAndSendLink($email) {
 	        

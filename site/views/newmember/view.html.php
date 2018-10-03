@@ -52,6 +52,10 @@ class MemberDatabaseViewNewmember extends JViewLegacy
 		$this->form = $this->get('Form');
 		$this->item = $this->get('Item');
 		
+		$jinput = JFactory::getApplication ()->input;
+		$this->token = $jinput->get ( 'token', null, "ALNUM" );
+		$this->stage = $jinput->get ( 'stage', "initial", 'ALNUM' );
+		
 		error_log("Item retrieved: " . json_encode($this->item));
 		
 		// Check for errors.

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+		<fieldset name="proposers" addrulepath="components/com_memberdatabase/models/rules" addfieldpath="administrator/components/com_memberdatabase/models/fields">
+		
+		<field
+				name="proposer_email"
+				type="proposer_email"
+				label="Proposer Email"
+				description="Email address of the member that is proposing you"
+				size="40"
+				class="inputbox"
+				validate="email"
+				default=""
+				/>
+				
+		<field
+				name="seconder_email"
+				type="seconder_email"
+				label="Seconder Email"
+				description="Email address of the member that is seconding your proposal"
+				size="40"
+				class="inputbox"
+				validate="email"
+				default=""
+				/>
+        
+		</fieldset>
+		
+</form>

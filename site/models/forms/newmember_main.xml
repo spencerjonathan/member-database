@@ -13,7 +13,7 @@
 				description="The tower that the member is associated with"
 				required="true"
 				default=""
-				query="SELECT id AS value, concat_ws(', ', place, designation) AS tower_id FROM #__md_tower" />
+				query="SELECT '' as value, 'Please Select' as tower_id union all SELECT id AS value, concat_ws(', ', place, designation) AS tower_id FROM #__md_tower" />
 		<field
 				name="title"
 				type="list"
@@ -39,7 +39,7 @@
 				label="Forenames"
 				description="The forename(s) of the member"
 				size="50"
-				class="inputbox required"
+				class="inputbox"
 				required="true"
 				default=""
 				/>
@@ -49,7 +49,7 @@
 				label="Surname"
 				description="The Surname of the member"
 				size="50"
-				class="inputbox required"
+				class="inputbox"
 				required="true"
 				default=""
 				/>
@@ -61,7 +61,7 @@
 				description="The type of member"
 				required="true"
 				default=""
-				query="SELECT id AS value, name AS member_type_id FROM #__md_member_type where enabled = 1"
+				query="SELECT '' AS value, 'Please Select' AS member_type_id union all SELECT id AS value, name AS member_type_id FROM #__md_member_type where enabled = 1"
 		/>
 		
 		<field

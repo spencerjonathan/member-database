@@ -10,16 +10,18 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
-if ($this->item->id) {
-    $task = "newmember.save";
-} else {
-    $task = "newmember.save";
-}
+$task = "newmember.save" . $this->stage;
 
-$jinput = JFactory::getApplication()->input;
+/* if ($this->item->id) {
+    $task = "newmember.savefinal";
+} elseif ($this->token) {
+    $task = "newmember.saveintermediate";
+} else {
+    $task = "newmember.saveinitial";
+} */
 
 ?>
-<legend><?php echo JText::_('Member Database - Member Details'); ?></legend>
+<h1><?php echo JText::_('Member Database - Member Details'); ?></h1>
 
 <div>
 
@@ -37,7 +39,7 @@ $jinput = JFactory::getApplication()->input;
 <hr>
 
 <form class="form-validate"
-	action="<?php echo JRoute::_('index.php?option=com_memberdatabase&view=newmember&layout=edit&id=' . (int) $this->item->id); ?>"
+	action="<?php echo JRoute::_('index.php?option=com_memberdatabase&view=newmember&layout=edit&token=' . $this->token . '&stage=' . $this->stage); ?>"
 	method="post" name="adminForm" id="adminForm">
 	<div class="row-fluid">
 			
@@ -62,6 +64,10 @@ $sections = array(
     array(
         "privacy",
         "Privacy"
+    ),
+    array(
+        "proposers",
+        "Proposers"
     )
 );
 
@@ -74,6 +80,10 @@ foreach ($sections as $section) :
 
         if ($section[0] == 'privacy') {
             echo 'General Data Protection Regulation (GDPR) requires that<br> 1) We document in the Association\'s Privicy Policy the lawful basis for processing your personal information, and <br> 2) That you concent to us processing your personal data for the reasons set out in the Association Privicy Policy.<br><br> <a	href="https://scacr.org/documents/membership/SCACR_Data_Protection_Policy.pdf">Read the Association Privicy Policy Here</a><br><br> Concenting to the SCACR processing your personal data for the reasons set out in the Association\'s Privicy Policy is a requirement for membership to the SCACR.<br><br>';
+        }
+        
+        if ($section[0] == 'proposers') {
+            echo 'Please provide the email addresses of the two existing members that are proposing your membership.  They will both be emailed to confirm that they support your nomination.<br><br>';
         }
 
         foreach ($fieldset as $field) :

@@ -83,7 +83,7 @@ class MemberDatabaseControllerNewmember extends JControllerForm
         //$data = $this->input->post->get('jform', array(), 'array');
         
         $id = $this->input->post->getInt('id');
-        $token = $this->input->getInt('token');
+        $token = $this->input->get('token', null, "ALNUM");
         
         $this->setRedirect(JRoute::_('index.php?option=' . $this->option . '&view=newmember&layout=edit&token=' . $token . '&stage=final', false));
     }
@@ -102,6 +102,8 @@ class MemberDatabaseControllerNewmember extends JControllerForm
         
         $jinput = JFactory::getApplication ()->input;
         $token = $jinput->get ( 'token', null, 'ALNUM' );
+        
+        $pk = $model->getPK($token);
         
         error_log("this->input = " . json_encode($this->input));
         error_log("jinput = " . json_encode((array) $jinput));
@@ -128,9 +130,9 @@ class MemberDatabaseControllerNewmember extends JControllerForm
             return false;
         }
         
-        $model->saveProposers($validData);
+        $model->saveProposers($validData, $pk);
         //$data = $this->input->post->get('jform', array(), 'array');
         
-        $this->setRedirect(JRoute::_('index.php?option=' . $this->option . '&view=newmember&layout=edit&token=' . $token . '&id=' . $data['email'], false));
+        $this->setRedirect(JRoute::_('index.php?option=' . $this->option . '&view=newmember&layout=default', false));
     }
 }

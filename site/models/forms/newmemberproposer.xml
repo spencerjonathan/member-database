@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+		<fieldset name="main" addrulepath="components/com_memberdatabase/models/rules" addfieldpath="administrator/components/com_memberdatabase/models/fields">
+		
+		<field
+			name="id"
+			type="hidden"
+		/>
+		<field
+			name="newmember_id"
+			type="hidden"
+		/>
+
+		<field
+                	name="annual_report"
+            		type="radio"
+            		label="Approve?"
+            		description="Do you confirm that you nominate this person for membership?"
+            		class="btn-group btn-group-yesno"
+            		default=""
+            		filter="integer">
+                		<option value="">Unspecified</option>
+                		<option value="1">JYES</option>
+                		<option value="0">JNO</option>
+        	</field>
+	</fieldset>
+</form>

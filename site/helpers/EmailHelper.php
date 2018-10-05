@@ -8,6 +8,7 @@ abstract class EmailHelper
         $config = JFactory::getConfig();
         $fromname = $config->get('fromname');
         $mailfrom = $config->get('mailfrom');
+        $site = $config->get('sitename');
         
         return $mailer->sendMail($mailfrom, $fromname, $email, $site . " - " . $subject, $body);
     }

@@ -9,6 +9,8 @@
  
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
+
+JLoader::import('ModelHelper', JPATH_COMPONENT . "/helpers/");
  
 /**
  * User Tower View
@@ -23,6 +25,13 @@ class MemberDatabaseViewNewMemberProposer extends JViewLegacy
 	 * @var         form
 	 */
 	protected $form = null;
+	
+	public function __construct($config = array()) {
+	    parent::__construct ( $config );
+	    
+	    $model = ModelHelper::loadModel ( "NewMember", "MemberDatabaseModel" );
+	    $this->setModel ( $model, false );
+	}
  
 	/**
 	 * Display the UserTower view
@@ -36,6 +45,9 @@ class MemberDatabaseViewNewMemberProposer extends JViewLegacy
 		// Get the Data
 		$this->form = $this->get('Form');
 		$this->item = $this->get('Item');
+		$this->newmember = $this->getModel("NewMember")->getItem($this->item->newmember_id);
+		
+		error_log("newmemberproposer form data: " . json_encode((array) $this->item));
  
 		// Check for errors.
 		if (count($errors = $this->get('Errors')))

@@ -11,14 +11,14 @@
 defined('_JEXEC') or die('Restricted access');
  
 ?>
+<legend><?php echo JText::_('Member Database - Verify New Member Proposal'); ?></legend>
+Do you wish to propose <?php echo $this->newmember->forenames . " " . $this->newmember->surname; ?> of tower <?php echo $this->newmember->tower_id ?>?<br>
 <form action="<?php echo JRoute::_('index.php?option=com_memberdatabase&id=' . (int) $this->item->id); ?>"
     method="post" name="adminForm" id="adminForm">
     <div class="form-horizontal">
         <fieldset class="adminform">
-            <legend><?php echo JText::_('Member Database - Verify New Member Proposal'); ?></legend>
             <div class="row-fluid">
                 <div class="span6">
-
                     <?php foreach ($this->form->getFieldset() as $field): ?>
                         <div class="control-group">
                             <div class="control-label"><?php echo $field->label; ?></div>
@@ -32,4 +32,9 @@ defined('_JEXEC') or die('Restricted access');
     </div>
     <input type="hidden" name="task" value="newmemberproposer.save" />
     <?php echo JHtml::_('form.token'); ?>
+    
+    <button type="submit" id="add_button" name="add_button"
+		class="btn btn-success btn-save-newmemberproposer">
+		<span class="icon-new icon-white"></span> Submit
+	</button>
 </form>

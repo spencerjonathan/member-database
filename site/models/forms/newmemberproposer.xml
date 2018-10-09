@@ -12,7 +12,7 @@
 		/>
 
 		<field
-                	name="annual_report"
+                	name="approved_flag"
             		type="radio"
             		label="Approve?"
             		description="Do you confirm that you nominate this person for membership?"

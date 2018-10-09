@@ -40,5 +40,15 @@ class MemberDatabaseControllerNewMemberProposer extends JControllerForm {
 		
 		return $this->allowEdit($data, $key);
 	}
+
+	public function save($key = null, $urlVar = null) {
+		$saveResult = parent::save($key, $urlVar);
+
+		if (!$saveResult) return $saveResult;
+
+		$this->setRedirect(JRoute::_('index.php?option=' . $this->option . '&view=newmemberproposer&layout=saved', false));
+
+		return true;
+	}
 	
 }

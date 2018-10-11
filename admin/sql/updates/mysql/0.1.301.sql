@@ -4,6 +4,6 @@ create table #__md_new_member_proposer (
 	`email` varchar(100) NOT NULL,
 	`hash_token` VARCHAR(100) NOT NULL,
 	`created_date` timestamp NOT NULL,
-	`approved_flag` tinyint(1) NOT NULL DEFAULT '0',
+	`approved_flag` tinyint(1) DEFAULT NULL,
 	PRIMARY KEY (`id`)
 )

@@ -165,7 +165,7 @@ class MemberDatabaseModelNewmember extends JModelAdmin
                 $db->quote($email),
                 $db->quote($token),
                 $db->quote($currentDate),
-                0
+                null
             );
 
             // Prepare the insert query.
@@ -247,4 +247,34 @@ class MemberDatabaseModelNewmember extends JModelAdmin
 
         return true;
     }
+    
+    public function validateEmailAddresses($form, $data, $group = null) {
+        if (!parent::validate($form, $data, $group)) return false;
+        
+        foreach ([
+            'proposer_email',
+            'seconder_email'
+        ] as $proposer) {
+            
+            $db = JFactory::getDbo();
+            
+            $query = $db->getQuery(true)
+            ->select('count(*)')
+            ->from($db->quoteName('#__md_member', 'm'))
+            ->join ( 'INNER', $db->quoteName ( '#__md_member_type', 'mt' ) . ' ON (' . $db->quoteName ( 'm.member_type_id' ) . ' = ' . $db->quoteName ( 'mt.id' ) . ')' )
+            ->where('m.email = ' . $db->quote($data['proposer_email']))
+            ->where('mt.include_in_reports = 1');
+            
+            $db->setQuery($query);
+            if (!$db->loadResult()) {
+                $this->setError("No current members have email address " . $data[$proposer]);
+                return false;
+            }
+            
+        }
+        
+        return $data;
+    }
+    
+    
 }

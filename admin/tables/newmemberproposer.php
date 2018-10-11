@@ -25,4 +25,11 @@ class MemberDatabaseTableNewMemberProposer extends JTable
 	{
 		parent::__construct('#__md_new_member_proposer', 'id', $db);
 	}
+	
+	public function store($updateNulls = false)
+	{
+	    $this->mod_date = $currentDate = date('Y-m-d H:i:s');
+	    
+	    return parent::store($updateNulls);
+	}
 }

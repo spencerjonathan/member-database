@@ -62,13 +62,20 @@ class MemberDatabaseControllerNewmember extends JControllerForm
     {
         error_log("In Newmember::saveinitial");
         
-        parent::save($key, $urlVar);
+        $model = $this->getModel();
+        
+        if( !parent::save($key, $urlVar) ) {
+            $this->setError(\JText::sprintf('JLIB_APPLICATION_ERROR_SAVE_FAILED', $model->getError()));
+            $this->setMessage($this->getError(), 'error');
+            
+            $this->setRedirect(JRoute::_('index.php?option=' . $this->option . '&view=newmember&layout=edit', false));
+            return false;
+        }
         
         error_log("data = " . json_encode($validData));
         
         $data = $this->input->post->get('jform', array(), 'array');
         
-        $model = $this->getModel();
         $model->generateAndSendLink($data['email']);
         
         $this->setRedirect(JRoute::_('index.php?option=' . $this->option . '&view=newmember&layout=default&email=' . $data['email'], false));
@@ -97,7 +104,7 @@ class MemberDatabaseControllerNewmember extends JControllerForm
         $model = $this->getModel();
         
         $form = $model->getForm($data, false);
-        $validData = $model->validate($form, $data);
+        $validData = $model->validateEmailAddresses($form, $data);
         $context = "$this->option.edit.$this->context";
         
         $jinput = JFactory::getApplication ()->input;

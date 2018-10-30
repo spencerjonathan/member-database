@@ -153,8 +153,7 @@ class MemberDatabaseModelNewmember extends JModelAdmin
                 'newmember_id',
                 'email',
                 'hash_token',
-                'created_date',
-                'approved_flag'
+                'created_date'
             );
 
             $email = $data[$proposer];
@@ -164,8 +163,7 @@ class MemberDatabaseModelNewmember extends JModelAdmin
                 (int) $pk,
                 $db->quote($email),
                 $db->quote($token),
-                $db->quote($currentDate),
-                null
+                $db->quote($currentDate)
             );
 
             // Prepare the insert query.
@@ -274,6 +272,35 @@ class MemberDatabaseModelNewmember extends JModelAdmin
         }
         
         return $data;
+    }
+    
+    public function checkEmailAddressNotAlreadyInUse($form, $data) {
+        $db = JFactory::getDbo();
+        
+        $query = $db->getQuery(true)
+        ->select('count(*)')
+        ->from($db->quoteName('#__md_member', 'm'))
+        ->where('m.email = ' . $db->quote($data['email']));
+        
+        $db->setQuery($query);
+        if ($db->loadResult()) {
+            $this->setError("A member with this email address already exists " . $data["email"]);
+            return false;
+        }
+        
+        $query = $db->getQuery(true)
+        ->select('count(*)')
+        ->from($db->quoteName('#__md_new_member', 'm'))
+        ->where('m.email = ' . $db->quote($data['email']));
+        
+        $db->setQuery($query);
+        if ($db->loadResult()) {
+            $this->setError("A membership application request has already been submitted using this email address " . $data["email"]);
+            return false;
+        }
+        
+        return $data;
+        
     }
     
     

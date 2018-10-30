@@ -64,6 +64,29 @@ class MemberDatabaseControllerNewmember extends JControllerForm
         
         $model = $this->getModel();
         
+        $validData = $model->checkEmailAddressNotAlreadyInUse($form, $data);
+        
+        if ($validData === false)
+        {
+            // Get the validation messages.
+            $this->setError(\JText::sprintf('JLIB_APPLICATION_ERROR_SAVE_FAILED', $model->getError()));
+            $this->setMessage($this->getError(), 'error');
+            
+            $app   = \JFactory::getApplication();
+            
+            // Save the data in the session.
+            $app->setUserState($context . '.data', $data);
+            
+            // Redirect back to the edit screen.
+            $this->setRedirect(
+                \JRoute::_(
+                    'index.php?option=' . $this->option . '&view=' . $this->view_item . "&layout=edit", false
+                    )
+                );
+            
+            return false;
+        }
+        
         if( !parent::save($key, $urlVar) ) {
             $this->setError(\JText::sprintf('JLIB_APPLICATION_ERROR_SAVE_FAILED', $model->getError()));
             $this->setMessage($this->getError(), 'error');

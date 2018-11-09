@@ -128,6 +128,7 @@ class MemberDatabaseControllerNewmember extends JControllerForm
         
         $form = $model->getForm($data, false);
         $validData = $model->validateEmailAddresses($form, $data);
+        
         $context = "$this->option.edit.$this->context";
         
         $jinput = JFactory::getApplication ()->input;

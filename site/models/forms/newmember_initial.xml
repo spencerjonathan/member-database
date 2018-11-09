@@ -56,5 +56,13 @@
 				validate="email"
 				default=""
 				/>
+		<field
+                name="captcha"
+                type="captcha"
+                label="Captcha"
+                description="Captcha"
+                validate="captcha"
+                namespace="newmember"
+        />
 		</fieldset>
 </form>

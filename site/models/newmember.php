@@ -58,25 +58,10 @@ class MemberDatabaseModelNewmember extends JModelAdmin
     {
         // Get the form.
         $jinput = JFactory::getApplication()->input;
-        // $token = $jinput->get ( 'token', null, 'CMD' );
         $stage = $jinput->get('stage', "initial", 'ALNUM');
-        // $id = $jinput->get ( 'id', null, 'INT' );
 
         $form_name = 'com_memberdatabase.newmember_' . $stage;
         $form_file = 'newmember_' . $stage;
-
-        /*
-         * if ($id) {
-         * $form_name = 'com_memberdatabase.newmember_final';
-         * $form_file = 'newmember_final';
-         * } elseif ($token) {
-         * $form_name = 'com_memberdatabase.newmember_main';
-         * $form_file = 'newmember_main';
-         * } else {
-         * $form_name = 'com_memberdatabase.newmember_initial';
-         * $form_file = 'newmember_initial';
-         * }
-         */
 
         $form = $this->loadForm($form_name, $form_file, array(
             'control' => 'jform',
@@ -100,6 +85,9 @@ class MemberDatabaseModelNewmember extends JModelAdmin
      */
     protected function loadFormData()
     {
+        
+        error_log("In ModelNewmember::loadFormData");
+        
         // Check the session for previously entered form data.
         $data = JFactory::getApplication()->getUserState('com_memberdatabase.edit.newmember.data', array());
 
@@ -120,7 +108,7 @@ class MemberDatabaseModelNewmember extends JModelAdmin
         $db = JFactory::getDbo();
 
         $query = $db->getQuery(true)
-            ->select('m.id')
+            ->select('max(m.id)')   // Ensure that we only get one record (should only get one anyway)
             ->from($db->quoteName('#__md_new_member', 'm'))
             ->join('INNER', $db->quoteName('#__md_member_token', 'memt') . ' ON (' . $db->quoteName('m.email') . ' = ' . $db->quoteName('memt.email') . ')')
             ->where('memt.hash_token = ' . $db->quote($token));
@@ -249,6 +237,11 @@ class MemberDatabaseModelNewmember extends JModelAdmin
     public function validateEmailAddresses($form, $data, $group = null) {
         if (!parent::validate($form, $data, $group)) return false;
         
+        if (strtolower(trim($data['proposer_email'])) == strtolower(trim($data['seconder_email']))) {
+            $this->setError("Proposer and Seconder email addresses must be different!");
+            return false;
+        }
+        
         foreach ([
             'proposer_email',
             'seconder_email'
@@ -260,7 +253,7 @@ class MemberDatabaseModelNewmember extends JModelAdmin
             ->select('count(*)')
             ->from($db->quoteName('#__md_member', 'm'))
             ->join ( 'INNER', $db->quoteName ( '#__md_member_type', 'mt' ) . ' ON (' . $db->quoteName ( 'm.member_type_id' ) . ' = ' . $db->quoteName ( 'mt.id' ) . ')' )
-            ->where('m.email = ' . $db->quote($data['proposer_email']))
+            ->where('lower(trim(m.email)) = ' . $db->quote(strtolower(trim($data[$proposer]))))
             ->where('mt.include_in_reports = 1');
             
             $db->setQuery($query);

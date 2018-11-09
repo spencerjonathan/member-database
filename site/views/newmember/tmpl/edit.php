@@ -12,14 +12,6 @@ defined('_JEXEC') or die('Restricted access');
 
 $task = "newmember.save" . $this->stage;
 
-/* if ($this->item->id) {
-    $task = "newmember.savefinal";
-} elseif ($this->token) {
-    $task = "newmember.saveintermediate";
-} else {
-    $task = "newmember.saveinitial";
-} */
-
 ?>
 <h1><?php echo JText::_('Member Database - Member Details'); ?></h1>
 
@@ -89,14 +81,13 @@ foreach ($sections as $section) :
         foreach ($fieldset as $field) :
             ?>
 
-					<div class="control-group">
-			<div class="control-label"><?php echo $field->label; ?></div>
+			<div class="control-group">
+			<?php if ($field->label != "Captcha") :?>
+				<div class="control-label"><?php echo $field->label; ?></div>
+			<?php endif; ?>
 			<div class="controls"><?php echo $field->input; ?></div>
-		</div>
-				<?php
-
-endforeach
-        ;
+			</div>
+		<?php endforeach;
 
         echo '</fieldset></div>';
     endif;

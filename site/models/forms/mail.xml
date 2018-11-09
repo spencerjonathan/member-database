@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+	<fieldset>
+
+		<field
+			name="tower_id"
+			type="sql"
+			label="Tower"
+			description="The tower that you wish to contact"
+			required="true"
+			query="SELECT id AS value, concat_ws(', ', place, designation) AS tower_id FROM #__md_tower" />
+			
+		<field
+			name="reply_to_email"
+			type="email"
+			label="Your Email Address"
+			description="Your email address"
+			size="40"
+			class="inputbox"
+			validate="email"
+			required="true"
+		/>
+				
+		<field 
+			name="subject" 
+			type="text"
+			label="Subject"
+			description="Subject"
+			class="span8"
+			maxlength="150"
+			size="30"
+			required="true"
+		/>
+
+		<field 
+			name="message" 
+			type="textarea"
+			label="COM_USERS_MAIL_FIELD_MESSAGE_LABEL"
+			description="COM_USERS_MAIL_FIELD_MESSAGE_DESC"
+			class="span11 vert"
+			cols="70"
+			rows="20"
+			required="true"
+		/>
+		<field
+            name="captcha"
+            type="captcha"
+            label="Captcha"
+            description="Captcha"
+            validate="captcha"
+            namespace="mail"
+        />
+	</fieldset>
+</form>

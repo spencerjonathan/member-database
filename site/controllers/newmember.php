@@ -62,6 +62,9 @@ class MemberDatabaseControllerNewmember extends JControllerForm
     {
         error_log("In Newmember::saveinitial");
         
+        // Check for request forgeries.
+        $this->checkToken('request');
+        
         $model = $this->getModel();
         
         $validData = $model->checkEmailAddressNotAlreadyInUse($form, $data);
@@ -108,6 +111,9 @@ class MemberDatabaseControllerNewmember extends JControllerForm
     {
         error_log("In Newmember::saveinitermediate");
         
+        // Check for request forgeries.
+        $this->checkToken('request');
+        
         parent::save($key, $urlVar);
         
         //$data = $this->input->post->get('jform', array(), 'array');
@@ -121,6 +127,9 @@ class MemberDatabaseControllerNewmember extends JControllerForm
     public function savefinal($key = null, $urlVar = null)
     {
         error_log("In Newmember::savefinal");
+        
+        // Check for request forgeries.
+        $this->checkToken('request');
         
         $data  = $this->input->post->get('jform', array(), 'array');
         

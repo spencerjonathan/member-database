@@ -42,6 +42,9 @@ class MemberDatabaseControllerNewMemberProposer extends JControllerForm {
 	}
 
 	public function save($key = null, $urlVar = null) {
+	    // Check for request forgeries.
+	    $this->checkToken('request');
+	    
 		$saveResult = parent::save($key, $urlVar);
 
 		if (!$saveResult) return $saveResult;

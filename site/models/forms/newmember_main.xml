@@ -61,7 +61,7 @@
 				description="The type of member"
 				required="true"
 				default=""
-				query="SELECT '' AS value, 'Please Select' AS member_type_id union all SELECT id AS value, name AS member_type_id FROM #__md_member_type where enabled = 1"
+				query="SELECT '' AS value, 'Please Select' AS member_type_id union all SELECT id AS value, name AS member_type_id FROM #__md_member_type where enabled = 1 and new_member_type = 1"
 		/>
 		
 		<field

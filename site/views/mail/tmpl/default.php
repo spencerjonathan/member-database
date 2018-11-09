@@ -17,11 +17,13 @@ $script .= "\t\t\t" . 'return;' . "\n";
 $script .= "\t\t" . '}' . "\n";
 $script .= "\t\t" . '// do field validation' . "\n";
 $script .= "\t\t" . 'if (form.jform_subject.value == ""){' . "\n";
-$script .= "\t\t\t" . 'alert("' . JText::_('COM_USERS_MAIL_PLEASE_FILL_IN_THE_SUBJECT', true) . '");' . "\n";
-$script .= "\t\t" . '} else if (getSelectedValue(\'adminForm\',\'jform[group]\') < 0){' . "\n";
-$script .= "\t\t\t" . 'alert("' . JText::_('COM_USERS_MAIL_PLEASE_SELECT_A_GROUP', true) . '");' . "\n";
+$script .= "\t\t\t" . 'alert("Please fill in the subject");' . "\n";
+$script .= "\t\t" . '} else if (getSelectedValue(\'adminForm\',\'jform[tower_id]\') < 0){' . "\n";
+$script .= "\t\t\t" . 'alert("Please select a tower to contact");' . "\n";
+$script .= "\t\t" . '} else if (form.jform_reply_to_email.value == ""){' . "\n";
+$script .= "\t\t\t" . 'alert("Please provide your email address");' . "\n";
 $script .= "\t\t" . '} else if (form.jform_message.value == ""){' . "\n";
-$script .= "\t\t\t" . 'alert("' . JText::_('COM_USERS_MAIL_PLEASE_FILL_IN_THE_MESSAGE', true) . '");' . "\n";
+$script .= "\t\t\t" . 'alert("Please fill in the message");' . "\n";
 $script .= "\t\t" . '} else {' . "\n";
 $script .= "\t\t\t" . 'Joomla.submitform(pressbutton);' . "\n";
 $script .= "\t\t" . '}' . "\n";
@@ -33,6 +35,18 @@ JHtml::_('formbehavior.chosen', 'select');
 JFactory::getDocument()->addScriptDeclaration($script);
 ?>
 
+<legend>Contact A SCACR Tower</legend>
+
+	<button onclick="Joomla.submitbutton('mail.send')" id="send_button"
+		class="btn btn-small btn-success">
+		<span class="icon-mail"></span> Send
+	</button>
+	
+	<button onclick="Joomla.submitbutton('mail.cancel')"
+		class="btn btn-small">
+		<span class="icon-cancel"></span> Cancel
+	</button>
+<hr>
 <form action="<?php echo JRoute::_('index.php?option=com_memberdatabase&view=mail'); ?>" name="adminForm" method="post" id="adminForm">
 	<div class="row-fluid">
 		<div class="span12">

@@ -45,6 +45,8 @@ class MemberDatabaseControllerNewMemberProposer extends JControllerForm {
 		$saveResult = parent::save($key, $urlVar);
 
 		if (!$saveResult) return $saveResult;
+		
+		$this->getModel()->promoteToMember();
 
 		$this->setRedirect(JRoute::_('index.php?option=' . $this->option . '&view=newmemberproposer&layout=saved', false));
 

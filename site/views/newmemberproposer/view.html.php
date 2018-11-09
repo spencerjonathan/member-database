@@ -43,6 +43,10 @@ class MemberDatabaseViewNewMemberProposer extends JViewLegacy
 	public function display($tpl = null)
 	{
 		// Get the Data
+		
+	    $jinput = JFactory::getApplication()->input;
+	    $this->token = $jinput->get('token', null, "ALNUM");
+	    
 		$this->form = $this->get('Form');
 		$this->item = $this->get('Item');
 		$this->newmember = $this->getModel("NewMember")->getItem($this->item->newmember_id);

@@ -80,49 +80,30 @@ class MemberDatabaseModelMail extends JModelAdmin
 	 */
 	public function send()
 	{
-		$app    = JFactory::getApplication();
-		$data   = $app->input->post->get('jform', array(), 'array');
-		$user   = JFactory::getUser();
-		$access = new JAccess;
-		$db     = $this->getDbo();
+		
+		$message_body = JFilterInput::getInstance()->clean($message_body, 'string');
 
-		$mode         = array_key_exists('mode', $data) ? (int) $data['mode'] : 0;
-		$subject      = array_key_exists('subject', $data) ? $data['subject'] : '';
-		$grp          = array_key_exists('group', $data) ? (int) $data['group'] : 0;
-		$recurse      = array_key_exists('recurse', $data) ? (int) $data['recurse'] : 0;
-		$bcc          = array_key_exists('bcc', $data) ? (int) $data['bcc'] : 0;
-		$disabled     = array_key_exists('disabled', $data) ? (int) $data['disabled'] : 0;
-		$message_body = array_key_exists('message', $data) ? $data['message'] : '';
+        $reply_to_email = MailHelper::cleanAddress($data'reply_to_email']);
 
-		// Automatically removes html formatting
-		if (!$mode)
-		{
-			$message_body = JFilterInput::getInstance()->clean($message_body, 'string');
-		}
+        if (!MailHelper::isEmailAddress($reply_to_email)) {
+            $app->setUserState('com_memberdatabase.display.mail.data', $data);
+		    $this->setError('Email address provided is not valid: ' . $reply_to_email);
+		    return false;
+        }
 
-		// Check for a message body and subject
-		if (!$message_body || !$subject)
-		{
-			$app->setUserState('com_users.display.mail.data', $data);
-			$this->setError(JText::_('COM_USERS_MAIL_PLEASE_FILL_IN_THE_FORM_CORRECTLY'));
-
-			return false;
-		}
-
-		// Get users in the group out of the ACL
-		$to = $access->getUsersByGroup($grp, $recurse);
-
-		// Get all users email and group except for senders
-		$query = $db->getQuery(true)
+		// Get correspondent email address
+		
+        $db = $this->getDbo();
+        $query = $db->getQuery(true)
 			->select('t.corresp_email, corresp.email')
 			->from('#__md_tower t')
 			->leftJoin('#__md_member corresp on corresp.id = t.correspondent_id')
-			->where('t.id = ' . (int) $data['id']);
+			->where('t.id = ' . (int) $data['tower_id']);
 
 		$db->setQuery($query);
 		$row = $db->loadAssoc();
 
-		$to = $row['corresp_email'] ? $row['corresp_email'] : $row['email'];
+		$to = MailHelper::cleanLine($row['corresp_email'] ? $row['corresp_email'] : $row['email']);
 		
 		if (!$to) {
 		    $app->setUserState('com_memberdatabase.display.mail.data', $data);
@@ -135,9 +116,10 @@ class MemberDatabaseModelMail extends JModelAdmin
 		$params = JComponentHelper::getParams('com_memberdatabase');
 
 		// Build email message format.
+        $mailer->addReplyTo($reply_to_email);
 		$mailer->setSender(array($app->get('mailfrom'), $app->get('fromname')));
 		$mailer->setSubject($params->get('mailSubjectPrefix') . stripslashes($subject));
-		$mailer->setBody($message_body . $params->get('mailBodySuffix'));
+		$mailer->setBody($reply_to_email . " sent you a message from the SCACR website\n\n" . $message_body . $params->get('mailBodySuffix'));
 		//$mailer->IsHtml($mode);
 
 		$mailer->addRecipient($to);

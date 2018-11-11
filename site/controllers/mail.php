@@ -28,7 +28,35 @@ class MemberDatabaseControllerMail extends JControllerLegacy
 		// Check for request forgeries.
 		$this->checkToken('request');
 
-		$model = $this->getModel('Mail');
+		$model = $this->getModel();
+
+        $app    = JFactory::getApplication();
+		$data   = $app->input->post->get('jform', array(), 'array');
+		
+		$form = $model->getForm($data, false);
+		$validData = $model->validate($form, $data);
+		
+		// Check for validation errors.
+		if ($validData === false)
+		{
+		    // Get the validation messages.
+		    $errors = $model->getErrors();
+		    
+		    // Push up to three validation messages out to the user.
+		    for ($i = 0, $n = count($errors); $i < $n && $i < 3; $i++)
+		    {
+		        if ($errors[$i] instanceof \Exception)
+		        {
+		            $app->enqueueMessage($errors[$i]->getMessage(), 'warning');
+		        }
+		        else
+		        {
+		            $app->enqueueMessage($errors[$i], 'warning');
+		        }
+		    }
+
+            return false;
+		}
 
 		if ($model->send())
 		{

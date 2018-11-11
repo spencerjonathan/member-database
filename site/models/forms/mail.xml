@@ -35,8 +35,8 @@
 		<field 
 			name="message" 
 			type="textarea"
-			label="COM_USERS_MAIL_FIELD_MESSAGE_LABEL"
-			description="COM_USERS_MAIL_FIELD_MESSAGE_DESC"
+			label="Message"
+			description="Type your message here"
 			class="span11 vert"
 			cols="70"
 			rows="20"
@@ -49,6 +49,7 @@
             description="Captcha"
             validate="captcha"
             namespace="mail"
+            required="true"
         />
 	</fieldset>
 </form>

@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+//JLoader::import('MailHelper', JPATH_ADMINISTRATOR . '/path/to/test.php');
+
 /**
  * Users mail model.
  *
@@ -78,14 +80,19 @@ class MemberDatabaseModelMail extends JModelAdmin
 	 *
 	 * @return  boolean
 	 */
-	public function send()
+	public function send($data)
 	{
-		
-		$message_body = JFilterInput::getInstance()->clean($message_body, 'string');
+		$app    = JFactory::getApplication();
 
-        $reply_to_email = MailHelper::cleanAddress($data'reply_to_email']);
+		$message_body = JMailHelper::cleanBody(JFilterInput::getInstance()->clean($data['message'], 'string'));
 
-        if (!MailHelper::isEmailAddress($reply_to_email)) {
+        error_log("Address Provided is: " . $data['reply_to_email']);
+
+        $reply_to_email = JMailHelper::cleanAddress($data['reply_to_email']);
+
+        error_log("Address after clean: " . $reply_to_email);
+
+        if (!JMailHelper::isEmailAddress($reply_to_email)) {
             $app->setUserState('com_memberdatabase.display.mail.data', $data);
 		    $this->setError('Email address provided is not valid: ' . $reply_to_email);
 		    return false;
@@ -103,11 +110,13 @@ class MemberDatabaseModelMail extends JModelAdmin
 		$db->setQuery($query);
 		$row = $db->loadAssoc();
 
-		$to = MailHelper::cleanLine($row['corresp_email'] ? $row['corresp_email'] : $row['email']);
+		$to = JMailHelper::cleanAddress($row['corresp_email'] ? $row['corresp_email'] : $row['email']);
 		
+        error_log("Correspondent Address is: " . $to);
+
 		if (!$to) {
 		    $app->setUserState('com_memberdatabase.display.mail.data', $data);
-		    $this->setError(JText::_('COM_USERS_MAIL_ONLY_YOU_COULD_BE_FOUND_IN_THIS_GROUP'));
+		    $this->setError(JText::_('Could not find correspondent\'s email address'));
 		    return false;
 		}
 		
@@ -118,7 +127,7 @@ class MemberDatabaseModelMail extends JModelAdmin
 		// Build email message format.
         $mailer->addReplyTo($reply_to_email);
 		$mailer->setSender(array($app->get('mailfrom'), $app->get('fromname')));
-		$mailer->setSubject($params->get('mailSubjectPrefix') . stripslashes($subject));
+		$mailer->setSubject($params->get('mailSubjectPrefix') . JMailHelper::cleanLine(stripslashes($data['subject'])));
 		$mailer->setBody($reply_to_email . " sent you a message from the SCACR website\n\n" . $message_body . $params->get('mailBodySuffix'));
 		//$mailer->IsHtml($mode);
 

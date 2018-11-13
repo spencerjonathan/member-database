@@ -28,7 +28,7 @@ class MemberDatabaseControllerMail extends JControllerLegacy
 		// Check for request forgeries.
 		$this->checkToken('request');
 
-		$model = $this->getModel();
+		$model = $this->getModel('Mail');
 
         $app    = JFactory::getApplication();
 		$data   = $app->input->post->get('jform', array(), 'array');
@@ -47,18 +47,22 @@ class MemberDatabaseControllerMail extends JControllerLegacy
 		    {
 		        if ($errors[$i] instanceof \Exception)
 		        {
-		            $app->enqueueMessage($errors[$i]->getMessage(), 'warning');
+		            $msg = $errors[$i]->getMessage();
 		        }
 		        else
 		        {
-		            $app->enqueueMessage($errors[$i], 'warning');
+		            $msg = $errors[$i];
 		        }
 		    }
 
+            $app->setUserState('com_memberdatabase.display.mail.data', $data);
+
+            $this->setredirect('index.php?option=com_memberdatabase&view=mail', $msg, 'warning');
             return false;
+
 		}
 
-		if ($model->send())
+		if ($model->send($validData))
 		{
 			$type = 'message';
 		}

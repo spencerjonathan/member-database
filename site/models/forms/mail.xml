@@ -49,7 +49,6 @@
             description="Captcha"
             validate="captcha"
             namespace="mail"
-            required="true"
         />
 	</fieldset>
 </form>

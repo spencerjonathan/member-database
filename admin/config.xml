@@ -29,6 +29,15 @@
 			label="Email Change Distribution List" description="The ; separated list of email addresses to notify of a members' change of email address"
 			default="" />
 
+        <field name="mail_subject_prefix" type="text"
+			label="Email Subject Prefix" description="The text that gets prefixed to the start of the subject for emails to tower correspondents sent from the mail form"
+			default="" />
+
+        <field name="mail_body_suffix" type="text"
+			label="Email Body Suffix" description="The text that gets appended to the end of the message body for emails to tower correspondents sent from the mail form"
+			default="" />
+
+
 	</fieldset>
 	<fieldset name="permissions" label="JCONFIG_PERMISSIONS_LABEL"
 		description="JCONFIG_PERMISSIONS_DESC">

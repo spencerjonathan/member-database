@@ -18,10 +18,12 @@ $script .= "\t\t" . '}' . "\n";
 $script .= "\t\t" . '// do field validation' . "\n";
 $script .= "\t\t" . 'if (form.jform_subject.value == ""){' . "\n";
 $script .= "\t\t\t" . 'alert("Please fill in the subject");' . "\n";
-$script .= "\t\t" . '} else if (getSelectedValue(\'adminForm\',\'jform[tower_id]\') < 0){' . "\n";
+$script .= "\t\t" . '} else if (getSelectedValue(\'adminForm\',\'jform[tower_id]\') == ""){' . "\n";
 $script .= "\t\t\t" . 'alert("Please select a tower to contact");' . "\n";
 $script .= "\t\t" . '} else if (form.jform_reply_to_email.value == ""){' . "\n";
 $script .= "\t\t\t" . 'alert("Please provide your email address");' . "\n";
+$script .= "\t\t" . '} else if (form.jform_reply_to_name.value == ""){' . "\n";
+$script .= "\t\t\t" . 'alert("Please fill in your name");' . "\n";
 $script .= "\t\t" . '} else if (form.jform_message.value == ""){' . "\n";
 $script .= "\t\t\t" . 'alert("Please fill in the message");' . "\n";
 $script .= "\t\t" . '} else {' . "\n";
@@ -59,15 +61,19 @@ JFactory::getDocument()->addScriptDeclaration($script);
 					<div class="control-label"><?php echo $this->form->getLabel('reply_to_email'); ?></div>
 					<div class="controls"><?php echo $this->form->getInput('reply_to_email'); ?></div>
 				</div>
+                <div class="control-group">
+					<div class="control-label"><?php echo $this->form->getLabel('reply_to_name'); ?></div>
+					<div class="controls"><?php echo $this->form->getInput('reply_to_name'); ?></div>
+				</div>
 				<div class="control-group">
 					<div class="control-label"><?php echo $this->form->getLabel('subject'); ?></div>
-					<div class="controls"><?php echo JComponentHelper::getParams('com_memberdatabase')->get('mailSubjectPrefix'); ?>
+					<div class="controls"><?php echo JComponentHelper::getParams('com_memberdatabase')->get('mail_subject_prefix'); ?>
 						<?php echo $this->form->getInput('subject'); ?></div>
 				</div>
 				<div class="control-group">
 					<div class="control-label"><?php echo $this->form->getLabel('message'); ?></div>
 					<div class="controls"><?php echo $this->form->getInput('message'); ?><br>
-						<?php echo JComponentHelper::getParams('com_memberdatabase')->get('mailBodySuffix'); ?></div>
+						<?php echo JComponentHelper::getParams('com_memberdatabase')->get('mail_body_suffix'); ?></div>
 				</div>
 				<div class="control-group">
 					<div class="controls"><?php echo $this->form->getField('captcha')->renderField(); ?></div>

@@ -8,7 +8,7 @@
 			label="Tower"
 			description="The tower that you wish to contact"
 			required="true"
-			query="SELECT id AS value, concat_ws(', ', place, designation) AS tower_id FROM #__md_tower" />
+			query="SELECT '' as value, 'Please Select' as tower_id union all SELECT id AS value, concat_ws(', ', place, designation) AS tower_id FROM #__md_tower" />
 			
 		<field
 			name="reply_to_email"
@@ -20,7 +20,18 @@
 			validate="email"
 			required="true"
 		/>
-				
+		
+        <field 
+			name="reply_to_name" 
+			type="text"
+			label="Your Name"
+			description="Your Name"
+			class="inputbox"
+			maxlength="50"
+			size="40"
+			required="true"
+		/>
+		
 		<field 
 			name="subject" 
 			type="text"

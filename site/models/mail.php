@@ -89,6 +89,7 @@ class MemberDatabaseModelMail extends JModelAdmin
         error_log("Address Provided is: " . $data['reply_to_email']);
 
         $reply_to_email = JMailHelper::cleanAddress($data['reply_to_email']);
+        $reply_to_name = JMailHelper::cleanLine($data['reply_to_name']);
 
         error_log("Address after clean: " . $reply_to_email);
 
@@ -125,10 +126,10 @@ class MemberDatabaseModelMail extends JModelAdmin
 		$params = JComponentHelper::getParams('com_memberdatabase');
 
 		// Build email message format.
-        $mailer->addReplyTo($reply_to_email);
+        $mailer->addReplyTo($reply_to_email, $reply_to_name);
 		$mailer->setSender(array($app->get('mailfrom'), $app->get('fromname')));
-		$mailer->setSubject($params->get('mailSubjectPrefix') . JMailHelper::cleanLine(stripslashes($data['subject'])));
-		$mailer->setBody($reply_to_email . " sent you a message from the SCACR website\n\n" . $message_body . $params->get('mailBodySuffix'));
+		$mailer->setSubject($params->get('mail_subject_prefix') . JMailHelper::cleanLine(stripslashes($data['subject'])));
+		$mailer->setBody($reply_to_name . " (" . $reply_to_email . ") sent you a message from the SCACR website\n\n" . $message_body . "\n\n" . $params->get('mail_body_suffix'));
 		//$mailer->IsHtml($mode);
 
 		$mailer->addRecipient($to);

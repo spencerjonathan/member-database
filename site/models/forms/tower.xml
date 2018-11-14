@@ -297,7 +297,7 @@
 				description="Tower Captain"
 				message="Please select a Tower Captain"
 				required="true"
-				query="SELECT 0 as value, '--Please Select--' as captain_id union SELECT id AS value, concat(forenames, ' ', surname) AS captain_id FROM #__md_member order by captain_id asc"
+				query="SELECT 0 as value, '--Please Select--' as captain_id union SELECT id AS value, concat(forenames, ' ', surname, ' (', id , ')') AS captain_id FROM #__md_member order by captain_id asc"
 				/>
 		<field
 				name="incl_capt"
@@ -318,7 +318,7 @@
 				description="Tower Correspondent"
 				message="Please select a Tower Correspondent"
 				required="true"
-				query="SELECT 0 as value, '--Please Select--' as correspondent_id union SELECT id AS value, concat(forenames, ' ', surname) AS correspondent_id FROM #__md_member order by correspondent_id asc"
+				query="SELECT 0 as value, '--Please Select--' as correspondent_id union SELECT id AS value, concat(forenames, ' ', surname, ' (', id , ')') AS correspondent_id FROM #__md_member order by correspondent_id asc"
 				/>
 		<field
 				name="incl_corresp"

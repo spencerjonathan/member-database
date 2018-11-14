@@ -67,13 +67,11 @@ JFactory::getDocument()->addScriptDeclaration($script);
 				</div>
 				<div class="control-group">
 					<div class="control-label"><?php echo $this->form->getLabel('subject'); ?></div>
-					<div class="controls"><?php echo JComponentHelper::getParams('com_memberdatabase')->get('mail_subject_prefix'); ?>
-						<?php echo $this->form->getInput('subject'); ?></div>
+					<div class="controls"><?php echo $this->form->getInput('subject'); ?></div>
 				</div>
 				<div class="control-group">
 					<div class="control-label"><?php echo $this->form->getLabel('message'); ?></div>
-					<div class="controls"><?php echo $this->form->getInput('message'); ?><br>
-						<?php echo JComponentHelper::getParams('com_memberdatabase')->get('mail_body_suffix'); ?></div>
+					<div class="controls"><?php echo $this->form->getInput('message'); ?></div>
 				</div>
 				<div class="control-group">
 					<div class="controls"><?php echo $this->form->getField('captcha')->renderField(); ?></div>

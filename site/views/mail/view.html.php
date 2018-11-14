@@ -33,6 +33,9 @@ class MemberDatabaseViewMail extends JViewLegacy
 		// Get data from the model
 		$this->form = $this->get('Form');
 
+        $document = JFactory::getDocument();
+        $document->addStyleSheet('media/jui/css/bootstrap.css');
+
 		parent::display($tpl);
 	}
 

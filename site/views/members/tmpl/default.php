@@ -98,7 +98,7 @@ if (isset ( $token )) {
 				<?php echo JHtml::_('grid.checkall'); ?>
 			</th>
 				<th width="25%">
-				<?php echo JHtml::_('grid.sort', 'Name', 'name', $listDirn, $listOrder) ;?>
+				<?php echo JHtml::_('grid.sort', 'Name (Id)', 'name', $listDirn, $listOrder) ;?>
 			</th>
 				<th width="25%">
 				<?php echo JHtml::_('grid.sort', 'Tower', 'tower', $listDirn, $listOrder) ;?>
@@ -142,7 +142,7 @@ if (isset ( $token )) {
 						</td>
 				<td><a href="<?php echo $link; ?>"
 					title="<?php echo JText::_('Edit Member'); ?>">
-							<?php echo $row->name; ?>
+							<?php echo $row->name . ' (' . $row->id . ')'; ?>
 						</td>
 				<td>
 							<?php echo $row->tower; ?>

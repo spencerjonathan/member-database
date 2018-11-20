@@ -9,6 +9,8 @@
 // No direct access to this file
 defined ( '_JEXEC' ) or die ( 'Restricted access' );
 
+JLoader::import('ActionlogsHelper', JPATH_COMPONENT . "/helpers/");
+
 /**
  * HelloWorlds Controller
  *
@@ -126,6 +128,9 @@ class MemberDatabaseControllerInvoice extends JControllerForm {
 		}
 		
 		$this->setMessage("Invoice created successfully");
+
+        // To Do
+        //ActionlogsHelper::logAction($validData['id'], "Invoice# " . $validData['id'], "invoice", "saved");
 		
 		return true;
 	}
@@ -143,6 +148,8 @@ class MemberDatabaseControllerInvoice extends JControllerForm {
 		return false;
 	}
 	
-	
+	protected function postSaveHook(JModelLegacy $model, $validData = array()) {
+        ActionlogsHelper::logAction($validData['id'], "Invoice# " . $validData['id'], "invoice", "saved");
+    }
 	
 }

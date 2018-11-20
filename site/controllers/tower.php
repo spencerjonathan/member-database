@@ -9,6 +9,8 @@
 // No direct access to this file
 defined ( '_JEXEC' ) or die ( 'Restricted access' );
 
+JLoader::import('ActionlogsHelper', JPATH_COMPONENT . "/helpers/");
+
 /**
  * tower Database Controller
  *
@@ -136,5 +138,9 @@ class MemberDatabaseControllerTower extends JControllerForm {
 		
 		return $this->allowEdit($data, $key);
 	}
+
+    protected function postSaveHook(JModelLegacy $model, $validData = array()) {
+        ActionlogsHelper::logAction($validData['id'], $validData['place'] . ", " . $validData['designation'], "tower", "saved");
+    }
 	
 }

@@ -9,6 +9,8 @@
 // No direct access to this file
 defined ( '_JEXEC' ) or die ( 'Restricted access' );
 
+JLoader::import('ActionlogsHelper', JPATH_COMPONENT . "/helpers/");
+
 /**
  * HelloWorld Controller
  *
@@ -389,6 +391,8 @@ class MemberDatabaseControllerMember extends JControllerForm {
 		$jinput = JFactory::getApplication ()->input;
 		
 		error_log("Member - Controller - In postSaveHook");
+
+        ActionlogsHelper::logAction($validData['id'], $validData['surname'] . ", " . $validData['forenames'], "member", "saved");
 		
 		// If the user has created an new member from the create invoice screen, then send them back there after the new member has been saved.
 		if ($jinput->get ( 'list_view', "", 'STRING' ) == "invoice") {

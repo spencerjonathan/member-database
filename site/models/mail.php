@@ -176,7 +176,7 @@ class MemberDatabaseModelMail extends JModelAdmin
 			$data['bcc']     = $bcc;
 			$data['message'] = $message_body; */
 			$app->setUserState('com_memberdatabase.display.mail.data', array());
-			$app->enqueueMessage('Message sent!', 'message');
+			$app->enqueueMessage('Message sent to tower correspondent!', 'message');
 
 			return true;
 		}

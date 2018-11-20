@@ -103,7 +103,7 @@ class MemberDatabaseModelMail extends JModelAdmin
 		
         $db = $this->getDbo();
         $query = $db->getQuery(true)
-			->select('t.corresp_email, corresp.email')
+			->select('t.corresp_email, corresp.email, concat_ws(", ", t.place, t.designation) tower, concat_ws(" ", forenames, surname) correspondent')
 			->from('#__md_tower t')
 			->leftJoin('#__md_member corresp on corresp.id = t.correspondent_id')
 			->where('t.id = ' . (int) $data['tower_id']);
@@ -120,16 +120,26 @@ class MemberDatabaseModelMail extends JModelAdmin
 		    $this->setError(JText::_('Could not find correspondent\'s email address'));
 		    return false;
 		}
+
+       
 		
 		// Get the Mailer
 		$mailer = JFactory::getMailer();
 		$params = JComponentHelper::getParams('com_memberdatabase');
 
+        $body = "Dear " . $row['correspondent'] . ",\n\n" . 
+            $reply_to_name . " (" . $reply_to_email . ") sent you a message as the tower correspondent for " . $row['tower'] . 
+            ".  Please reply to " . $reply_to_email . " to answer their question soon!\n\n" . 
+            $message_body . "\n\n" . 
+            $params->get('mail_body_suffix');
+
+        error_log("Email Body = " . $body);
+
 		// Build email message format.
         $mailer->addReplyTo($reply_to_email, $reply_to_name);
-		$mailer->setSender(array($app->get('mailfrom'), $app->get('fromname')));
+		$mailer->setSender(array("noreply@scacr.org", "SCACR.org Contact Form"));
 		$mailer->setSubject($params->get('mail_subject_prefix') . JMailHelper::cleanLine(stripslashes($data['subject'])));
-		$mailer->setBody($reply_to_name . " (" . $reply_to_email . ") sent you a message from the SCACR website\n\n" . $message_body . "\n\n" . $params->get('mail_body_suffix'));
+		$mailer->setBody($body);
 		//$mailer->IsHtml($mode);
 
 		$mailer->addRecipient($to);

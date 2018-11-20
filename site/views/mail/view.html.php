@@ -21,6 +21,8 @@ class MemberDatabaseViewMail extends JViewLegacy
 	 */
 	protected $form;
 
+    protected $captchaEnabled = false;
+
 	/**
 	 * Display the view
 	 *
@@ -32,6 +34,25 @@ class MemberDatabaseViewMail extends JViewLegacy
 	{
 		// Get data from the model
 		$this->form = $this->get('Form');
+
+        /*$params = $this->get('State')->params;
+        $captchaSet = $params->get('captcha', JFactory::getApplication()->get('captcha', '0'));
+
+        // Check if captcha is enabled
+        foreach (JPluginHelper::getPlugin('captcha') as $plugin)
+        {
+            if ($captchaSet === $plugin->name)
+            {
+                $this->captchaEnabled = true;
+                break;
+            }
+        } */
+
+
+        error_log("Plugin captcha: " . json_encode(JPluginHelper::getPlugin('captcha')));
+        if (count(JPluginHelper::getPlugin('captcha')) > 0 ) {
+            $this->captchaEnabled = true;
+        }
 
         $document = JFactory::getDocument();
         $document->addStyleSheet('media/jui/css/bootstrap.css');

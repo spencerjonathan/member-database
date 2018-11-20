@@ -8,7 +8,7 @@
 			label="Tower"
 			description="The tower that you wish to contact"
 			required="true"
-			query="SELECT '' as value, 'Please Select' as tower_id union all SELECT id AS value, concat_ws(', ', place, designation) AS tower_id FROM #__md_tower" />
+			query="SELECT '' as value, 'Please Select' as tower_id union all SELECT t.id AS value, concat_ws(', ', place, designation) AS tower_id FROM #__md_tower t left join #__md_member m on t.correspondent_id = m.id where t.corresp_email is not null or m.email is not null" />
 			
 		<field
 			name="reply_to_email"
@@ -48,9 +48,9 @@
 			type="textarea"
 			label="Message"
 			description="Type your message here"
-			class="span11 vert"
+			class="span8 vert"
 			cols="70"
-			rows="20"
+			rows="10"
 			required="true"
 		/>
 		<field

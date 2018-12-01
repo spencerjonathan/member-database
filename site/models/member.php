@@ -124,11 +124,12 @@ class MemberDatabaseModelMember extends JModelAdmin {
 		$emailAddressUpdated = $this->emailAddressUpdated($data);
 		$commsPreferenceUpdated = $this->commsPreferenceUpdated($data);
 		$districtCommsUpdated = $this->districtCommsUpdated($data);
-		
+		$memberTypeUpdated = $this->memberTypeUpdated($data);		
+
 		$saveResult = parent::save($data);
 		
-		if ($saveResult && ($emailAddressUpdated || $commsPreferenceUpdated || $districtCommsUpdated)) {
-			$this->emailUpdatedHandler($data, $emailAddressUpdated, $commsPreferenceUpdated, $districtCommsUpdated);
+		if ($saveResult && ($emailAddressUpdated || $commsPreferenceUpdated || $districtCommsUpdated || $memberTypeUpdated)) {
+			$this->emailUpdatedHandler($data, $emailAddressUpdated, $commsPreferenceUpdated, $districtCommsUpdated, $memberTypeUpdated);
 		}
 		
 		return $saveResult;
@@ -178,8 +179,23 @@ class MemberDatabaseModelMember extends JModelAdmin {
 		return $db->loadResult () == 1;
 		
 	}
+
+    private function memberTypeUpdated($data) {
+		
+		$db = JFactory::getDbo ();
+		$query = $db->getQuery ( true );
+		
+		$query->select("count(*)");
+		$query->from("#__md_member");
+		$query->where("id = " . (INT) $data['id'] . " and member_type_id != " . $db->quote($data['member_type_id']) );
+		
+		$db->setQuery ( $query );
+		error_log($query->__toString());
+		return $db->loadResult () == 1;
+		
+	}
 	
-	private function emailUpdatedHandler($data, $emailAddressUpdated, $commsPreferenceUpdated, $districtCommsUpdated) {
+	private function emailUpdatedHandler($data, $emailAddressUpdated, $commsPreferenceUpdated, $districtCommsUpdated, $memberTypeUpdated) {
 		
 		$mailer = JFactory::getMailer();
 		$config = JFactory::getConfig();
@@ -221,15 +237,26 @@ class MemberDatabaseModelMember extends JModelAdmin {
 					$which_districts
 					);
 		};
+
+        $memberType = $this->getMemberType($data['member_type_id']);
+        if ($memberTypeUpdated) {	
+			$body = $body . JText::sprintf(
+					"<li>Membership Type has been updated to <strong>%s</strong></li>",
+                    $memberType
+					);
+		};
 		
 		$body = $body . JText::sprintf(
-				"</ul><br>Comms preference are now:<br><br>Email Address: <strong>%s</strong><br>Communication Method: <strong>%s</strong><br>Which Districts\' comms: <strong>%s</strong>",
-				$data['email'],
+				"</ul><br>Comms preference are now:<br><br>Membership Type: <strong>%s</strong><br>Email Address: <strong>%s</strong><br>Communication Method: <strong>%s</strong><br>Which Districts\' comms: <strong>%s</strong>",
+                $memberType,      				
+                $data['email'],
 				$data['newsletters'],
 				$which_districts
 				);
 		
 		$subject = $site . ' - Member\'s Communication Preferences Updated';
+
+        error_log("Email Content: " . $body);
 		
 		$sender = array(
 				$config->get( 'mailfrom' ),
@@ -330,6 +357,18 @@ class MemberDatabaseModelMember extends JModelAdmin {
 		$results = $db->loadObjectList ();
 		
 		return $results;
+	}
+
+    public function getMemberType($memberType) {
+		$db = JFactory::getDbo ();
+		
+		$query = $db->getQuery ( true );
+		
+		$query->select ( 'name' )->from ( $db->quoteName ( '#__md_member_type', 'mt' ) );
+		$query->where ( 'mt.id = ' . ( int ) $memberType );
+
+        $db->setQuery ( $query );
+		return $db->loadResult ();
 	}
 	
 	public function getAttachments($memberId, $attachmentId = 0) {

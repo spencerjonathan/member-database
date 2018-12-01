@@ -53,6 +53,10 @@
 			rows="10"
 			required="true"
 		/>
+    </fieldset>
+
+    <fieldset name="captcha">
+
 		<field
             name="captcha"
             type="captcha"

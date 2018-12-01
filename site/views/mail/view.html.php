@@ -46,13 +46,13 @@ class MemberDatabaseViewMail extends JViewLegacy
                 $this->captchaEnabled = true;
                 break;
             }
-        } */
+        }
 
 
         error_log("Plugin captcha: " . json_encode(JPluginHelper::getPlugin('captcha')));
         if (count(JPluginHelper::getPlugin('captcha')) > 0 ) {
             $this->captchaEnabled = true;
-        }
+        } */
 
         $document = JFactory::getDocument();
         $document->addStyleSheet('media/jui/css/bootstrap.css');

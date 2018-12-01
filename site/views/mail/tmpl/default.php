@@ -73,7 +73,7 @@ JFactory::getDocument()->addScriptDeclaration($script);
 					<div class="control-label"><?php echo $this->form->getLabel('message'); ?></div>
 					<div class="controls"><?php echo $this->form->getInput('message'); ?></div>
 				</div>
-                <?php if ($this->captchaEnabled): ?>
+                <?php if ($this->form->getField('captcha')) : ?>
 				<div class="control-group">
 					<div class="controls"><?php echo $this->form->getField('captcha')->renderField(); ?></div>
 				</div>

@@ -247,14 +247,14 @@ class MemberDatabaseModelMember extends JModelAdmin {
 		};
 		
 		$body = $body . JText::sprintf(
-				"</ul><br>Comms preference are now:<br><br>Membership Type: <strong>%s</strong><br>Email Address: <strong>%s</strong><br>Communication Method: <strong>%s</strong><br>Which Districts\' comms: <strong>%s</strong>",
+				"</ul><br>Comms preference are now:<br><br>Membership Type: <strong>%s</strong><br>Email Address: <strong>%s</strong><br>Communication Method: <strong>%s</strong><br>Which Districts' comms: <strong>%s</strong>",
                 $memberType,      				
                 $data['email'],
 				$data['newsletters'],
 				$which_districts
 				);
 		
-		$subject = $site . ' - Member\'s Communication Preferences Updated';
+		$subject = $site . " - Member's Communication Preferences Updated";
 
         error_log("Email Content: " . $body);
 		

@@ -44,11 +44,22 @@ class MemberDatabaseModelInvoices extends JModelList
 	public function getInvoices($memberId = null) {
 		$db    = JFactory::getDbo();
 		$query = $this->getListQuery();
+
+        $verification_required_since = JComponentHelper::getParams('com_memberdatabase')->get('verification_required_since');
+		if (!$this->verification_required_since) {
+			error_log("verification_required_since global configuration option is not set for the MemberDatabase.");
+		}
+
+        $date = DateTime::createFromFormat("Y-m-d", $verification_required_since);
+		$this->year = $date->format("Y");
 		
 		if ($memberId) {
 			$query->join('INNER', $db->quoteName('#__md_invoicemember', 'm') . ' ON (' . $db->quoteName('inv.id') . ' = ' . $db->quoteName('m.invoice_id') . ')');
 			$query->where("m.member_id = " . (int) $memberId);
-		}
+		} else {
+            // If we're not looking for a specific member, only return invoices for current year
+            $query->where("inv.year = " . $this->year);
+        }
 		
 		$db->setQuery ( $query );
 		

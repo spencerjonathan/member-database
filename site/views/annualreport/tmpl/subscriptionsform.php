@@ -24,12 +24,14 @@ foreach ( $towers as $tower ) : ?>
 	<col width="8%" />
 	<col width="8%" />
 	<col width="8%" />
-	<col width="15%" />
-	<col width="15%" />
+	<col width="8%" />
+	<col width="11%" />
+	<col width="11%" />
 	
 	<tr>
 		<th rowspan=2>NAME</th>
 		<th colspan=5 style="text-align:center">SUBSCRIPTION TYPE</th>
+		<th rowspan=2 style="text-align:center">TICK to request a handbook</th>
 		<th rowspan=2 style="text-align:center">TICK to request a 50-year membership certificate</th>
 		<th rowspan=2 style="text-align:center">Member details form enclosed (tick)</th>
 
@@ -51,14 +53,18 @@ foreach ( $towers as $tower ) : ?>
 	
 	foreach ( $this->members as $member ) {
 		if ($member->tower_id == $tower->id) {
+
+            $annual_report = "";
+            if ($member->annual_report) $annual_report = "Yes";
+
 			echo "<tr style=\"height:20px\"><td>$member->surname, $member->forenames<td>
 			<td></td>
 			<td></td>
 			<td></td>
 			<td></td>
+			<td>$annual_report</td>
 			<td></td>
-			<td></td>
-			
+			<td></td>			
 			</tr>";
 		}
 		;
@@ -66,14 +72,20 @@ foreach ( $towers as $tower ) : ?>
 	;
 	
 	// A couple of empty lines for new members
-	echo '<tr style="height:30px;"><td><td><td></td>
+	echo '<tr style="height:30px;">
+            <td></td>
+            <td></td>
+			<td></td>
+			<td></td>
 			<td></td>
 			<td></td>
 			<td></td>
 			<td></td>
 			<td></td></tr>';
 	echo '<tr style="height:30px;">
-			<td><td>
+			<td></td>
+			<td></td>
+			<td></td>
 			<td></td>
 			<td></td>
 			<td></td>

@@ -41,7 +41,7 @@ class MemberDatabaseControllerNewmember extends JControllerForm
     protected function allowEdit($data = array(), $key = 'id')
     {
         // Needs to be updated to check that valid token has been provided
-        return false;
+        return true;
     }
 
     /* protected function postSaveHook(\JModelLegacy $model, $validData = array())
@@ -64,8 +64,10 @@ class MemberDatabaseControllerNewmember extends JControllerForm
         
         // Check for request forgeries.
         $this->checkToken('request');
-        
+
+        $data  = $this->input->post->get('jform', array(), 'array');
         $model = $this->getModel();
+        $form = $model->getForm($data, false);
         
         $validData = $model->checkEmailAddressNotAlreadyInUse($form, $data);
         
@@ -109,16 +111,22 @@ class MemberDatabaseControllerNewmember extends JControllerForm
     
     public function savemain($key = null, $urlVar = null)
     {
-        error_log("In Newmember::saveinitermediate");
+        error_log("In Newmember::savemain");
         
+        error_log ("In Newmember::savemain - input is " . json_encode((array) $this->input));        
         // Check for request forgeries.
         $this->checkToken('request');
+
+        $data  = $this->input->post->get('jform', array(), 'array');
+
+        error_log("Controller::savemain() - id from jform = " . $data['id']);
+
+        $this->input->set('id', $data['id']);
         
         parent::save($key, $urlVar);
-        
-        //$data = $this->input->post->get('jform', array(), 'array');
-        
-        $id = $this->input->post->getInt('id');
+                
+        $id = $this->input->getInt('id');
+        error_log ("In Newmember::savemain - id is " . $id);        
         $token = $this->input->get('token', null, "ALNUM");
         
         $this->setRedirect(JRoute::_('index.php?option=' . $this->option . '&view=newmember&layout=edit&token=' . $token . '&stage=final', false));

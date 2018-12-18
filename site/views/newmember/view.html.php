@@ -74,7 +74,7 @@ class MemberDatabaseViewNewmember extends JViewLegacy
 		    $app->redirect($redirect);
         }
 
-        error_log("Item retrieved: " . json_encode($this->item));
+        //error_log("Item retrieved: " . json_encode($this->item));
 
         // Check for errors.
         if (count($errors = $this->get('Errors'))) {
@@ -84,7 +84,7 @@ class MemberDatabaseViewNewmember extends JViewLegacy
         }
 
         // Set the toolbar
-        $this->addToolBar();
+        //$this->addToolBar();
 
         // Display the template
         parent::display($tpl);
@@ -97,7 +97,7 @@ class MemberDatabaseViewNewmember extends JViewLegacy
      *
      * @since 1.6
      */
-    protected function addToolBar()
+    /* protected function addToolBar()
     {
         // $input = JFactory::getApplication()->input;
 
@@ -119,5 +119,5 @@ class MemberDatabaseViewNewmember extends JViewLegacy
         // );
 
         // echo JToolbar::getInstance()->render();
-    }
+    } */
 }

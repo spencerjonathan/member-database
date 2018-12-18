@@ -10,13 +10,5 @@
 // No direct access
 defined ( '_JEXEC' ) or die ( 'Restricted access' );
 
-if ($this->item->id) {
-	$task = "newmember.edit";
-} else {
-	$task = "newmember.add";
-}
-
-$jinput = JFactory::getApplication ()->input;
-
 ?>
 You're on the default page for newmember

@@ -138,7 +138,7 @@ class MemberDatabaseModelAnnualreport extends JModelList {
 		$db = JFactory::getDbo ();
 		
 		$query = $this->getTowersQuery($db);
-		QueryHelper::addOnlineCorrespondentsExclusion($db, $query);
+		//QueryHelper::addOnlineCorrespondentsExclusion($db, $query);
 		
 		$db->setQuery ( $query );
 		$results = $db->loadObjectList ();

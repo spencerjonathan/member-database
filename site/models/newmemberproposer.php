@@ -143,17 +143,31 @@ class MemberDatabaseModelNewMemberProposer extends JModelAdmin
         }
         
         $newmember = JTable::getInstance('NewMember', 'MemberDatabaseTable', array());
-        
+
         $newmember->load($row['newmember_id']);
         unset($newmember->id);
         
-        $newmember->mod_date = $currentDate = date('Y-m-d H:i:s');
-        
-        
-        //$properties = $table->getProperties(1);
-        //$item = ArrayHelper::toObject($properties, '\JObject');
+        $newmember->mod_date = date('Y-m-d H:i:s');
         
         $result = JFactory::getDbo()->insertObject('#__md_member', $newmember, 'primary_key');
+
+        // Fields to update.
+        $fields = array(
+            $db->quoteName('member_id') . ' = ' . $newmember->id
+        );
+
+        // Conditions for which records should be updated.
+        $conditions = array(
+            $db->quoteName('newmember_id') . $row['newmember_id'] 
+        );
+
+        $query = $db->getQuery(true)
+        ->update($db->quoteName('#__md_new_member_proposer', 'p'))
+        ->set($fields)->where($conditions);
+
+        $db->setQuery($query);
+
+        return $db->execute();
         
     }
 }

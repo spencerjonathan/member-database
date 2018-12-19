@@ -51,8 +51,8 @@ class MemberDatabaseViewNewMemberProposer extends JViewLegacy
 		$this->item = $this->get('Item');
 		$this->newmember = $this->getModel("NewMember")->getItem($this->item->newmember_id);
 
-        $tower = JTable::getInstance('Tower', 'MemberDatabaseTable', array());
-        $tower->load($this->newmember->tower_id);
+        $this->tower = JTable::getInstance('Tower', 'MemberDatabaseTable', array());
+        $this->tower->load($this->newmember->tower_id);
 		
 		error_log("newmemberproposer form data: " . json_encode((array) $this->item));
  

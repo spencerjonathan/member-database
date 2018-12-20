@@ -158,7 +158,7 @@ class MemberDatabaseModelNewMemberProposer extends JModelAdmin
 
         // Conditions for which records should be updated.
         $conditions = array(
-            $db->quoteName('newmember_id') . $row['newmember_id'] 
+            $db->quoteName('newmember_id') . " = " . $row['newmember_id'] 
         );
 
         $query = $db->getQuery(true)

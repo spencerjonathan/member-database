@@ -19,7 +19,6 @@
             		class="btn-group btn-group-yesno"
             		default=""
             		filter="integer">
-                		<option value="">Unspecified</option>
                 		<option value="1">JYES</option>
                 		<option value="0">JNO</option>
         	</field>

@@ -56,9 +56,6 @@
 				validate="email"
 				default=""
 				/>
-    </fieldset>
-
-    <fieldset name="captcha">
 		<field
                 name="captcha"
                 type="captcha"

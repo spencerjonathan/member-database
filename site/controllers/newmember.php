@@ -181,6 +181,6 @@ class MemberDatabaseControllerNewmember extends JControllerForm
         $model->saveProposers($validData, $pk);
         //$data = $this->input->post->get('jform', array(), 'array');
         
-        $this->setRedirect(JRoute::_('index.php?option=' . $this->option . '&view=newmember&layout=default', false));
+        $this->setRedirect(JRoute::_('index.php?option=' . $this->option . '&view=newmember&layout=complete', false));
     }
 }

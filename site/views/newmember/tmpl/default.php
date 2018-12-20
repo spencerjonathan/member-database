@@ -11,4 +11,4 @@
 defined ( '_JEXEC' ) or die ( 'Restricted access' );
 
 ?>
-You're on the default page for newmember
+Thank you for starting the membership application process.  A link has been sent to you by email to verify your email address.  When you click on that link you will be able to continue the membership application process.<br><br>If the email doesn't arrive in the next few minutes, please check your spam folder.  If you experience any problems, please contact the membership cooordinator by email at membership@scacr.org

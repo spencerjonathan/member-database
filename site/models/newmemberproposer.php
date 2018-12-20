@@ -151,9 +151,11 @@ class MemberDatabaseModelNewMemberProposer extends JModelAdmin
         
         $result = JFactory::getDbo()->insertObject('#__md_member', $newmember, 'primary_key');
 
+//        error_log("newmember after promoting to full member: " . json_encode($newmember));
+
         // Fields to update.
         $fields = array(
-            $db->quoteName('member_id') . ' = ' . $newmember->id
+            $db->quoteName('member_id') . ' = ' . $newmember->primary_key
         );
 
         // Conditions for which records should be updated.
@@ -164,6 +166,8 @@ class MemberDatabaseModelNewMemberProposer extends JModelAdmin
         $query = $db->getQuery(true)
         ->update($db->quoteName('#__md_new_member_proposer', 'p'))
         ->set($fields)->where($conditions);
+
+        error_log("Think this is problematic query: " . $query->__toString());
 
         $db->setQuery($query);
 

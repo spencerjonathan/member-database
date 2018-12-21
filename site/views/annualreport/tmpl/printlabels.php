@@ -10,12 +10,23 @@ defined ( '_JEXEC' ) or die ( 'Restricted Access' );
 
 $jinput = JFactory::getApplication ()->input;
 $correspFlag = $jinput->get ( 'correspFlag', 0, 'INT' );
+$dimensions = $jinput->get ( 'dimensions', '3x7', 'ALNUM' );
 
 if ($correspFlag) {
 	$members = $this->getModel("Members")->getCorrespondents($this->districtId);
 } else {
 	$members = $this->getModel("Members")->getMembersByUniqueAddress($this->districtId);
 }
+
+error_log("printlabels - dimensions = " . $dimensions);
+
+$maxCols = 3;
+$colsHtml = '<col width="33%" /><col width="33%" /><col width="33%" />';
+if ($dimensions == "2x7") {
+	$maxCols = 2;
+	$colsHtml = '<col width="50%" /><col width="50%" />';
+}
+	
 
 	$column = 1;
 	$row = 1;
@@ -26,11 +37,8 @@ if ($correspFlag) {
 		
 		if ($column == 1) {
 			if ($row == 1) {
-				echo '<table style="table-layout: fixed;" width="100%" class="page-break-inside-avoid page-break-after-always">
-			<col width="33%" />
-			<col width="33%" />
-			<col width="33%" />';
-				
+				echo '<table style="table-layout: fixed;" width="100%" class="page-break-inside-avoid page-break-after-always">';
+				echo $colsHtml;
 				$needClosingTable = true;			
 			}
 			
@@ -65,7 +73,7 @@ if ($correspFlag) {
 		}
 		
 		echo "</div></td>";
-		if ($column == 3) {
+		if ($column == $maxCols) {
 			$column = 1; 
 			echo "</tr>";
 			$needClosingTr = false;

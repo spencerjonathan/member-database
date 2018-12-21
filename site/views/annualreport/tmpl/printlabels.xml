@@ -10,6 +10,11 @@
 				<option value="0">No</option>
 				<option value="1">Yes</option>
 			</field>
+			<field name="dimensions" type="list" label="Print Layout"
+				description="Don't show other content on page" default="1">
+				<option value="2x7">2x7</option>
+				<option value="3x7">3x7</option>
+			</field>
 			<field name="districtId" type="list" label="District"
 				description="Don't show other content on page" default="1">
 				<option value="0">All Districts</option>

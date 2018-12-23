@@ -12,8 +12,18 @@ defined('_JEXEC') or die('Restricted access');
  
 ?>
 <legend><?php echo JText::_('Member Database - Verify New Member Proposal'); ?></legend>
-Do you wish to propose <?php echo $this->newmember->forenames . " " . $this->newmember->surname; ?>
- of tower <?php echo $this->tower->place . ", " . $this->tower->designation; ?>?<br>
+<?php if (!$this->item->approved_flag) {
+    echo 
+        "Do you wish to propose " . $this->newmember->forenames . " " . $this->newmember->surname . 
+        " of tower " . $this->tower->place . ", " . $this->tower->designation; 
+} else {
+    echo "You have already responded.";
+} 
+
+?>
+<br>
+
+
 <form action="<?php echo JRoute::_('index.php?option=com_memberdatabase&id=' . (int) $this->item->id . "&token=" . $this->token); ?>"
     method="post" name="adminForm" id="adminForm">
     <div class="form-horizontal">
@@ -33,9 +43,10 @@ Do you wish to propose <?php echo $this->newmember->forenames . " " . $this->new
     </div>
     <input type="hidden" name="task" value="newmemberproposer.save" />
     <?php echo JHtml::_('form.token'); ?>
-    
+    <?php if (!$this->item->approved_flag) : ?>
     <button type="submit" id="add_button" name="add_button"
 		class="btn btn-success btn-save-newmemberproposer">
 		<span class="icon-new icon-white"></span> Submit
 	</button>
+    <?php endif ?>
 </form>

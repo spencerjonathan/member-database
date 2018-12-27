@@ -295,6 +295,21 @@ class MemberDatabaseModelNewmember extends JModelAdmin
         return $data;
         
     }
+
+    public function hasApplicationBeenSubmitted($token) {
+
+        $db = JFactory::getDbo();
+        $query = $db->getQuery(true)
+        ->select('count(*)')
+        ->from($db->quoteName('#__md_member_token', 'mt'))
+        ->join('INNER', $db->quoteName ( '#__md_new_member', 'nm' ) . ' ON (nm.email = mt.email)')
+        ->join('INNER', $db->quoteName ( '#__md_new_member_proposer', 'nmp' ) . ' ON (nmp.newmember_id = nm.id)')
+        ->where('mt.hash_token = ' . $db->quote($token));
+        
+        $db->setQuery($query);
+        return ($db->loadResult() > 0 );
+
+    }
     
     
 }

@@ -49,17 +49,26 @@ class MemberDatabaseViewNewmember extends JViewLegacy
      */
     public function display($tpl = null)
     {
+
+        //debug_print_backtrace();
         // Get the Data
         $this->form = $this->get('Form');
         // This won't work because need to pass pk parameter to model getItem()
         //$this->item = $this->get('Item');
 
-        $jinput = JFactory::getApplication()->input;
+        $app = \JFactory::getApplication();
+
+        $jinput = $app->input;
         $this->token = $jinput->get('token', null, "ALNUM");
         $this->stage = $jinput->get('stage', "initial", 'ALNUM');
 
+        $app =& JFactory::getApplication();
+        
+        if ($this->getModel()->hasApplicationBeenSubmitted($this->token)) {
+            $app->redirect(JRoute::_('index.php?option=' . $this->option . '&view=newmember&layout=alreadysubmitted'));
+        }
+
         if ($this->stage != "initial" && ! ($this->getModel()->getPK($this->token))) {
-            $app = \JFactory::getApplication();
 
             // Enqueue the redirect message
             $app->enqueueMessage("Could not find record", "error");

@@ -1,16 +1,13 @@
 <?php
 /**
  * @package     Joomla.Administrator
- * @subpackage  com_helloworld
- *
- * @copyright   Copyright (C) 2005 - 2016 Open Source Matters, Inc. All rights reserved.
- * @license     GNU General Public License version 2 or later; see LICENSE.txt
+ * @subpackage  com_memberdatabase
  */
  
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
  
-// Get an instance of the controller prefixed by HelloWorld
+// Get an instance of the controller prefixed by MemberDatabase
 $controller = JControllerLegacy::getInstance('MemberDatabase');
  
 // Perform the Request task

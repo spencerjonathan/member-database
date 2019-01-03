@@ -183,4 +183,8 @@ class MemberDatabaseControllerNewmember extends JControllerForm
         
         $this->setRedirect(JRoute::_('index.php?option=' . $this->option . '&view=newmember&layout=complete', false));
     }
+
+    public function cancel($key = null, $urlVar = null) {
+        $this->setRedirect(JUri::root(true));
+    }
 }

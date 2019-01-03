@@ -17,11 +17,6 @@ $task = "newmember.save" . $this->stage;
 
 <div>
 
-<button onclick="Joomla.submitbutton('<?php echo $task ?>')" id="save_button"
-               class="btn btn-small">
-               <span class="icon-save"></span> Save & Close
-       </button>
-
 	<button onclick="Joomla.submitbutton('newmember.cancel')"
 		class="btn btn-small">
 		<span class="icon-cancel"></span> Close
@@ -29,6 +24,10 @@ $task = "newmember.save" . $this->stage;
 
 </div>
 <hr>
+
+<?php if ($this->stage == "initial") : ?>
+Thankyou for applying for membership online.  <strong>Before you start</strong>, you will need your own email address and the email addresses of the two association members proposing you for membership.<br><hr>
+<?php endif; ?>
 
 <form class="form-validate"
 	action="<?php echo JRoute::_('index.php?option=com_memberdatabase&view=newmember&layout=edit&token=' . $this->token . '&stage=' . $this->stage); ?>"

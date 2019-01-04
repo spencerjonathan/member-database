@@ -3,17 +3,14 @@
  * @package     Joomla.Administrator
  * @subpackage  com_memberdatabase
  *
- * @copyright   Copyright (C) 2005 - 2015 Open Source Matters, Inc. All rights reserved.
- * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * HelloWorld Model
+ * NewMemberProposer Model
  *
- * @since 0.0.1
  */
 class MemberDatabaseModelNewMemberProposer extends JModelAdmin
 {
@@ -132,8 +129,6 @@ class MemberDatabaseModelNewMemberProposer extends JModelAdmin
         ->where('p.approved_flag = 1')
         ->group($db->quoteName('p.newmember_id'));
         
-        error_log("ModelNewMemberProposer::promoteToMember Query: " . $query->__toString());
-        
         $db->setQuery($query);
         $row = $db->loadAssoc();
         
@@ -153,8 +148,6 @@ class MemberDatabaseModelNewMemberProposer extends JModelAdmin
         
         $result = JFactory::getDbo()->insertObject('#__md_member', $newmember, 'primary_key');
 
-//        error_log("newmember after promoting to full member: " . json_encode($newmember));
-
         // Fields to update.
         $fields = array(
             $db->quoteName('member_id') . ' = ' . $newmember->primary_key
@@ -168,8 +161,6 @@ class MemberDatabaseModelNewMemberProposer extends JModelAdmin
         $query = $db->getQuery(true)
         ->update($db->quoteName('#__md_new_member_proposer', 'p'))
         ->set($fields)->where($conditions);
-
-        error_log("Think this is problematic query: " . $query->__toString());
 
         $db->setQuery($query);
 

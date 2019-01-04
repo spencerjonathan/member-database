@@ -106,23 +106,24 @@ if (JFactory::getUser()->get('id') == 0)
 				$verification_required_since_time = strtotime ( $verification_required_since );
 				
 				foreach ( $this->items as $i => $row ) :
-					$link = JRoute::_ ( 'index.php?option=com_memberdatabase&task=member.edit&id=' . $row->id . $token_text );
-					$verify = JRoute::_ ( 'index.php?option=com_memberdatabase&task=member.verify&id=' . $row->id . $token_text );
+					$newmember_link = JRoute::_ ( 'index.php?option=com_memberdatabase&task=newmember.edit&id=' . $row->id );
+					$member_link = JRoute::_ ( 'index.php?option=com_memberdatabase&task=member.edit&id=' . $row->member_id );
 					
-					$verified_time = strtotime ( $row->verified_date );
 					?>
 					<tr>
 				        <td>
 							<?php echo JHtml::_('grid.id', $i, $row->id); ?>
 						</td>
-				        <td><a href="<?php echo $link; ?>" title="<?php echo JText::_('Edit Member'); ?>">
+				        <td><a href="<?php echo $newmember_link; ?>" title="<?php echo JText::_('Edit New Member'); ?>">
 							<?php echo $row->name . ' (' . $row->id . ')'; ?>
+                            </a>
 						</td>
 				        <td>
 							<?php echo $row->tower; ?>
 						</td>
-				        <td>
+				        <td><a href="<?php echo $member_link; ?>" title="<?php echo JText::_('Edit New Member'); ?>">
 							<?php echo $row->member_id; ?>
+                            </a>
 						</td>
 				        <td>
 							<?php echo $row->promoted; ?>

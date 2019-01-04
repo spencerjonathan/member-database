@@ -56,12 +56,25 @@ class MemberDatabaseModelNewmember extends JModelAdmin
      */
     public function getForm($data = array(), $loadData = true)
     {
-        // Get the form.
-        $jinput = JFactory::getApplication()->input;
-        $stage = $jinput->get('stage', "initial", 'ALNUM');
 
-        $form_name = 'com_memberdatabase.newmember_' . $stage;
-        $form_file = 'newmember_' . $stage;
+        $form_name = '';
+        $form_file = '';
+        
+        // Check if user is privilaged to view the newmember
+   		if (JFactory::getUser()->authorise ( 'core.admin', 'com_memberdatabase' )) {
+            $form_name = 'com_memberdatabase.newmember';    
+            $form_file = 'newmember';
+        } else {
+            // Must be someone registering so get the appropriate form for the
+            // stage of their application
+
+            $jinput = JFactory::getApplication()->input;
+
+            $stage = $jinput->get('stage', "initial", 'ALNUM');
+
+            $form_name = 'com_memberdatabase.newmember_' . $stage;
+            $form_file = 'newmember_' . $stage;
+        }
 
         $form = $this->loadForm($form_name, $form_file, array(
             'control' => 'jform',

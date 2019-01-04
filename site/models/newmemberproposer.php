@@ -148,6 +148,8 @@ class MemberDatabaseModelNewMemberProposer extends JModelAdmin
         unset($newmember->id);
         
         $newmember->mod_date = date('Y-m-d H:i:s');
+        $newmember->date_elected = date('Y-m-d');
+        $newmember->db_form_received = 1;
         
         $result = JFactory::getDbo()->insertObject('#__md_member', $newmember, 'primary_key');
 

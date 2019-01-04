@@ -70,7 +70,7 @@ foreach ($sections as $section) :
         echo '<div><fieldset class="form-horizontal"><legend>' . $section[1] . '</legend>';
 
         if ($section[0] == 'privacy') {
-            echo 'General Data Protection Regulation (GDPR) requires that<br> 1) We document in the Association\'s Privicy Policy the lawful basis for processing your personal information, and <br> 2) That you concent to us processing your personal data for the reasons set out in the Association Privicy Policy.<br><br> <a	href="https://scacr.org/documents/membership/SCACR_Data_Protection_Policy.pdf">Read the Association Privicy Policy Here</a><br><br> Concenting to the SCACR processing your personal data for the reasons set out in the Association\'s Privicy Policy is a requirement for membership to the SCACR.<br><br>';
+            echo 'General Data Protection Regulation (GDPR) requires that<br> 1) We document in the Association\'s Privicy Policy the lawful basis for processing your personal information, and <br> 2) That you concent to us processing your personal data for the reasons set out in the Association Privicy Policy.<br><br> <a	href="https://scacr.org/documents/membership/Privacy_Policy.pdf">Read the Association Privicy Policy Here</a><br><br> Concenting to the SCACR processing your personal data for the reasons set out in the Association\'s Privicy Policy is a requirement for membership to the SCACR.<br><br>';
         }
         
         if ($section[0] == 'proposers') {

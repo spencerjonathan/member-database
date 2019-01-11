@@ -29,11 +29,8 @@ class MemberDatabaseModelInvoices extends JModelList
 		if (empty($config['filter_fields']))
 		{
 			$config['filter_fields'] = array(
-				'id',
-				'tower_name',
-				'created_by_user',
-				/* 'email', */
-				'created_date'
+				'id', 'inv.id',
+                'year', 'inv.year'
 			);
 		}
  
@@ -100,6 +97,12 @@ class MemberDatabaseModelInvoices extends JModelList
 		{
 			$like = $db->quote('%' . $db->escape($search, true) . '%');
 			$query->where('concat_ws(\'/\', t.place, inv.id, inv.payment_reference) LIKE ' . $like);
+		}
+
+		$year = $this->getState('filter.year');
+        if (!empty($year))
+		{
+			$query->where('inv.year = ' . (int) $year);
 		}
 
 		// Add the list ordering clause.

@@ -85,22 +85,25 @@ class MemberDatabaseViewNewmembers extends JViewLegacy
 		JToolbarHelper::deleteList('', 'newmembers.delete');
 	}
 
-    protected function displayProposer($email, $approved) {
+    protected function displayProposer($email, $approved, $token, $pk) {
+
+        error_log("displayProposer() - approved = '$approved'");
+
+        $link = 'index.php?option=com_memberdatabase&view=newmemberproposer&token=' . $token . '&id=' . $pk;
 
         if (!$email) {
             echo '<span class="label label-default">N/A</span>';
         } else {
             if ($approved) {
                 // Has said yes!
-                echo '<span class="label label-success">';
-            } elseif ($approved == 0) {
+                echo '<span class="label label-success">' . $email . '</span>';
+            } elseif ($approved === 0) {
                 // has said no!  Aaaahhh!
-                echo '<span class="label label-danger">';
+                echo '<span class="label label-danger">' . $email . '</span>';
             } else {
                 // hasn't responded yet
-                echo '<span class="label label-warning">';
+                echo '<a href="' . $link . '"><span class="label label-warning">' . $email . '</span></a>';
             }
-            echo $email . '</span>';
         }
     }
 

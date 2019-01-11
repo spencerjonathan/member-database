@@ -129,10 +129,10 @@ if (JFactory::getUser()->get('id') == 0)
 							<?php echo $row->promoted; ?>
 						</td>
                         <td>
-							<?php $this->displayProposer($row->proposer_email, $row->proposer_approved); ?>
+							<?php $this->displayProposer($row->proposer_email, $row->proposer_approved, $row->proposer_token, $row->id); ?>
 						</td>
                         <td>
-							<?php $this->displayProposer($row->seconder_email, $row->seconder_approved); ?>
+							<?php $this->displayProposer($row->seconder_email, $row->seconder_approved, $row->seconder_token, $row->id); ?>
 						</td>
 			        </tr>
 				<?php endforeach; ?>

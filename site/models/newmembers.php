@@ -41,14 +41,14 @@ class MemberDatabaseModelNewMembers extends JModelList {
 		
 		$query = $db->getQuery ( true );
 		
-        $subquery = '(select p.newmember_id, p.member_id, p.email as proposer_email, p.approved_flag as proposer_approved, s.email as seconder_email, s.approved_flag as seconder_approved
+        $subquery = '(select p.newmember_id, p.member_id, p.email as proposer_email, p.approved_flag as proposer_approved, p.hash_token as proposer_token, s.email as seconder_email, s.approved_flag as seconder_approved, s.hash_token as seconder_token
                      from #__md_new_member_proposer p
                      inner join #__md_new_member_proposer s on p.newmember_id = s.newmember_id
                      where s.id > p.id)';
 
 		// Create the base select statement.
 		$query->select ( 'm.*, concat_ws(\', \',place, designation) as tower, concat_ws(\', \',surname, forenames) as name, props.member_id, if(isnull(props.member_id), "No", "Yes") as promoted, ' .
-        'props.proposer_email, props.proposer_approved, props.seconder_email, props.seconder_approved'  );
+        'props.proposer_email, props.proposer_approved, props.proposer_token, props.seconder_email, props.seconder_approved, props.seconder_token'  );
 		$query->from ( $db->quoteName ( '#__md_new_member', 'm' ) );
 		$query->join ( 'LEFT', $db->quoteName ( '#__md_tower', 't' ) . ' ON (' . $db->quoteName ( 'm.tower_id' ) . ' = ' . $db->quoteName ( 't.id' ) . ')' );
         $query->join ( 'LEFT', $subquery . ' props ON props.newmember_id = m.id');

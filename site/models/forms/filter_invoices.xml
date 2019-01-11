@@ -8,8 +8,18 @@
 			hint="Search in Invoice"
 			class="js-stools-search-string"
 		/>
+        <field
+				name="year"
+				type="sql"
+				label="Filter by Year"
+				description="Filter by the year of the invoice"
+				default=""
+                onchange="this.form.submit();"
+				query="select '' as value, '- Select Year -' as year union all SELECT distinct year AS value, year FROM #__md_invoice" 
+        />
 	</fields>
 	<fields name="list">
+
 		<field
 			name="limit"
 			type="limitbox"

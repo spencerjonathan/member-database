@@ -40,7 +40,7 @@ class MemberDatabaseViewNewmembers extends JViewLegacy
             $app->redirect(JUri::root(true));
         }
 
-		$context = "memberdatabase.list.admin.newmember";
+		$context = "com_memberdatabase.list.admin.newmember";
 
 		// Get data from the model
 		$this->items		= $this->get('Items');
@@ -86,8 +86,6 @@ class MemberDatabaseViewNewmembers extends JViewLegacy
 	}
 
     protected function displayProposer($email, $approved, $token, $pk) {
-
-        error_log("displayProposer() - approved = '$approved'");
 
         $link = 'index.php?option=com_memberdatabase&view=newmemberproposer&token=' . $token . '&id=' . $pk;
 

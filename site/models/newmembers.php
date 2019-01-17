@@ -28,9 +28,12 @@ class MemberDatabaseModelNewMembers extends JModelList {
 	public function __construct($config = array()) {
 		if (empty ( $config ['filter_fields'] )) {
 			$config ['filter_fields'] = array (
-					'id',
+					'member_id',
 					'tower',
-					'name'
+					'name',
+                    'promoted',
+                    'proposer',
+                    'seconder'
 			);
 		}
 		
@@ -75,10 +78,9 @@ class MemberDatabaseModelNewMembers extends JModelList {
 		}
 		
 		// Add the list ordering clause.
-		error_log("State = " . serialize($this->state));
-		
+
 		$orderCol = $this->state->get ( 'list.ordering', 'surname, forenames' );
-		$orderDirn = $this->state->get ( 'list.direction', 'asc' );
+		$orderDirn = $this->state->get ( 'list.direction', 'ASC' );
 		
 		$query->order ( $db->escape ( $orderCol ) . ' ' . $db->escape ( $orderDirn ) );
 		
@@ -103,17 +105,18 @@ class MemberDatabaseModelNewMembers extends JModelList {
 		$app = JFactory::getApplication('site');
 		
 		$itemid = $app->input->get('id', 0, 'int') . ':' . $app->input->get('Itemid', 0, 'int');
-		
+        $context = "com_memberdatabase.list.admin.newmember";
+
 		// Optional filter text
-		$search = $app->getUserStateFromRequest('com_memberdatabase.newmember.list.' . $itemid . '.filter-search', 'filter-search', '', 'string');
+		$search = $app->getUserStateFromRequest($context . '.filter-search', 'filter-search', '', 'string');
 		$this->setState('list.filter', $search);
 		
 		// Filter.order
-		$orderCol = $app->getUserStateFromRequest('com_memberdatabase.newmember.list.' . $itemid . '.filter_order', 'filter_order', '', 'string');
+		$orderCol = $app->getUserStateFromRequest($context . '.filter_order', 'filter_order', '', 'string');
 		
 		$this->setState('list.ordering', $orderCol);
 		
-		$listOrder = $app->getUserStateFromRequest('com_content.category.list.' . $itemid . '.filter_order_Dir', 'filter_order_Dir', '', 'cmd');
+		$listOrder = $app->getUserStateFromRequest($context . '.filter_order_Dir', 'filter_order_Dir', '', 'cmd');
 		
 		if (!in_array(strtoupper($listOrder), array('ASC', 'DESC', '')))
 		{
@@ -130,8 +133,6 @@ class MemberDatabaseModelNewMembers extends JModelList {
 	}
 	
 	public function delete(&$newMemberId) {
-		
-		error_log("In newmember.delete: newMemberId = " . $newMemberId);
 		
 		// Initialize variables.
 		$db    = JFactory::getDbo();

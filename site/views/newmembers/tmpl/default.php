@@ -80,7 +80,7 @@ if (JFactory::getUser()->get('id') == 0)
 	    			<?php echo JHtml::_('grid.sort', 'Promoted?', 'promoted', $listDirn, $listOrder) ;?>
 		    	</th>
                 <th width="5%">
-			    	<?php echo JHtml::_('grid.sort', 'Seconder?', 'proposer_email', $listDirn, $listOrder) ;?>
+			    	<?php echo JHtml::_('grid.sort', 'Proposer', 'proposer_email', $listDirn, $listOrder) ;?>
     			</th>
                 <th width="5%">
 			    	<?php echo JHtml::_('grid.sort', 'Seconder', 'seconder_email', $listDirn, $listOrder) ;?>

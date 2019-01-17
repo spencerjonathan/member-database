@@ -311,7 +311,7 @@ class MemberDatabaseModelMembers extends JModelList {
 		
 		$this->setState('list.ordering', $orderCol);
 		
-		$listOrder = $app->getUserStateFromRequest('com_content.category.list.' . $itemid . '.filter_order_Dir', 'filter_order_Dir', '', 'cmd');
+		$listOrder = $app->getUserStateFromRequest('com_memberdatabase.member.list.' . $itemid . '.filter_order_Dir', 'filter_order_Dir', '', 'cmd');
 		
 		if (!in_array(strtoupper($listOrder), array('ASC', 'DESC', '')))
 		{

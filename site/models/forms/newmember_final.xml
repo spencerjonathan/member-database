@@ -10,6 +10,7 @@
 				size="40"
 				class="inputbox"
 				validate="email"
+                required="true"
 				default=""
 				/>
 				
@@ -21,6 +22,7 @@
 				size="40"
 				class="inputbox"
 				validate="email"
+                required="true"
 				default=""
 				/>
         

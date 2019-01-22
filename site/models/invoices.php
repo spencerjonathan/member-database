@@ -29,8 +29,9 @@ class MemberDatabaseModelInvoices extends JModelList
 		if (empty($config['filter_fields']))
 		{
 			$config['filter_fields'] = array(
-				'id', 'inv.id',
-                'year', 'inv.year'
+				'id',
+                'year',
+                'paid', 'place', 'created_by_user', 'created_date', 'fee', 'tower_name'
 			);
 		}
  
@@ -104,6 +105,17 @@ class MemberDatabaseModelInvoices extends JModelList
 		{
 			$query->where('inv.year = ' . (int) $year);
 		}
+
+        $paid = $this->getState('filter.paid');
+        error_log("Invoice Model - paid filter: $paid; empty test is " . empty($paid));
+        if ($paid == "1")
+		{
+			$query->where('inv.paid = 1');
+		} 
+        elseif ($paid == "0")
+        {
+            $query->where('(inv.paid is null or inv.paid = 0)');
+        }
 
 		// Add the list ordering clause.
 		$orderCol	= $this->state->get('list.ordering', 't.place, t.designation, inv.created_date');

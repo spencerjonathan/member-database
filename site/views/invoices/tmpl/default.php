@@ -57,7 +57,7 @@ $listDirn = $this->escape ( $this->filter_order_Dir );
 <form action="index.php?option=com_memberdatabase&view=invoices"
 	method="post" id="adminForm" name="adminForm">
 	<div class="row-fluid">
-		<div class="span6">
+		<div class="span12">
 			<?php echo JText::_('Invoices Filter'); ?>
 			<?php
 			echo JLayoutHelper::render ( 'joomla.searchtools.default', array (
@@ -72,11 +72,11 @@ $listDirn = $this->escape ( $this->filter_order_Dir );
 				<th width="1%"><?php echo JText::_('#'); ?></th>
 				<th width="2%"> <?php echo JHtml::_('grid.checkall'); ?> </th>
 				<th width="10%"> <?php echo JHtml::_('grid.sort', 'invoice', 'id', $listDirn, $listOrder) ;?> </th>
-				<th width="10%"> <?php echo JHtml::_('grid.sort', 'Tower', 'tower', $listDirn, $listOrder) ;?> </th>
+				<th width="10%"> <?php echo JHtml::_('grid.sort', 'Tower', 'tower_name', $listDirn, $listOrder) ;?> </th>
 				<th width="10%"> <?php echo JHtml::_('grid.sort', 'Created User', 'created_by_user', $listDirn, $listOrder) ;?> </th>
 				<th width="10%"> <?php echo JHtml::_('grid.sort', 'Created Date', 'created_date', $listDirn, $listOrder) ;?> </th>
 				<th width="10%" style="text-align: right"> <?php echo JHtml::_('grid.sort', 'Amount £', 'fee', $listDirn, $listOrder) ;?> </th>
-				<th width="10%">Paid?</th>
+				<th width="10%"> <?php echo JHtml::_('grid.sort', 'Paid', 'paid', $listDirn, $listOrder);?> </th>
 				<th width="10%" >Action</th>
 			</tr>
 		</thead>

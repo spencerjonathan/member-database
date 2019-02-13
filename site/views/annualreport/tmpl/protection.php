@@ -39,7 +39,7 @@ defined ( '_JEXEC' ) or die ( 'Restricted Access' );
 
         if (sizeof($juniors)) : ?>
             
-			<br><table style="table-layout: fixed;">
+			<table style="table-layout: fixed;" class='page-break-inside-avoid' width=100%>
 				<col width="50%" />
 				<col width="50%" />
 			<tr><td COLSPAN=2><strong>

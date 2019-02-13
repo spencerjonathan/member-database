@@ -48,16 +48,16 @@ defined ( '_JEXEC' ) or die ( 'Restricted Access' );
             <tr><td COLSPAN=2><strong>Correspondent: </strong>
             <?php echo $tower->corresp_forenames . " " . $tower->corresp_surname . " " . $tower->corresp_telephone . " " . $tower->corresp_email; ?>
             </td></tr>
-            <tr><td><strong>Juniors:</strong>
+            <tr><td valign="top"><strong>Juniors:</strong>
 
             <?php foreach ($juniors as $junior) {
                 echo "<br />" . $junior;
             }; ?>
-            </td><td><strong>DBS Checked Adults:</strong>
+            </td><td valign="top"><strong>DBS Checked Adults:</strong>
             <?php foreach ($adults as $adult) {
                 echo "<br />" . $adult;
             }; ?>
-            </td></tr></table>
+            </td></tr></table><br>
         <?php endif; endforeach; ?>
 		</div>
 	</div>

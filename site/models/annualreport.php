@@ -150,7 +150,9 @@ class MemberDatabaseModelAnnualreport extends JModelList {
         $date = DateTime::createFromFormat("Y-m-d", $this->verification_required_since);
         $year = $date->format("Y") - 1;
 
-        $from_date = "$year" . "01-01";
+        error_log("New Members since $year");
+
+        $from_date = "$year" . "-01-01";
 
         $query->select("m.id, forenames, surname, date_elected as member_since, concat_ws(', ', place, designation) as tower, d.name as district") 
             ->from($db->quoteName ( "#__md_member", 'm'))

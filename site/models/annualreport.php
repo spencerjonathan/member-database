@@ -133,6 +133,42 @@ class MemberDatabaseModelAnnualreport extends JModelList {
 		
 		return $results;
 	}
+
+
+	public function getNewMembers($from_date = '2017-01-01') {
+		// Initialize variables.
+		$db = JFactory::getDbo ();
+		
+        $query = $db->getQuery( true );
+
+        jimport('joomla.application.component.helper');
+        $this->verification_required_since = JComponentHelper::getParams('com_memberdatabase')->get('verification_required_since');
+        if (!$this->verification_required_since) {
+            error_log("verification_required_since global configuration option is not set for the MemberDatabase.");
+        }
+
+        $date = DateTime::createFromFormat("Y-m-d", $this->verification_required_since);
+        $year = $date->format("Y") - 1;
+
+        $from_date = "$year" . "01-01";
+
+        $query->select("m.id, forenames, surname, date_elected as member_since, concat_ws(', ', place, designation) as tower, d.name as district") 
+            ->from($db->quoteName ( "#__md_member", 'm'))
+            ->join('INNER', $db->quoteName('#__md_tower', 't') . "on m.tower_id = t.id")
+//            ->join('INNER', $db->quoteName('#__md_district', 'd') . "on t.district_id = d.id")
+            ->where("m.date_elected >= '$from_date'")
+            ->order("d.name, date_elected");
+
+        QueryHelper::addDistrictJoin($db, $query);
+		QueryHelper::addDataPermissionConstraints($db, $query);
+
+		$db->setQuery ( $query );
+		
+		$results = $db->loadObjectList ();
+		
+		return $results;
+	}
+    
 	
 	public function getTowerDetails() {
 		$db = JFactory::getDbo ();

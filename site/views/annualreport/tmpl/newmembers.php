@@ -18,6 +18,7 @@ defined ( '_JEXEC' ) or die ( 'Restricted Access' );
 
             <table class="table-bordered" width=100%><tr>
                 <th>ID</th>
+                <th>Type</th>
                 <th>Name</th>
                 <th>Joining Date</th>
                 <th>Tower</th>
@@ -31,6 +32,7 @@ defined ( '_JEXEC' ) or die ( 'Restricted Access' );
                     
                     echo "<tr>";
                     echo "<td>" . $member->id . "</td>";
+                    echo "<td>" . $member->type . "</td>";
                     echo "<td>" . $member->surname . ", " . $member->forenames . "</td>";
                     echo "<td>" . $member->member_since . "</td>";
                     echo "<td>" . $member->tower . "</td>";

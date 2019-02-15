@@ -154,10 +154,11 @@ class MemberDatabaseModelAnnualreport extends JModelList {
 
         $from_date = "$year" . "-01-01";
 
-        $query->select("m.id, forenames, surname, date_elected as member_since, concat_ws(', ', place, designation) as tower, d.name as district") 
+        $query->select("m.id, mt.name as type, forenames, surname, date_elected as member_since, concat_ws(', ', place, designation) as tower, d.name as district") 
             ->from($db->quoteName ( "#__md_member", 'm'))
             ->join('INNER', $db->quoteName('#__md_tower', 't') . "on m.tower_id = t.id")
 //            ->join('INNER', $db->quoteName('#__md_district', 'd') . "on t.district_id = d.id")
+            ->join('INNER', $db->quoteName('#__md_member_type', 'mt') . "on m.member_type_id = mt.id")
             ->where("m.date_elected >= '$from_date'")
             ->order("d.name, date_elected");
 

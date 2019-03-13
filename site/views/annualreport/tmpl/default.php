@@ -69,9 +69,9 @@ defined ( '_JEXEC' ) or die ( 'Restricted Access' );
 							
 							<td COLSPAN=7>Corresp: <?php 
 							if ($tower->incl_corresp && $tower->corresp_surname) {
-								echo $tower->corresp_title . ' ' . substr($tower->corresp_forenames, 0, 1) . ' ' . $tower->corresp_surname . ', ' . $tower->corresp_telephone . ' - ';
+								echo $tower->corresp_title . ' ' . substr($tower->corresp_forenames, 0, 1) . ' ' . $tower->corresp_surname . ', ' . $tower->corresp_telephone;
 							}
-							echo $tower->email; 
+
 							?></td>
 						</tr>
 						<?php endif ?>

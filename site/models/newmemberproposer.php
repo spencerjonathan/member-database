@@ -164,7 +164,12 @@ class MemberDatabaseModelNewMemberProposer extends JModelAdmin
 
         $db->setQuery($query);
 
-        return $db->execute();
-        
+        $db->execute();
+
+        $memberModel = JModelLegacy::getInstance("Member", "MemberDatabaseModel", array());
+
+        $memberModel->notifyPeopleOfNewMember($newmember->primary_key);
+
+        return true;       
     }
 }

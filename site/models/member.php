@@ -127,11 +127,23 @@ class MemberDatabaseModelMember extends JModelAdmin {
 		$districtCommsUpdated = $this->districtCommsUpdated($data);
 		$memberTypeUpdated = $this->memberTypeUpdated($data);		
 
+        // If we're adding a new user
+        $isNew = true;
+        if ($data['id'] > 0) { $isNew = false; }
+
+        error_log("In save.  isNew = $isNew and id is " . $data['id']);
+
 		$saveResult = parent::save($data);
 		
 		if ($saveResult && ($emailAddressUpdated || $commsPreferenceUpdated || $districtCommsUpdated || $memberTypeUpdated)) {
 			$this->emailUpdatedHandler($data, $emailAddressUpdated, $commsPreferenceUpdated, $districtCommsUpdated, $memberTypeUpdated);
 		}
+
+        // If we're adding a new user
+        if ($isNew) {
+            error_log("Calling notifyPeopleOfNewMember with id = " . $data['id']);
+            $this->notifyPeopleOfNewMember($data['id']);
+        }
 		
 		return $saveResult;
 	}
@@ -608,7 +620,7 @@ class MemberDatabaseModelMember extends JModelAdmin {
     }
 	
     public function notifyMemberThatApplicationSuccessful($newmember, $member_type) {
-        $email = "$newmember->email;membership@scacr.org";
+        $email = array ($newmember->email, "membership@scacr.org");
         $body = JText::sprintf("Dear %s %s<br><br>", $newmember->forenames, $newmember->surname);
 
         $body = $body . "Welcome to the Sussex County Association of Change Ringers (SCACR)!  Your proposer and seconder have confirmed their support for your application and your membership has been approved.<br><br>";
@@ -638,7 +650,7 @@ class MemberDatabaseModelMember extends JModelAdmin {
             $email = $correspondent->email;
         }
 
-        $email = $email . ";membership@scacr.org;$district->email";
+        $email = array ($email, "membership@scacr.org", $district->email);
         $body = "Dear Secretaries<br><br>";
 
         $body = $body . JText::sprintf("This is to notify you that %s %s has joined the association as a %s member at tower %s.<br><br>%s - Please can you ensure that their membership fee of £%s is paid to the treasurer.  (Please pay by BACS to - Sort Code: 40-52-40, Account No: 00002642)<br><br>",

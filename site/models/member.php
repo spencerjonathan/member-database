@@ -140,10 +140,10 @@ class MemberDatabaseModelMember extends JModelAdmin {
 		}
 
         // If we're adding a new user
-        if ($isNew) {
-            error_log("Calling notifyPeopleOfNewMember with id = " . $data['id']);
-            $this->notifyPeopleOfNewMember($data['id']);
-        }
+        //if ($isNew) {
+        //    error_log("Calling notifyPeopleOfNewMember with id = " . $data['id']);
+        //    $this->notifyPeopleOfNewMember($data['id']);
+        //}
 		
 		return $saveResult;
 	}
@@ -615,24 +615,26 @@ class MemberDatabaseModelMember extends JModelAdmin {
         $correspondent->load($tower->correspondent_id);
 
         $this->notifyMemberThatApplicationSuccessful($newmember, $member_type);
-        $this->notifySecretariesOfNewMember($newmember, $member_type, $correspondent, $tower, $district);
-
+        $this->notifyDistrictSecretaryOfNewMember($newmember, $member_type, $tower, $district);
+        $this->notifyTowerCorrespOfNewMember($newmember, $member_type, $correspondent, $tower);
+        $this->emailUpdatedHandler((array) $newmember, true, true, true, true);
     }
 	
     public function notifyMemberThatApplicationSuccessful($newmember, $member_type) {
-        $email = array ($newmember->email, "membership@scacr.org");
-        $body = JText::sprintf("Dear %s %s<br><br>", $newmember->forenames, $newmember->surname);
+        //$email = array ($newmember->email, "membership@scacr.org", "treasurer@scacr.org");
+        $email = array ("membership@scacr.org");
+        $body = sprintf("Dear %s %s<br><br>", $newmember->forenames, $newmember->surname);
 
         $body = $body . "Welcome to the Sussex County Association of Change Ringers (SCACR)!  Your proposer and seconder have confirmed their support for your application and your membership has been approved.<br><br>";
 
-        $body = $body . JText::sprintf(
-					'Your membership fee of %c%s for %s membership for the current year are due now.  Please pay by BACS to - Sort Code: 40-52-40, Account No: 00002642<br><br>',
-					163, $member_type->fee, $member_type->name
+        $body = $body . sprintf(
+					'Your membership fee of £%s for %s membership for the current year are due now.  Please pay by BACS to - Sort Code: 40-52-40, Account No: 00002642 with your name and tower as payment reference<br><br>',
+					$member_type->fee, $member_type->name
 					);
 
         $body = $body . "Kind Regards,<br><br>Jon Spencer (Membership Coordinator)";
 
-        error_log("Email To  : " . $email);
+        error_log("Email To  : " . implode(", ", $email));
         error_log("Email Body: " . $body);
 
         $send = EmailHelper::sendEmail($email, "Welcome to the Association!", $body, true);
@@ -643,25 +645,54 @@ class MemberDatabaseModelMember extends JModelAdmin {
 
     }
 
-    public function notifySecretariesOfNewMember($newmember, $member_type, $correspondent, $tower, $district) {
+    public function notifyTowerCorrespOfNewMember($newmember, $member_type, $correspondent, $tower) {
+
+        $corresp_email = $correspondent->email;
+        
+        if ($tower->corresp_email) {
+            $corresp_email = $tower->corresp_email;
+        } 
+
+        //$email = array ($corresp_email, "membership@scacr.org");
+        $email = array ("membership@scacr.org");
+        $body = "Dear " . $correspondent->forenames . "<br><br>";
+
+        $body = $body . sprintf("This is to notify you that %s %s has joined the association as a %s member at tower %s.<br><br>Between they two of you, please can you ensure that their membership fee of £%d is paid to the treasurer.  (Please pay by BACS to - Sort Code: 40-52-40, Account No: 00002642)<br><br>",
+            $newmember->forenames, $newmember->surname, $member_type->name, $tower->place, $correspondent->forenames, $member_type->fee);
+
+        $body = $body . "Kind Regards,<br><br>Jon Spencer (Membership Coordinator)";
+
+        error_log("Email To  : " . implode(", ", $email));
+        error_log("Email Body: " . $body);
+
+        $send = EmailHelper::sendEmail($email, "New Member of the Association!", $body, true);
+        if ($send !== true) {
+            $this->setError(JText::sprintf('Could not send email to %s', $email), 500);
+            return false;
+        }
+
+    }
+
+    public function notifyDistrictSecretaryOfNewMember($newmember, $member_type, $tower, $district) {
         if ($tower->corresp_email) {
             $email = $tower->corresp_email;
         } else {
             $email = $correspondent->email;
         }
 
-        $email = array ($email, "membership@scacr.org", $district->email);
-        $body = "Dear Secretaries<br><br>";
+        //$email = array ("membership@scacr.org", $district->email);
+        $email = array ("membership@scacr.org");
+        $body = "Dear " . $district->name . " secretary<br><br>";
 
-        $body = $body . JText::sprintf("This is to notify you that %s %s has joined the association as a %s member at tower %s.<br><br>%s - Please can you ensure that their membership fee of £%s is paid to the treasurer.  (Please pay by BACS to - Sort Code: 40-52-40, Account No: 00002642)<br><br>",
-            $newmember->forenames, $newmember->surname, $member_type->name, $tower->place, $correspondent->forenames, $member_type->fee);
+        $body = $body . JText::sprintf("This is to notify you that %s %s (%s) has joined the association as a %s member at tower %s.<br><br>",
+            $newmember->forenames, $newmember->surname, $newmember->email, $member_type->name, $tower->place);
 
         $body = $body . "Kind Regards,<br><br>Jon Spencer (Membership Coordinator)";
 
-        error_log("Email To  : " . $email);
+        error_log("Email To  : " . implode(", ", $email));
         error_log("Email Body: " . $body);
 
-        $send = EmailHelper::sendEmail($email, "New Member to the Association!", $body, true);
+        $send = EmailHelper::sendEmail($email, "New Member of the Association!", $body, true);
         if ($send !== true) {
             $this->setError(JText::sprintf('Could not send email to %s', $email), 500);
             return false;

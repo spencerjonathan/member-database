@@ -6,12 +6,24 @@ abstract class EmailHelper
     public static function sendEmail($email, $subject, $body, $isHtml=false) {
         $mailer = JFactory::getMailer();
         $config = JFactory::getConfig();
-        $fromname = $config->get('fromname');
-        $mailfrom = $config->get('mailfrom');
+        //$fromname = $config->get('fromname');
+        //$mailfrom = $config->get('mailfrom');
         $site = $config->get('sitename');
-        $mailer->isHtml($isHtml);
         
-        return $mailer->sendMail($mailfrom, $fromname, $email, $site . " - " . $subject, $body);
+        $sender = array(
+				$config->get( 'mailfrom' ),
+				$config->get( 'fromname' )
+		);
+
+		$mailer->setSender($sender);
+		$mailer->addRecipient($email);
+		$mailer->setSubject($site . " - " . $subject);
+		$mailer->setBody($body);
+        $mailer->isHtml($isHtml);		
+
+		return $mailer->Send();
+        
+        //return $mailer->sendMail($mailfrom, $fromname, $email, $site . " - " . $subject, $body);
     }
     
     public static function createToken() {

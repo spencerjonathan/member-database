@@ -628,7 +628,7 @@ class MemberDatabaseModelMember extends JModelAdmin {
         $body = $body . "Welcome to the Sussex County Association of Change Ringers (SCACR)!  Your proposer and seconder have confirmed their support for your application and your membership has been approved.<br><br>";
 
         $body = $body . sprintf(
-					'Your membership fee of £%s for %s membership for the current year are due now.  Please pay by BACS to - Sort Code: 40-52-40, Account No: 00002642 with your name and tower as payment reference<br><br>',
+					'Your membership fee of £%s for %s membership for the current year is due now.  Please pay by BACS to - Sort Code: 40-52-40, Account No: 00002642 with your name and tower as payment reference<br><br>',
 					$member_type->fee, $member_type->name
 					);
 
@@ -657,8 +657,8 @@ class MemberDatabaseModelMember extends JModelAdmin {
         $email = array ("membership@scacr.org");
         $body = "Dear " . $correspondent->forenames . "<br><br>";
 
-        $body = $body . sprintf("This is to notify you that %s %s has joined the association as a %s member at tower %s.<br><br>Between they two of you, please can you ensure that their membership fee of £%d is paid to the treasurer.  (Please pay by BACS to - Sort Code: 40-52-40, Account No: 00002642)<br><br>",
-            $newmember->forenames, $newmember->surname, $member_type->name, $tower->place, $correspondent->forenames, $member_type->fee);
+        $body = $body . sprintf("This is to notify you that %s %s has joined the association as a %s member at tower %s.<br><br>Between the two of you, please can you ensure that their membership fee of £%s is paid to the treasurer.  (Please pay by BACS to - Sort Code: 40-52-40, Account No: 00002642)<br><br>",
+            $newmember->forenames, $newmember->surname, $member_type->name, $tower->place, $member_type->fee);
 
         $body = $body . "Kind Regards,<br><br>Jon Spencer (Membership Coordinator)";
 

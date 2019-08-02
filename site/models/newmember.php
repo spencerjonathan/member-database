@@ -320,7 +320,7 @@ class MemberDatabaseModelNewmember extends JModelAdmin
         ->where('mt.hash_token = ' . $db->quote($token));
         
         $db->setQuery($query);
-        return ($db->loadResult() > 0 );
+        return ($db->loadResult());
 
     }
     

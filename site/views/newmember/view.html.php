@@ -62,10 +62,10 @@ class MemberDatabaseViewNewmember extends JViewLegacy
         $this->token = $jinput->get('token', null, "ALNUM");
         $this->stage = $jinput->get('stage', "initial", 'ALNUM');
 
-        $app =& JFactory::getApplication();
+        //$app =& JFactory::getApplication();
         
         if ($this->getModel()->hasApplicationBeenSubmitted($this->token)) {
-            $app->redirect(JRoute::_('index.php?option=' . $this->option . '&view=newmember&layout=alreadysubmitted'));
+            $app->redirect(JRoute::_('index.php?option=' . $this->option . '&view=newmember&layout=alreadysubmitted', false));
         }
 
         if ($this->stage != "initial" && ! ($this->getModel()->getPK($this->token))) {

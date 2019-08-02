@@ -608,21 +608,24 @@ class MemberDatabaseModelMember extends JModelAdmin {
         $tower->load($newmember->tower_id);
 
         $district = JTable::getInstance('District', 'MemberDatabaseTable', array());
-        $member_type->load($tower->district_id);
+        $district->load($tower->district_id);
+
+        $district_sec = JTable::getInstance('Member', 'MemberDatabaseTable', array());
+        $district_sec->load($district->secretary_id);
 
         // Get the correspondent record
         $correspondent = JTable::getInstance('Member', 'MemberDatabaseTable', array());
         $correspondent->load($tower->correspondent_id);
 
         $this->notifyMemberThatApplicationSuccessful($newmember, $member_type);
-        $this->notifyDistrictSecretaryOfNewMember($newmember, $member_type, $tower, $district);
+        $this->notifyDistrictSecretaryOfNewMember($newmember, $member_type, $tower, $district, $district_sec);
         $this->notifyTowerCorrespOfNewMember($newmember, $member_type, $correspondent, $tower);
         $this->emailUpdatedHandler((array) $newmember, true, true, true, true);
     }
 	
     public function notifyMemberThatApplicationSuccessful($newmember, $member_type) {
-        //$email = array ($newmember->email, "membership@scacr.org", "treasurer@scacr.org");
-        $email = array ("membership@scacr.org");
+        $email = array ($newmember->email, "membership@scacr.org", "treasurer@scacr.org", "secretary@scacr.org");
+        //$email = array ("membership@scacr.org");
         $body = sprintf("Dear %s %s<br><br>", $newmember->forenames, $newmember->surname);
 
         $body = $body . "Welcome to the Sussex County Association of Change Ringers (SCACR)!  Your proposer and seconder have confirmed their support for your application and your membership has been approved.<br><br>";
@@ -653,8 +656,8 @@ class MemberDatabaseModelMember extends JModelAdmin {
             $corresp_email = $tower->corresp_email;
         } 
 
-        //$email = array ($corresp_email, "membership@scacr.org");
-        $email = array ("membership@scacr.org");
+        $email = array ($corresp_email, "membership@scacr.org", "secretary@scacr.org");
+        //$email = array ("membership@scacr.org");
         $body = "Dear " . $correspondent->forenames . "<br><br>";
 
         $body = $body . sprintf("This is to notify you that %s %s has joined the association as a %s member at tower %s.<br><br>Between the two of you, please can you ensure that their membership fee of £%s is paid to the treasurer.  (Please pay by BACS to - Sort Code: 40-52-40, Account No: 00002642)<br><br>",
@@ -673,16 +676,11 @@ class MemberDatabaseModelMember extends JModelAdmin {
 
     }
 
-    public function notifyDistrictSecretaryOfNewMember($newmember, $member_type, $tower, $district) {
-        if ($tower->corresp_email) {
-            $email = $tower->corresp_email;
-        } else {
-            $email = $correspondent->email;
-        }
-
-        //$email = array ("membership@scacr.org", $district->email);
-        $email = array ("membership@scacr.org");
-        $body = "Dear " . $district->name . " secretary<br><br>";
+    public function notifyDistrictSecretaryOfNewMember($newmember, $member_type, $tower, $district, $district_sec) {
+        
+        $email = array ("membership@scacr.org", "secretary@scacr.org", $district->email);
+        //$email = array ("membership@scacr.org");
+        $body = "Dear " . $district_sec->forenames . "<br><br>";
 
         $body = $body . JText::sprintf("This is to notify you that %s %s (%s) has joined the association as a %s member at tower %s.<br><br>",
             $newmember->forenames, $newmember->surname, $newmember->email, $member_type->name, $tower->place);

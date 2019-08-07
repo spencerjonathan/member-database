@@ -631,7 +631,7 @@ class MemberDatabaseModelMember extends JModelAdmin {
         $body = $body . "Welcome to the Sussex County Association of Change Ringers (SCACR)!  Your proposer and seconder have confirmed their support for your application and your membership has been approved.<br><br>";
 
         $body = $body . sprintf(
-					'Your membership fee of £%s for %s membership for the current year is due now.  Please pay by BACS to - Sort Code: 40-52-40, Account No: 00002642 with your name and tower as payment reference<br><br>',
+					'Your membership fee of £%s for %s membership for the current year is due now.  Please pay by BACS to - Sort Code: 40-52-40, Account No: 00002642 with "SUBS [your name]" as payment reference<br><br>',
 					$member_type->fee, $member_type->name
 					);
 

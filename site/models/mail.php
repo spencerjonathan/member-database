@@ -137,7 +137,7 @@ class MemberDatabaseModelMail extends JModelAdmin
 
 		// Build email message format.
         $mailer->addReplyTo($reply_to_email, $reply_to_name);
-		$mailer->setSender(array("noreply@scacr.org", "SCACR.org Contact Form"));
+		$mailer->setSender(array("membership@scacr.org", "SCACR.org Contact Form"));
 		$mailer->setSubject($params->get('mail_subject_prefix') . JMailHelper::cleanLine(stripslashes($data['subject'])));
 		$mailer->setBody($body);
 		//$mailer->IsHtml($mode);

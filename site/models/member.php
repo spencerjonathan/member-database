@@ -621,6 +621,8 @@ class MemberDatabaseModelMember extends JModelAdmin {
         $this->notifyDistrictSecretaryOfNewMember($newmember, $member_type, $tower, $district, $district_sec);
         $this->notifyTowerCorrespOfNewMember($newmember, $member_type, $correspondent, $tower);
         $this->emailUpdatedHandler((array) $newmember, true, true, true, true);
+
+        return true;
     }
 	
     public function notifyMemberThatApplicationSuccessful($newmember, $member_type) {
@@ -682,10 +684,29 @@ class MemberDatabaseModelMember extends JModelAdmin {
         //$email = array ("membership@scacr.org");
         $body = "Dear " . $district_sec->forenames . "<br><br>";
 
-        $body = $body . JText::sprintf("This is to notify you that %s %s (%s) has joined the association as a %s member at tower %s.<br><br>",
+        $body = $body . JText::sprintf("This is to notify you that %s %s (%s) has joined the association as a %s member at tower %s.<br><br>Their postal address is:<br>",
             $newmember->forenames, $newmember->surname, $newmember->email, $member_type->name, $tower->place);
 
-        $body = $body . "Kind Regards,<br><br>Jon Spencer (Membership Coordinator)";
+        if ($newmember->address1) {
+			$body = $body . "<br>$newmember->address1";
+		}
+		if ($newmember->address2) {
+			$body = $body . "<br>$newmember->address2";
+		}
+		if ($newmember->address3) {
+			$body = $body . "<br>$newmember->address3";
+		}
+		if ($newmember->town) {
+			$body = $body . "<br>$newmember->town";
+		}
+		if ($newmember->county) {
+			$body = $body . "<br>$newmember->county";
+		}
+		if ($newmember->postcode) {
+			$body = $body . "<br>$newmember->postcode";
+		}
+    
+        $body = $body . "<br><br>Kind Regards,<br><br>Jon Spencer (Membership Coordinator)";
 
         error_log("Email To  : " . implode(", ", $email));
         error_log("Email Body: " . $body);

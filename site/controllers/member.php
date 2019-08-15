@@ -308,6 +308,26 @@ class MemberDatabaseControllerMember extends JControllerForm {
 		} else
 			return false;
 	}
+
+    public function notify($key = null, $urlVar = null) {
+
+        $model = $this->getModel ();
+
+        $jinput = JFactory::getApplication ()->input;
+		$member_id = $jinput->get ( 'id', null, 'INT' );
+
+		error_log ( "In member.notify;  member_id is $member_id" );
+
+        $return = $model->notifyPeopleOfNewMember($member_id);
+
+        if ($return == true) {
+				$this->setMessage ( JText::_ ( 'Notifications sent.' ) );
+		}
+
+        $this->setRedirect ( JRoute::_ ( 'index.php?option=' . $this->option . '&view=newmembers', false ) );
+
+        return $return;
+	}
 	
 	/**
 	 * Method to add an attachment to a member's record.

@@ -13,6 +13,16 @@ defined ( '_JEXEC' ) or die ( 'Restricted Access' );
 
 JHtml::_ ( 'formbehavior.chosen', 'select' );
 
+$document = JFactory::getDocument();
+$document->addScriptDeclaration("
+
+  function notify(url) {
+    if (confirm('Are you sure you want to notify sakeholders that a new member has joined? (This has probably already been done!)'))   
+        { window.location.href = url; }
+    return false;
+  }");
+
+
 $listOrder = $this->escape ( $this->filter_order );
 $listDirn = $this->escape ( $this->filter_order_Dir );
 
@@ -85,6 +95,7 @@ if (JFactory::getUser()->get('id') == 0)
                 <th width="5%">
 			    	<?php echo JHtml::_('grid.sort', 'Seconder', 'seconder_email', $listDirn, $listOrder) ;?>
     			</th>
+                <th width="5%">Action</th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -108,6 +119,7 @@ if (JFactory::getUser()->get('id') == 0)
 				foreach ( $this->items as $i => $row ) :
 					$newmember_link = JRoute::_ ( 'index.php?option=com_memberdatabase&task=newmember.edit&id=' . $row->id );
 					$member_link = JRoute::_ ( 'index.php?option=com_memberdatabase&task=member.edit&id=' . $row->member_id );
+					$notify_link = JRoute::_ ( JURI::base() . 'index.php?option=com_memberdatabase&task=member.notify&id=' . $row->member_id, false );
 					
 					?>
 					<tr>
@@ -133,6 +145,16 @@ if (JFactory::getUser()->get('id') == 0)
 						</td>
                         <td>
 							<?php $this->displayProposer($row->seconder_email, $row->seconder_approved, $row->seconder_token, $row->id); ?>
+						</td>
+                        <td>
+                            <?php if ($row->member_id) : ?>
+
+                            <button onclick="notify('<?php echo $notify_link ?>')" class="btn">
+                                <span class="icon-envelope"></span>
+                            </button>
+
+							<!-- <a class="btn" description="Send Notifications (Again)" href="<?php echo $notify_link; ?>"><span class="icon-envelope"></span></a> -->
+                            <?php endif; ?>
 						</td>
 			        </tr>
 				<?php endforeach; ?>

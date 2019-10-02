@@ -75,21 +75,13 @@ class MemberDatabaseModelInvoices extends JModelList
 		// Initialize variables.
 		$db    = JFactory::getDbo();
 		$userid = JFactory::getUser()->id;
-		$query = $db->getQuery(true);
+		$query = $this->getBasicListQuery($db);
 		
-		// Create the base select statement.
-		$query->select('inv.id, inv.tower_id, inv.year, inv.created_by_user_id, u.name as created_by_user, inv.created_date, inv.payment_method, inv.payment_reference, concat_ws(", ", t.place, t.designation) as tower_name, t.place, sum(im.fee) as fee, inv.paid, inv.paid_date')
-                ->from($db->quoteName('#__md_invoice', 'inv'))
-		->join('INNER', $db->quoteName('#__users', 'u') . ' ON (' . $db->quoteName('inv.created_by_user_id') . ' = ' . $db->quoteName('u.id') . ')')
-		->join('INNER', $db->quoteName('#__md_invoicemember', 'im') . ' ON (' . $db->quoteName('inv.id') . ' = ' . $db->quoteName('im.invoice_id') . ')')
-		->join('INNER', $db->quoteName('#__md_tower', 't') . ' ON (' . $db->quoteName('inv.tower_id') . ' = ' . $db->quoteName('t.id') . ')');
-
+        // Add authorisation check
 		if (! JFactory::getUser ()->authorise ( 'invoice.view', 'com_memberdatabase' )) {
 			$query->join ( 'INNER', $db->quoteName ( '#__md_usertower', 'ut' ) . ' ON (' . $db->quoteName ( 'inv.tower_id' ) . ' = ' . $db->quoteName ( 'ut.tower_id' ) . ')' );
 			$query->where ( 'ut.user_id = ' . $userid );
 		}
-		
-		$query->group('inv.id, inv.tower_id, inv.year, inv.created_by_user_id, inv.created_date, inv.payment_method, inv.payment_reference, concat_ws(", ", t.place, t.designation)');
 
 		// Filter: like / search
 		$search = $this->getState('filter.search');
@@ -123,6 +115,24 @@ class MemberDatabaseModelInvoices extends JModelList
  
 		$query->order($db->escape($orderCol) . ' ' . $db->escape($orderDirn));
  
+		return $query;
+	}
+
+    public function getBasicListQuery($db)
+	{
+		// Initialize variables.
+//		$db    = JFactory::getDbo();
+		$query = $db->getQuery(true);
+		
+		// Create the base select statement.
+		$query->select('inv.id, inv.tower_id, inv.year, inv.created_by_user_id, u.name as created_by_user, inv.created_date, inv.payment_method, inv.payment_reference, concat_ws(", ", t.place, t.designation) as tower_name, t.place, sum(im.fee) as fee, inv.paid, inv.paid_date')
+                ->from($db->quoteName('#__md_invoice', 'inv'))
+		->join('INNER', $db->quoteName('#__users', 'u') . ' ON (' . $db->quoteName('inv.created_by_user_id') . ' = ' . $db->quoteName('u.id') . ')')
+		->join('INNER', $db->quoteName('#__md_invoicemember', 'im') . ' ON (' . $db->quoteName('inv.id') . ' = ' . $db->quoteName('im.invoice_id') . ')')
+		->join('INNER', $db->quoteName('#__md_tower', 't') . ' ON (' . $db->quoteName('inv.tower_id') . ' = ' . $db->quoteName('t.id') . ')');
+		
+		$query->group('inv.id, inv.tower_id, inv.year, inv.created_by_user_id, inv.created_date, inv.payment_method, inv.payment_reference, concat_ws(", ", t.place, t.designation)');
+
 		return $query;
 	}
 }

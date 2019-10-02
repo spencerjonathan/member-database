@@ -412,6 +412,7 @@ class MemberDatabaseModelMembers extends JModelList {
 		$newMembers = $db->loadObjectList ();
 
         $report = '<h1>New Members Still Pending Confirmation From Proposers</h1><br><br>';
+        $report .= 'The table below shows people who have started the application process online, but the process has not completed for some reason.<br><br>';
         $report .= '<table><thead><tr><th>Name</th><th>Tower</th>' . 
                    '<th>Proposer Email</th><th>Seconder Email</th><th>Applied</th></tr></thead><tbody>';
 
@@ -424,6 +425,43 @@ class MemberDatabaseModelMembers extends JModelList {
         }
 
         $report .= '</tbody></table><br><br>';
+
+        $noInvoice = $this->getMembersWithoutInvoiceCount();
+
+        $report .= '<h1>Members With No Invoice</h1><br><br>';
+        $report .= 'Members by tower that have not been included on an invoice for the current year.<br><br>';
+        $report .= '<table><thead><tr><th>Tower</th><th>Number of Members</th></tr></thead><tbody>';
+
+        foreach ( $noInvoice as $tower ) {
+            if ($newMember->number_of_members > 0) {
+                $report .= "<tr><td>$newMember->tower_name</td><td>$newMember->number_of_members</td></tr>";
+            }
+        }
+
+        $report .= '</tbody></table><br><br>';
+
+        // Unpaid invoices
+
+        $invoicesModel = \JModelLegacy::getInstance("Invoices", "MemberDatabaseModel", array());
+
+        $query = $invoicesModel->getBasicListQuery($db);
+
+		$db->setQuery ( $query );
+		
+		$unpaidInvoices = $db->loadObjectList ();
+
+        $report .= '<h1>Unpaid Invoices</h1><br><br>';
+        $report .= 'Invoices that have not yet been receipted.<br><br>';
+        $report .= '<table><thead><tr><th>ID</th><th>Tower</th><th>Amount</th></tr></thead><tbody>';
+
+        foreach ( $unpaidInvoices as $invoice ) {
+            if ($invoice->paid) {
+                $report .= "<tr><td>$invoice->id</td><td>$invoice->tower_name</td><td>£$invoice->fee</td></tr>";
+            }
+        }
+
+        $report .= '</tbody></table><br><br>';
+
 
         error_log("sendStatusEmail: " . $report);
 
@@ -438,6 +476,33 @@ class MemberDatabaseModelMembers extends JModelList {
 		}
 
         return;
+    }
+
+    public function getMembersWithoutInvoiceCount() {
+        $db    = JFactory::getDbo();
+
+		$query = $db->getQuery(true);
+		
+		$verification_required_since = JComponentHelper::getParams('com_memberdatabase')->get('verification_required_since');
+		$date = DateTime::createFromFormat("Y-m-d", $verification_required_since);
+		$year = $date->format("Y");
+		
+		// Create the base select statement.
+		$query->select('t.id, concat_ws(", ", t.place, t.designation) as tower_name, count(m.id) as number_of_members')
+		->from($db->quoteName('#__md_member', 'm'))
+		->join('INNER', $db->quoteName('#__md_tower', 't') . ' ON (' . $db->quoteName('m.tower_id') . ' = ' . $db->quoteName('t.id') . ')')
+		->join('LEFT', '(select imsub.id, member_id, year from #__md_invoicemember imsub LEFT JOIN #__md_invoice AS i ON (imsub.invoice_id = i.id) where year = ' . $year . ') as im on m.id = im.member_id')
+		->join ( 'INNER', $db->quoteName ( '#__md_member_type', 'mt' ) . 'ON (m.member_type_id = mt.id)' );
+		
+		$query->where ( 'im.id is null' );
+		$query->where ( 'mt.include_in_reports = 1' );
+		
+		$query->group('t.id, concat_ws(", ", t.place, t.designation)');
+		
+		$db->setQuery ( $query );
+		
+		return $db->loadObjectList ();
+
     }
 
 	

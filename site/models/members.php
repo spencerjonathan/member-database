@@ -400,5 +400,45 @@ class MemberDatabaseModelMembers extends JModelList {
 		return true;
 		
 	}
+
+    public function sendStatusEmail() {
+
+        $newMemberModel = \JModelLegacy::getInstance("NewMembers", "MemberDatabaseModel", array());
+
+        $db    = JFactory::getDbo();
+        $query = $newMemberModel->getBaseQuery($db);
+		$db->setQuery ( $query );
+		
+		$newMembers = $db->loadObjectList ();
+
+        $report = '<h1>New Members Still Pending Confirmation From Proposers</h1><br><br>';
+        $report .= '<table><thead><tr><th>Name</th><th>Tower</th>' . 
+                   '<th>Proposer Email</th><th>Seconder Email</th><th>Applied</th></tr></thead><tbody>';
+
+        foreach ( $newMembers as $newMember ) {
+            if (!($newMember->proposer_approved && $newMember->proposer_approved)) {
+                $report .= '<tr><td>' . "$newMember->surname, $newMember->forenames" . "</td><td>$newMember->tower</td>";
+                $report .= "<td>$newMember->proposer_email" . '</td><td>' . "$newMember->seconder_email" . '</td>';
+                $report .= "<td>$newMember->mod_date" . '</td></tr>';
+            }
+        }
+
+        $report .= '</tbody></table><br><br>';
+
+        error_log("sendStatusEmail: " . $report);
+
+        $email = "membership@scacr.org";
+
+        $send = EmailHelper::sendEmail($email, "Member Status Report", "$report", true);
+		if ( $send !== true ) {
+			$this->setError(JText::sprintf('Could not send email to %s', $email), 500);
+			return false;
+		} else {
+			return true;
+		}
+
+        return;
+    }
+
 	
 }

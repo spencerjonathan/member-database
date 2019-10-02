@@ -80,4 +80,19 @@ class MemberDatabaseControllerMembers extends JControllerAdmin
 		
 		$this->setRedirect ( JRoute::_ ( 'index.php?option=' . $this->option . '&view=' . $this->view_list, false ) );
 	}
+
+    public function status_email($key = null, $urlVar = null) {
+
+        // http://localhost/joomla/index.php/component/memberdatabase/?task=members.status_email
+
+		$model = $this->getModel ( 'Members', 'MemberDatabaseModel', array () );
+		
+		$jinput = JFactory::getApplication ()->input;
+		$cids = $jinput->post->get ( 'cid', null, array () );
+		
+		error_log ( "Members Controller status_email" );
+
+        $model->sendStatusEmail();
+		
+	}
 }

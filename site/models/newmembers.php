@@ -40,7 +40,7 @@ class MemberDatabaseModelNewMembers extends JModelList {
 		parent::__construct ( $config );
 	}
 	
-	private function getBaseQuery($db) {
+	public function getBaseQuery($db) {
 		
 		$query = $db->getQuery ( true );
 		

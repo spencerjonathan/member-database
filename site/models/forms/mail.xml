@@ -77,11 +77,13 @@
 			class="inputbox"
 			maxlength="50"
 			size="40"
+            readonly="true"
 		/>
 
 		<field
 			name="tower_id"
 			type="sql"
+            readonly="true"
 			label="To"
 			description="The tower that the message was sent to"
 			query="SELECT '' as value, 'Please Select' as tower_id union all SELECT t.id AS value, concat_ws(', ', place, designation) AS tower_id FROM #__md_tower t left join #__md_member m on t.correspondent_id = m.id where (t.corresp_email is not null and trim(t.corresp_email) != '') or (m.email is not null and trim(m.email) != '')" />
@@ -94,6 +96,7 @@
 			size="40"
 			class="inputbox"
 			validate="email"
+            readonly="true"
 		/>
 			
 		<field
@@ -104,6 +107,7 @@
 			size="40"
 			class="inputbox"
 			validate="email"
+            readonly="true"
 		/>
 		
         <field 
@@ -114,6 +118,7 @@
 			class="inputbox"
 			maxlength="50"
 			size="40"
+            readonly="true"
 		/>
 		
 		<field 
@@ -124,6 +129,7 @@
 			class="span8"
 			maxlength="150"
 			size="30"
+            readonly="true"
 		/>
 
 		<field 
@@ -134,6 +140,7 @@
 			class="span8 vert"
 			cols="70"
 			rows="10"
+            readonly="true"
 		/>
     </fieldset>
 </form>

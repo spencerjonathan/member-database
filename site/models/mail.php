@@ -41,6 +41,11 @@ class MemberDatabaseModelMail extends JModelAdmin
 		return $form;
 	}
 
+	public function getTable($type = 'Mail', $prefix = 'MemberDatabaseTable', $config = array()) {
+		JTable::addIncludePath ( JPATH_ADMINISTRATOR . '/components/com_memberdatabase/tables' );
+		return JTable::getInstance ( $type, $prefix, $config );
+	}
+
 	/**
 	 * Method to get the data that should be injected in the form.
 	 *
@@ -90,6 +95,8 @@ class MemberDatabaseModelMail extends JModelAdmin
 
         $reply_to_email = JMailHelper::cleanAddress($data['reply_to_email']);
         $reply_to_name = JMailHelper::cleanLine($data['reply_to_name']);
+        $data['reply_to_email'] = $reply_to_email;
+        $data['reply_to_name'] = $reply_to_name;
 
         error_log("Address after clean: " . $reply_to_email);
 
@@ -112,7 +119,8 @@ class MemberDatabaseModelMail extends JModelAdmin
 		$row = $db->loadAssoc();
 
 		$to = JMailHelper::cleanAddress($row['corresp_email'] ? $row['corresp_email'] : $row['email']);
-		
+        $data['email'] = $to;		
+
         error_log("Correspondent Address is: " . $to);
 
 		if (!$to) {
@@ -143,6 +151,8 @@ class MemberDatabaseModelMail extends JModelAdmin
 		//$mailer->IsHtml($mode);
 
 		$mailer->addRecipient($to);
+
+        $this->save($data);
 
 		// Send the Mail
 		$rs = $mailer->Send();

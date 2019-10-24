@@ -62,9 +62,9 @@ class MemberDatabaseModelAnnualreport extends JModelList {
 					case(insurance_group) when \'Under 16\' then 1 else 0 END as under16,
 					case(insurance_group) when \'16-70\' then 1 else 0 END as over16,
 					case(insurance_group) when \'Over 70\' then 1 else 0 END as over70,
-					case(insurance_group) when null then 1 else 0 END as unspecified
-				from #__md_tower t, #__md_member m ' . $query_from_addition . 
-				' where t.id = m.tower_id ' . $query_where_addition . ') as data
+					case when insurance_group is null or insurance_group = "" then 1 else 0 END as unspecified
+				from #__md_tower t, #__md_member m, #__md_member_type mt ' . $query_from_addition . 
+				' where t.id = m.tower_id and m.member_type_id = mt.id and mt.include_in_reports = 1 ' . $query_where_addition . ') as data
 				GROUP BY district_id, tower
 				order by district_id, tower';
 		

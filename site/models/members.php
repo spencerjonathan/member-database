@@ -411,16 +411,16 @@ class MemberDatabaseModelMembers extends JModelList {
 		
 		$newMembers = $db->loadObjectList ();
 
-        $report = '<h1>New Members Still Pending Confirmation From Proposers</h1><br><br>';
+        $report = '<h1>New Members Still Pending Confirmation From Proposers</h1>';
         $report .= 'The table below shows people who have started the application process online, but the process has not completed for some reason.<br><br>';
-        $report .= '<table><thead><tr><th>Name</th><th>Tower</th>' . 
-                   '<th>Proposer Email</th><th>Seconder Email</th><th>Applied</th></tr></thead><tbody>';
+        $report .= '<table width="100%"><thead><tr><th align="left">Name</th><th align="left">Tower</th>' . 
+                   '<th align="left">Proposer Email</th><th align="left">Seconder Email</th><th align="right">Applied</th></tr></thead><tbody>';
 
         foreach ( $newMembers as $newMember ) {
             if (!($newMember->proposer_approved && $newMember->proposer_approved)) {
                 $report .= '<tr><td>' . "$newMember->surname, $newMember->forenames" . "</td><td>$newMember->tower</td>";
                 $report .= "<td>$newMember->proposer_email" . '</td><td>' . "$newMember->seconder_email" . '</td>';
-                $report .= "<td>$newMember->mod_date" . '</td></tr>';
+                $report .= "<td align=\"right\">$newMember->mod_date" . '</td></tr>';
             }
         }
 
@@ -428,13 +428,13 @@ class MemberDatabaseModelMembers extends JModelList {
 
         $noInvoice = $this->getMembersWithoutInvoiceCount();
 
-        $report .= '<h1>Members With No Invoice</h1><br><br>';
+        $report .= '<h1>Members With No Invoice</h1>';
         $report .= 'Members by tower that have not been included on an invoice for the current year.<br><br>';
-        $report .= '<table><thead><tr><th>Tower</th><th>Number of Members</th></tr></thead><tbody>';
+        $report .= '<table width="100%"><thead><tr><th align="left">Tower</th><th align="right">Number of Members</th></tr></thead><tbody>';
 
         foreach ( $noInvoice as $tower ) {
-            if ($newMember->number_of_members > 0) {
-                $report .= "<tr><td>$newMember->tower_name</td><td>$newMember->number_of_members</td></tr>";
+            if ($tower->number_of_members > 0) {
+                $report .= "<tr><td>$tower->tower_name</td><td align=\"right\">$tower->number_of_members</td></tr>";
             }
         }
 
@@ -450,13 +450,13 @@ class MemberDatabaseModelMembers extends JModelList {
 		
 		$unpaidInvoices = $db->loadObjectList ();
 
-        $report .= '<h1>Unpaid Invoices</h1><br><br>';
+        $report .= '<h1>Unpaid Invoices</h1>';
         $report .= 'Invoices that have not yet been receipted.<br><br>';
-        $report .= '<table><thead><tr><th>ID</th><th>Tower</th><th>Amount</th></tr></thead><tbody>';
+        $report .= '<table width="100%"><thead><tr><th align="right">Invoice Number</th><th align="right">Year</th><th align="left">Tower</th><th align="right">Amount</th></tr></thead><tbody>';
 
         foreach ( $unpaidInvoices as $invoice ) {
-            if ($invoice->paid) {
-                $report .= "<tr><td>$invoice->id</td><td>$invoice->tower_name</td><td>£$invoice->fee</td></tr>";
+            if (!$invoice->paid) {
+                $report .= "<tr><td align=\"right\">$invoice->id</td><td align=\"right\">$invoice->year</td><td>$invoice->tower_name</td><td align=\"right\">£$invoice->fee</td></tr>";
             }
         }
 
@@ -465,7 +465,7 @@ class MemberDatabaseModelMembers extends JModelList {
 
         error_log("sendStatusEmail: " . $report);
 
-        $email = "membership@scacr.org";
+        $email = array ("membership@scacr.org", "treasurer@scacr.org");
 
         $send = EmailHelper::sendEmail($email, "Member Status Report", "$report", true);
 		if ( $send !== true ) {

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <form>
-	<fieldset>
+	<fieldset name="new">
 
 		<field
 			name="tower_id"
@@ -66,4 +66,74 @@
             namespace="mail"
         />
 	</fieldset>
+
+    <fieldset name="view">
+
+        <field 
+			name="mod_date" 
+			type="text"
+			label="Sent"
+			description="When message was sent"
+			class="inputbox"
+			maxlength="50"
+			size="40"
+		/>
+
+		<field
+			name="tower_id"
+			type="sql"
+			label="To"
+			description="The tower that the message was sent to"
+			query="SELECT '' as value, 'Please Select' as tower_id union all SELECT t.id AS value, concat_ws(', ', place, designation) AS tower_id FROM #__md_tower t left join #__md_member m on t.correspondent_id = m.id where (t.corresp_email is not null and trim(t.corresp_email) != '') or (m.email is not null and trim(m.email) != '')" />
+
+		<field
+			name="email"
+			type="email"
+			label="Tower Email Address"
+			description="Tower email address"
+			size="40"
+			class="inputbox"
+			validate="email"
+		/>
+			
+		<field
+			name="reply_to_email"
+			type="email"
+			label="Sender Email Address"
+			description="Sender email address"
+			size="40"
+			class="inputbox"
+			validate="email"
+		/>
+		
+        <field 
+			name="reply_to_name" 
+			type="text"
+			label="Sender Name"
+			description="Sender Name"
+			class="inputbox"
+			maxlength="50"
+			size="40"
+		/>
+		
+		<field 
+			name="subject" 
+			type="text"
+			label="Subject"
+			description="Subject"
+			class="span8"
+			maxlength="150"
+			size="30"
+		/>
+
+		<field 
+			name="message" 
+			type="textarea"
+			label="Message"
+			description="Type your message here"
+			class="span8 vert"
+			cols="70"
+			rows="10"
+		/>
+    </fieldset>
 </form>

@@ -75,8 +75,6 @@ if (isset ( $token )) {
 							array("contact_details", "Contact Details"),
 								array("communication_preferences", "Communication Preferences"),
 								array("safeguarding", "Safeguarding"),
-							
-							
 								array("privacy", "Privacy")
 							
 						);											

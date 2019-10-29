@@ -20,6 +20,11 @@ defined ( '_JEXEC' ) or die ( 'Restricted Access' );
 				$firstdistrict = 1;
 			
 				$towersbyinsurancegroup = $this->get("TowersByInsuranceGroup");
+
+                $unspecified_grand_total = 0;
+                $under_grand_total = 0;
+                $adult_grand_total = 0;
+                $over_grand_total = 0;
 	
 				foreach ( $towersbyinsurancegroup as $tower ) :
 			  		if ($currentdistrictid != $tower->district_id) :
@@ -35,7 +40,15 @@ defined ( '_JEXEC' ) or die ( 'Restricted Access' );
 		        				<td style="text-align:right"><strong><?php echo $unspecified_total + $under_total + $adult_total + $over_total ?> </strong></td>
 					        </tr>
 			  				</table>
-			  			<?php endif; 
+			  			<?php 
+
+                            $unspecified_grand_total += $unspecified_total;
+                            $under_grand_total += $under_total;
+                            $adult_grand_total += $adult_total;
+                            $over_grand_total += $over_total;
+
+
+                        endif; 
 
                         $unspecified_total = 0;
                         $under_total = 0;
@@ -83,7 +96,12 @@ defined ( '_JEXEC' ) or die ( 'Restricted Access' );
 						<td style="text-align:right"><?php echo $tower->over70 ?></td>
 						<td style="text-align:right"><strong><?php echo $tower->total ?></strong></td>
 					</tr>
-	<?php endforeach; ?>
+	<?php endforeach; 
+                            $unspecified_grand_total += $unspecified_total;
+                            $under_grand_total += $under_total;
+                            $adult_grand_total += $adult_total;
+                            $over_grand_total += $over_total;
+    ?>
 
                     <tr>
 						<td><strong>Totals</strong></td>
@@ -92,7 +110,17 @@ defined ( '_JEXEC' ) or die ( 'Restricted Access' );
 						<td style="text-align:right"><?php echo $adult_total ?></td>
 						<td style="text-align:right"><?php echo $over_total ?></td>
 						<td style="text-align:right"><strong><?php echo $unspecified_total + $under_total + $adult_total + $over_total ?></strong></td>
-					</tr>	                
+					</tr>	           
+                    <tr></tr>
+                    <tr>
+						<td><strong>Association Grand Totals</strong></td>
+						<td style="text-align:right"> <?php echo $unspecified_grand_total ?></td>
+						<td style="text-align:right"><?php echo $under_grand_total ?></td>
+						<td style="text-align:right"><?php echo $adult_grand_total ?></td>
+						<td style="text-align:right"><?php echo $over_grand_total ?></td>
+						<td style="text-align:right"><strong><?php echo $unspecified_grand_total + $under_grand_total + $adult_grand_total + $over_grand_total ?></strong></td>
+                    </tr>
+     
 		
 	</table>
 

@@ -15,12 +15,6 @@ defined ( '_JEXEC' ) or die ( 'Restricted Access' );
 <div class="container-fluid">
 	<div class="row-fluid">
 		<div class="span12">
-		
-		
-		
-
-		
-
 			<?php
 				$currentdistrictid = 0;
 				$firstdistrict = 1;
@@ -29,9 +23,24 @@ defined ( '_JEXEC' ) or die ( 'Restricted Access' );
 	
 				foreach ( $towersbyinsurancegroup as $tower ) :
 			  		if ($currentdistrictid != $tower->district_id) :
+                        
+
 			  			if ($currentdistrictid != 0) : ?>
+                            <tr>
+						        <td><strong>Totals</strong></td>
+        						<td style="text-align:right"> <?php echo $unspecified_total ?></td>
+		        				<td style="text-align:right"><?php echo $under_total ?></td>
+		        				<td style="text-align:right"><?php echo $adult_total ?></td>
+		        				<td style="text-align:right"><?php echo $over_total ?></td>
+		        				<td style="text-align:right"><strong><?php echo $unspecified_total + $under_total + $adult_total + $over_total ?> </strong></td>
+					        </tr>
 			  				</table>
 			  			<?php endif; 
+
+                        $unspecified_total = 0;
+                        $under_total = 0;
+                        $adult_total = 0;
+                        $over_total = 0;
 						
 			  			$currentdistrictid = $tower->district_id;
 						?>
@@ -57,8 +66,14 @@ defined ( '_JEXEC' ) or die ( 'Restricted Access' );
 							<th style="text-align:right">Over-70</th>
 							<th style="text-align:right">Total</th>
 						</tr>
+
 			
-					<?php endif ?>
+					<?php endif;
+                        $unspecified_total += $tower->unspecified;
+                        $under_total += $tower->under16;
+                        $adult_total += $tower->over16;
+                        $over_total += $tower->over70;
+                     ?>
 	
 					<tr>
 						<td><strong><?php echo $tower->tower ?></strong></td>
@@ -69,7 +84,15 @@ defined ( '_JEXEC' ) or die ( 'Restricted Access' );
 						<td style="text-align:right"><strong><?php echo $tower->total ?></strong></td>
 					</tr>
 	<?php endforeach; ?>
-	
+
+                    <tr>
+						<td><strong>Totals</strong></td>
+						<td style="text-align:right"> <?php echo $unspecified_total ?></td>
+						<td style="text-align:right"><?php echo $under_total ?></td>
+						<td style="text-align:right"><?php echo $adult_total ?></td>
+						<td style="text-align:right"><?php echo $over_total ?></td>
+						<td style="text-align:right"><strong><?php echo $unspecified_total + $under_total + $adult_total + $over_total ?></strong></td>
+					</tr>	                
 		
 	</table>
 

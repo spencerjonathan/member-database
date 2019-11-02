@@ -14,7 +14,7 @@ defined('_JEXEC') or die;
  *
  * @since  1.6
  */
-class MemberDatabaseControllerMail extends JControllerLegacy
+class MemberDatabaseControllerMail extends JControllerForm
 {
 	/**
 	 * Send the mail
@@ -87,5 +87,15 @@ class MemberDatabaseControllerMail extends JControllerLegacy
 		// Check for request forgeries.
 		$this->checkToken('request');
 		$this->setRedirect('index.php');
+	}
+
+    public function view($key = null, $urlVar = null)
+	{
+		// Check for request forgeries.
+//		$this->checkToken('request');
+
+        $this->input->set('layout', 'view');
+        $this->edit($key, $urlVar);
+
 	}
 }

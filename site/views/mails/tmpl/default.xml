@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+	<layout title="Mails Sent to Correspondents">
+		<message>Lists all mails that have been sent to correspondents through the Mail form</message>
+	</layout>
+</metadata>

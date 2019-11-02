@@ -42,7 +42,7 @@ class MemberDatabaseModelMail extends JModelAdmin
 	}
 
 	public function getTable($type = 'Mail', $prefix = 'MemberDatabaseTable', $config = array()) {
-		JTable::addIncludePath ( JPATH_ADMINISTRATOR . '/components/com_memberdatabase/tables' );
+		//JTable::addIncludePath ( JPATH_ADMINISTRATOR . '/components/com_memberdatabase/tables' );
 		return JTable::getInstance ( $type, $prefix, $config );
 	}
 
@@ -55,10 +55,18 @@ class MemberDatabaseModelMail extends JModelAdmin
 	 */
 	protected function loadFormData()
 	{
-		// Check the session for previously entered form data.
-		$data = JFactory::getApplication()->getUserState('com_memberdatabase.display.mail.data', array());
 
-		$this->preprocessData('com_users.mail', $data);
+        $id = (int) $this->getState($this->getName() . '.id');
+        error_log("loadForm - id = " . $id);
+
+        if ($id > 0) {
+    		$data = $this->getItem ();
+        } else {
+            $data = JFactory::getApplication()->getUserState('com_memberdatabase.display.mail.data', array());
+    		$this->preprocessData('com_users.mail', $data);
+        }
+
+        error_log("Mail loadFormData: " . json_encode((array) $data));
 
 		return $data;
 	}

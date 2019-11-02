@@ -12,7 +12,12 @@ defined('_JEXEC') or die;
 JHtml::_('behavior.core');
 JHtml::_('formbehavior.chosen', 'select');
 
-JFactory::getDocument()->addScriptDeclaration($script);
+// Check that user is privilaged to view this form
+if (!(JFactory::getUser()->authorise ( 'mail.view', 'com_memberdatabase' ))) {
+    $app = JFactory::getApplication();
+    $app->redirect(JUri::root(true));
+}
+
 ?>
 
 <legend>Message Sent To A Tower</legend>

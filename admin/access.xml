@@ -12,6 +12,7 @@
 		<action name="invoice.delete" title="COM_MEMBERDATABASE_INVOICE_DELETE" description="COM_MEMBERDATABASE_INVOICE_DELETE_DESC" />
 		<action name="invoice.edit" title="COM_MEMBERDATABASE_INVOICE_EDIT" description="COM_MEMBERDATABASE_INVOICE_EDIT_DESC" />
 		<action name="invoice.view" title="COM_MEMBERDATABASE_INVOICE_VIEW" description="COM_MEMBERDATABASE_INVOICE_VIEW_DESC" />
+		<action name="mail.view" title="COM_MEMBERDATABASE_MAIL_VIEW" description="COM_MEMBERDATABASE_MAIL_VIEW_DESC" />
 		<!-- <action name="invoice.manage" title="COM_MEMBERDATABASE_INVOICE_MANAGE" description="COM_MEMBERDATABASE_INVOICE_MANAGE_COMPONENT_DESC" /> -->
 	</section>
 </access>

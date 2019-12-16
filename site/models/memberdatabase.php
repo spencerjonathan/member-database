@@ -59,7 +59,7 @@ class MemberDatabaseModelMemberDatabase extends JModelItem
 		return $db->loadResult();
 	}
 	
-	protected function getMemberWithoutInvoiceCount() {
+	public function getMemberWithoutInvoiceCount() {
 		$db    = JFactory::getDbo();
 		$userid = JFactory::getUser()->id;
 		$query = $db->getQuery(true);

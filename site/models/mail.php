@@ -93,7 +93,7 @@ class MemberDatabaseModelMail extends JModelAdmin
 	 *
 	 * @return  boolean
 	 */
-	public function send($data)
+	public function send($data, $isHtml = false)
 	{
 		$app    = JFactory::getApplication();
 
@@ -156,7 +156,9 @@ class MemberDatabaseModelMail extends JModelAdmin
 		$mailer->setSender(array("membership@scacr.org", "SCACR.org Contact Form"));
 		$mailer->setSubject($params->get('mail_subject_prefix') . JMailHelper::cleanLine(stripslashes($data['subject'])));
 		$mailer->setBody($body);
-		//$mailer->IsHtml($mode);
+        if ($isHtml) {		
+            $mailer->IsHtml();
+        }
 
 		$mailer->addRecipient($to);
 

@@ -8,6 +8,7 @@
 			label="Association Name" description="The name of the Association as it is to appear on screens and reports"
 			default="SCACR" />
 
+
 		<field name="db_locked" type="radio" label="Database Locked?"
 			description="Is the database locked for editing?" class="btn-group btn-group-yesno"
 			default="0" filter="integer">
@@ -37,6 +38,9 @@
 			label="Email Body Suffix" description="The text that gets appended to the end of the message body for emails to tower correspondents sent from the mail form"
 			default="" />
 
+		<field name="covering_letter_alias" type="text"
+			label="Covering Letter Alias" description="The alias of the article to include in the membership renewals email"
+	    />
 
 	</fieldset>
 	<fieldset name="permissions" label="JCONFIG_PERMISSIONS_LABEL"

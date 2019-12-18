@@ -26,9 +26,24 @@ class MemberDatabaseModelMembershipRenewals extends JModelItem
 		
 	}
 
-    public function sendinvoice($towerId) {
+    private function getCoveringLetter() {
+        $article_alias = JComponentHelper::getParams('com_memberdatabase')->get('covering_letter_alias');
 
-		
+        error_log("Preparing membership renewal email to tower correspondent.  Using article alias '$article_alias'");
+
+        $db    = JFactory::getDbo();
+        $query = $db->getQuery(true);
+
+        $query->select($db->quoteName('introtext'))
+		->from($db->quoteName('#__content', 'c'))
+        ->where("c.alias = '" . $article_alias . "'");
+
+        $db->setQuery ( $query );
+        return $db->loadResult ();
+
+    }
+
+    public function sendinvoice($towerId) {
 
         //$towerId = $this->input->get('towerId', null, "INT");
         
@@ -37,7 +52,7 @@ class MemberDatabaseModelMembershipRenewals extends JModelItem
         // Uses towerId URL parameter to return members that should be included in the invoice
         $members = $invoiceModel->getMembers();
 
-        $invoice = "<table width='100%'><tr><th>Member</th><th>Member Type</th><th>Insurance Group</th><th style='text-align: right'>Fee</th></tr>";
+        $invoice = "<table width='100%'><tr><th>Member</th><th>Member Type</th><th>Insurance Group</th><th style='text-align: right'>Fee £</th></tr>";
 
         foreach ($members as $member) {
             $member_type = $member->member_type;
@@ -49,10 +64,12 @@ class MemberDatabaseModelMembershipRenewals extends JModelItem
 
         $invoice .= "</table>";
 
+        $message = $this->getCoveringLetter() . "<br><br>" . $invoice;
+
         $mailData = array();
         $mailData['tower_id'] = $towerId;
         $mailData['subject'] = "Membership Renewals";
-        $mailData['message'] = $invoice;
+        $mailData['message'] = $message;
         $mailData['reply_to_email'] = "membership@scacr.org";
         $mailData['reply_to_name'] = "Jonathan Spencer (SCACR Membership Coordinator)"; 
 

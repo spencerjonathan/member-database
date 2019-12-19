@@ -43,8 +43,18 @@ class MemberDatabaseViewMembershipRenewals extends JViewLegacy
 	 */
 	function display($tpl = null)
 	{
-		// $document = JFactory::getDocument ();
-		// $document->addStyleSheet ( './components/com_memberdatabase/css/bootstrap.min.css' );
+
+        if (! JFactory::getUser ()->authorise ( 'core.admin', 'com_memberdatabase' )) {
+            JError::raiseError(500, "You are not authorised to perform this action!");
+
+            $app = \JFactory::getApplication();
+            $redirect = \JRoute::_(
+                        'index.php/login/profile', false
+                        );
+
+            // Execute the redirect
+            $app->redirect($redirect);    
+        } 
 		
 		jimport('joomla.application.component.helper');
 		$this->verification_required_since = JComponentHelper::getParams('com_memberdatabase')->get('verification_required_since');

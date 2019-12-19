@@ -45,22 +45,31 @@ class MemberDatabaseModelMembershipRenewals extends JModelItem
 
     public function sendinvoice($towerId) {
 
-        //$towerId = $this->input->get('towerId', null, "INT");
+        if (! JFactory::getUser ()->authorise ( 'core.admin', 'com_memberdatabase' )) {
+            $this->setError("You are not authorised to perform this action!");
+            return "error";
+        } 
         
         $invoiceModel = JModelLegacy::getInstance("Invoice", "MemberDatabaseModel", array());
 
         // Uses towerId URL parameter to return members that should be included in the invoice
         $members = $invoiceModel->getMembers();
 
-        $invoice = "<table width='100%'><tr><th>Member</th><th>Member Type</th><th>Insurance Group</th><th style='text-align: right'>Fee £</th></tr>";
+        $invoice = "<table style='border-collapse: collapse' border='1' width='100%'><tr><th style='text-align: left'>Member</th><th style='text-align: left'>Member Type</th><th style='text-align: left'>Insurance Group</th><th style='text-align: right'>Fee £</th></tr>";
 
+        $invoice_total = 0;
+        
         foreach ($members as $member) {
             $member_type = $member->member_type;
             if ($member->long_service > 0) {
                 $member_type .= " (Long Service)";
             }
             $invoice .= "<tr><td>$member->name</td><td>$member_type</td><td>$member->insurance_group</td><td style='text-align: right'>$member->fee</td></tr>";
+
+            $invoice_total += $member->fee;
         }
+
+        $invoice .= "<tr><td colspan='3'><strong>Total</strong></td><td style='text-align: right'><strong>$invoice_total</strong></td></tr>";
 
         $invoice .= "</table>";
 
@@ -75,7 +84,7 @@ class MemberDatabaseModelMembershipRenewals extends JModelItem
 
         $mailModel = JModelLegacy::getInstance("Mail", "MemberDatabaseModel", array());
 
-		if ($mailModel->send($mailData, true))
+		if ($mailModel->send($mailData, true, false, false))
 		{
 			$type = 'message';
 		}

@@ -93,11 +93,15 @@ class MemberDatabaseModelMail extends JModelAdmin
 	 *
 	 * @return  boolean
 	 */
-	public function send($data, $isHtml = false)
+	public function send($data, $isHtml = false, $includePreffix = true, $includeSuffix = true)
 	{
 		$app    = JFactory::getApplication();
 
-		$message_body = JMailHelper::cleanBody(JFilterInput::getInstance()->clean($data['message'], 'string'));
+        if ($isHtml) {
+            $message_body = $data['message'];
+        } else {
+    		$message_body = JMailHelper::cleanBody(JFilterInput::getInstance()->clean($data['message'], 'string'));
+        }
 
         error_log("Address Provided is: " . $data['reply_to_email']);
 
@@ -137,18 +141,25 @@ class MemberDatabaseModelMail extends JModelAdmin
 		    return false;
 		}
 
-       
-		
 		// Get the Mailer
 		$mailer = JFactory::getMailer();
 		$params = JComponentHelper::getParams('com_memberdatabase');
 
-        $body = "Dear " . $row['correspondent'] . ",\n\n" . 
-            $reply_to_name . " (" . $reply_to_email . ") sent you a message as the tower correspondent for " . $row['tower'] . 
-            ".  Please reply to " . $reply_to_email . " to answer their question soon!\n\n" . 
-            $message_body . "\n\n" . 
-            $params->get('mail_body_suffix');
+        if ($isHtml) { $cariagereturn = "<br>"; } else { $cariagereturn = "\n"; };
 
+        $body = "Dear " . $row['correspondent'] . "," . $cariagereturn . $cariagereturn;
+
+        if ($includePreffix) {
+            $body .= "\n\n" . $reply_to_name . " (" . $reply_to_email . ") sent you a message as the tower correspondent for " . $row['tower'] . 
+                ".  Please reply to " . $reply_to_email . " to answer their question soon!\n\n";
+        }
+
+        $body .= $message_body;
+
+        if ($includeSuffix) {
+            $body .= $cariagereturn . $cariagereturn . $params->get('mail_body_suffix');
+        }
+    
         error_log("Email Body = " . $body);
 
 		// Build email message format.

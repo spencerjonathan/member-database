@@ -9,6 +9,9 @@
 // No direct access to this file
 defined ( '_JEXEC' ) or die ( 'Restricted access' );
 
+JLoader::import ( 'QueryHelper', JPATH_COMPONENT . "/helpers/" );
+
+
 /**
  * MemberDatabaseList Model
  *
@@ -173,12 +176,16 @@ class MemberDatabaseModelAnnualreport extends JModelList {
 	}
     
 	
-	public function getTowerDetails() {
+	public function getTowerDetails($towerid = null) {
 		$db = JFactory::getDbo ();
 		
 		$query = $this->getTowersQuery($db);
 		//QueryHelper::addOnlineCorrespondentsExclusion($db, $query);
 		
+        if (!is_null($towerid)) {
+            $query->where("t.id = $towerid");
+        }
+    
 		$db->setQuery ( $query );
 		$results = $db->loadObjectList ();
 		
@@ -192,7 +199,7 @@ class MemberDatabaseModelAnnualreport extends JModelList {
 		$query = $db->getQuery ( true );
 		
 		// Create the base select statement.
-		$query->select ( 't.*, cor.title as corresp_title, cor.surname as corresp_surname, cor.forenames as corresp_forenames, cor.telephone as corresp_telephone, cor.email as corresp_email, cap.title as captain_title, cap.surname as captain_surname, cap.forenames as captain_forenames, cap.telephone as captain_telephone, concat_ws(\', \', place, designation) as name' );
+		$query->select ( 't.*, t.corresp_email as tower_email, cor.title as corresp_title, cor.surname as corresp_surname, cor.forenames as corresp_forenames, cor.telephone as corresp_telephone, cor.email as corresp_email, cap.title as captain_title, cap.surname as captain_surname, cap.forenames as captain_forenames, cap.telephone as captain_telephone, concat_ws(\', \', place, designation) as name' );
 		$query->from ( $db->quoteName ( '#__md_tower', 't' ) );
 		$query->join ( 'LEFT', $db->quoteName ( '#__md_member', 'cor' ) . ' ON (' . $db->quoteName ( 't.correspondent_id' ) . ' = ' . $db->quoteName ( 'cor.id' ) . ')' );
 		$query->join ( 'LEFT', $db->quoteName ( '#__md_member', 'cap' ) . ' ON (' . $db->quoteName ( 't.captain_id' ) . ' = ' . $db->quoteName ( 'cap.id' ) . ')' );

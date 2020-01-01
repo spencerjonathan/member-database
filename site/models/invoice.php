@@ -214,7 +214,7 @@ class MemberDatabaseModelInvoice extends JModelAdmin {
 		$query = $db->getQuery ( true );
 		
 		// Create the base select statement.
-		$query->select ( 'm.id, m.long_service, m.insurance_group, mt.name as member_type, concat_ws(\', \',m.surname, m.forenames) as name, mt.fee' )->from ( $db->quoteName ( '#__md_member', 'm' ) );
+		$query->select ( 'm.id, m.long_service, m.insurance_group, m.annual_report, mt.name as member_type, concat_ws(\', \',m.surname, m.forenames) as name, mt.fee' )->from ( $db->quoteName ( '#__md_member', 'm' ) );
 		$query->join ( 'INNER', $db->quoteName ( '#__md_member_type', 'mt' ) . ' ON (' . $db->quoteName ( 'm.member_type_id' ) . ' = ' . $db->quoteName ( 'mt.id' ) . ')' );
 		$query->join ( 'LEFT', '(select imsub.id, member_id, year from #__md_invoicemember imsub INNER JOIN #__md_invoice AS i ON (imsub.invoice_id = i.id) where year = ' . $year . ') as im on m.id = im.member_id' );
 		

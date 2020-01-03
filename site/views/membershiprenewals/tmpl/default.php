@@ -43,12 +43,16 @@ if (JFactory::getUser()->get('id') == 0)
 <?php
 
 foreach ( $this->data as $tower ) :
+    if ($this->towerEmailAssoc[$tower->id]) { $disabled = ""; } else {$disabled = " disabled";}
+
+    error_log("Tower: $tower->id; Email: " . $this->towerEmailAssoc[$tower->id] . "; Disabled: $disabled");
+
 	$email_invoice_link = JRoute::_ ( 'index.php?option=com_memberdatabase&view=membershiprenewal&task=membershiprenewals.sendinvoice&towerId=' . $tower->id );
 	?>
 	
 			<tr>
 				<td><?php echo $tower->tower_name; ?> <span class="badge"><?php echo $tower->number_of_members; ?></span></td>
-				<td><a class="btn btn-success"
+				<td><a class="btn btn-success" <?php echo $disabled; ?> title="<?php echo $this->towerEmailAssoc[$tower->id]; ?>"
 					href="<?php echo $email_invoice_link; ?>"><span
 						class="icon-mail icon-white"></span> Email Invoice</a></td>
 			

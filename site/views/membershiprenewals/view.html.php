@@ -66,6 +66,9 @@ class MemberDatabaseViewMembershipRenewals extends JViewLegacy
 		$this->year = $date->format("Y");
 
 		$this->data = $this->get("TowerData");
+		$this->towerEmailAssoc = $this->get("TowerEmailAssoc");
+
+        error_log("TowerEmailAssoc: " . json_encode($this->towerEmailAssoc));
 		
 		parent::display($tpl);
 	}

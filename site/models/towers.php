@@ -91,4 +91,18 @@ class MemberDatabaseModelTowers extends JModelList {
 		
 		return $results;
 	}
+
+    public function getTowerEmailAssoc() {
+        $db = JFactory::getDbo ();
+		
+		$query = $db->getQuery ( true );
+		
+		$query->select ( 't.id, case when t.corresp_email is null or trim(t.corresp_email) = "" then trim(ifnull(c.email, "")) else trim(t.corresp_email) end as email' );
+        $query->from ( $db->quoteName ( '#__md_tower', 't' ) );
+        $query->join("LEFT", $db->quoteName ( '#__md_member', 'c' ) . " on c.id = t.correspondent_id");
+
+        $db->setQuery ( $query );
+
+        return $db->loadAssocList('id', 'email');
+    }
 }

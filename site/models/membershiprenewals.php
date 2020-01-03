@@ -37,6 +37,13 @@ class MemberDatabaseModelMembershipRenewals extends JModelItem
         return "$tower->place, $tower->designation";
     }
 
+    public function getTowerEmailAssoc() {
+
+		$memberDatabaseModel = JModelLegacy::getInstance("Towers", "MemberDatabaseModel", array());
+
+		return $memberDatabaseModel->getTowerEmailAssoc();
+    }
+
 	public function getTowerDetailData($towerId) {
 
 		$memberDatabaseModel = JModelLegacy::getInstance("AnnualReport", "MemberDatabaseModel", array());

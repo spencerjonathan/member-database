@@ -143,7 +143,9 @@ class MemberDatabaseModelMembershipRenewals extends JModelItem
             $member_type = $member->member_type;
             if ($member->long_service > 0) {
                 $member_type .= " (Long Service)";
-            }
+				$member->fee = 0;
+			}
+          
             $annual_report = "No";
             if ($member->annual_report > 0) {
                 $annual_report = "Yes";

@@ -617,9 +617,9 @@ class MemberDatabaseModelMember extends JModelAdmin {
         $correspondent = JTable::getInstance('Member', 'MemberDatabaseTable', array());
         $correspondent->load($tower->correspondent_id);
 
-        //$this->notifyMemberThatApplicationSuccessful($newmember, $member_type);
+        $this->notifyMemberThatApplicationSuccessful($newmember, $member_type);
         $this->notifyDistrictSecretaryOfNewMember($newmember, $member_type, $tower, $district, $district_sec);
-        //$this->notifyTowerCorrespOfNewMember($newmember, $member_type, $correspondent, $tower);
+        $this->notifyTowerCorrespOfNewMember($newmember, $member_type, $correspondent, $tower);
         $this->emailUpdatedHandler((array) $newmember, true, true, true, true);
 
         return true;

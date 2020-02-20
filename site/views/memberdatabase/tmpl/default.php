@@ -92,7 +92,7 @@ foreach ( $this->status ['towers_no_invoices'] as $tower ) :
 	?>
 	
 	<tr>
-				<td><?php echo $tower->tower_name; ?> <span class="badge"><?php echo $tower->number_of_members; ?></span></td>
+				<td><?php echo $tower->tower_name . " (" . substr($tower->district, 0, 1) . ")"; ?> <span class="badge"><?php echo $tower->number_of_members; ?></span></td>
 				<td><a class="btn btn-success"
 					href="<?php echo $create_invoice_link; ?>"><span
 						class="icon-new icon-white"></span> Create Invoice</a></td>

@@ -69,11 +69,12 @@ class MemberDatabaseModelMemberDatabase extends JModelItem
 		$year = $date->format("Y");
 		
 		// Create the base select statement.
-		$query->select('t.id, concat_ws(", ", t.place, t.designation) as tower_name, count(m.id) as number_of_members')
+		$query->select('t.id, concat_ws(", ", t.place, t.designation) as tower_name, d.name as district, count(m.id) as number_of_members')
 		->from($db->quoteName('#__md_member', 'm'))
 		->join('INNER', $db->quoteName('#__md_tower', 't') . ' ON (' . $db->quoteName('m.tower_id') . ' = ' . $db->quoteName('t.id') . ')')
 		->join('LEFT', '(select imsub.id, member_id, year from #__md_invoicemember imsub LEFT JOIN #__md_invoice AS i ON (imsub.invoice_id = i.id) where year = ' . $year . ') as im on m.id = im.member_id')
-		->join ( 'INNER', $db->quoteName ( '#__md_member_type', 'mt' ) . 'ON (m.member_type_id = mt.id)' );
+		->join ( 'INNER', $db->quoteName ( '#__md_member_type', 'mt' ) . 'ON (m.member_type_id = mt.id)' )
+        ->join ( 'INNER', $db->quoteName ( '#__md_district', 'd' ) . 'ON (t.district_id = d.id)' );
 		
 		if (! JFactory::getUser ()->authorise ( 'member.view', 'com_memberdatabase' )) {
 			$query->join ( 'INNER', $db->quoteName ( '#__md_usertower', 'ut' ) . ' ON (' . $db->quoteName ( 'm.tower_id' ) . ' = ' . $db->quoteName ( 'ut.tower_id' ) . ')' );
@@ -83,7 +84,7 @@ class MemberDatabaseModelMemberDatabase extends JModelItem
 		$query->where ( 'im.id is null' );
 		$query->where ( 'mt.include_in_reports = 1' );
 		
-		$query->group('t.id, concat_ws(", ", t.place, t.designation)');
+		$query->group('t.id, concat_ws(", ", t.place, t.designation), d.name');
 		
 		$db->setQuery ( $query );
 		

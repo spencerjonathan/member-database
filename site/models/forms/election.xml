@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+	<fieldset name="main">
+
+		<field
+			name="id"
+			type="hidden"
+		/>
+		<field
+			name="master_response"
+			type="list"
+			label="Master"
+			description="Your response to master nomination"
+			required="true"
+			default="">
+				<option value="">Please Select</option>
+				<option value="1">Vote For</option>
+				<option value="2">Vote Against</option>
+				<option value="3">Abstain</option>
+		</field>			
+		<field
+			name="secretary_response"
+			type="list"
+			label="Secretary"
+			description="Your response to secretary nomination"
+			required="true"
+			default="">
+				<option value="">Please Select</option>
+				<option value="1">Vote For</option>
+				<option value="2">Vote Against</option>
+				<option value="3">Abstain</option>
+		</field>			
+    </fieldset>
+
+	<fieldset name="captcha">
+
+		<field
+            name="captcha"
+            type="captcha"
+            label="Captcha"
+            description="Captcha"
+            validate="captcha"
+            namespace="mail"
+        />
+	</fieldset>
+
+</form>

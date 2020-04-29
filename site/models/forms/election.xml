@@ -10,7 +10,7 @@
 			name="master_response"
 			type="list"
 			label="Master"
-			description="Your response to master nomination"
+			description="Your response to Master nomination"
 			required="true"
 			default="">
 				<option value="">Please Select</option>
@@ -22,13 +22,84 @@
 			name="secretary_response"
 			type="list"
 			label="Secretary"
-			description="Your response to secretary nomination"
+			description="Your response to Secretary nomination"
 			required="true"
 			default="">
 				<option value="">Please Select</option>
 				<option value="1">Vote For</option>
 				<option value="2">Vote Against</option>
 				<option value="3">Abstain</option>
+		</field>			
+		<field
+			name="brf_secretary_response"
+			type="list"
+			label="BRF Secretary"
+			description="Your response to BRF Secretary nomination"
+			required="true"
+			default="">
+				<option value="">Please Select</option>
+				<option value="1">Vote For</option>
+				<option value="2">Vote Against</option>
+				<option value="3">Abstain</option>
+		</field>			
+		<field
+			name="treasurer_response"
+			type="list"
+			label="Treasurer"
+			description="Your response to Treasurer nomination"
+			required="true"
+			default="">
+				<option value="">Please Select</option>
+				<option value="1">Vote For</option>
+				<option value="2">Vote Against</option>
+				<option value="3">Abstain</option>
+		</field>			
+		<field
+			name="safeguarding_response"
+			type="list"
+			label="Safeguarding Officer"
+			description="Your response to Safeguarding Officer nomination"
+			required="true"
+			default="">
+				<option value="">Please Select</option>
+				<option value="1">Vote For</option>
+				<option value="2">Vote Against</option>
+				<option value="3">Abstain</option>
+		</field>			
+		<field
+			name="trustee_response"
+			type="list"
+			label="Trustee"
+			description="Your response to Trustee nomination"
+			required="true"
+			default="">
+				<option value="">Please Select</option>
+				<option value="1">Vote For</option>
+				<option value="2">Vote Against</option>
+				<option value="3">Abstain</option>
+		</field>			
+		<field
+			name="eastern_cccbr_response"
+			type="list"
+			label="Eastern CCCBR Representative"
+			description="Your response to Eastern CCCBR representative nomination"
+			required="true"
+			default="">
+				<option value="">Please Select</option>
+				<option value="1">Vote For</option>
+				<option value="2">Vote Against</option>
+				<option value="3">Abstain</option>
+		</field>			
+		<field
+			name="hon_life_response"
+			type="list"
+			label="Honorary Life Member"
+			description="Your response to Honaray Life Member nomination"
+			required="true"
+			default="">
+				<option value="">Please Select</option>
+				<option value="1">Vote For</option>
+				<option value="2">Vote Against</option>
 		</field>			
     </fieldset>
 

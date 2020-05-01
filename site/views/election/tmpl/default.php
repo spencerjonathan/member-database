@@ -28,6 +28,9 @@ Please select your voting options for each of the nominations below then click S
 	<div class="row-fluid">
 		<div class="span12">
 			<fieldset class="adminform">
+				
+				<?php echo $this->form->getInput('member_id'); ?>
+
 				<table width="100%">
 				<tr>
 					<td><div class="control-label"><?php echo $this->form->getLabel('master_response'); ?></div></td>
@@ -64,6 +67,7 @@ Please select your voting options for each of the nominations below then click S
 					<td>Alison Everett</td>
 					<td><div class="controls"><?php echo $this->form->getInput('eastern_cccbr_response'); ?></div></td>
 				</tr>
+				<tr><td><br><br>The following person is nominated for honarary life membership.  Please select your voting option.<br><br></td></tr>
 				<tr>
 					<td><div class="control-label"><?php echo $this->form->getLabel('hon_life_response'); ?></div></td>
 					<td>Alan Collings</td>
@@ -83,6 +87,6 @@ Please select your voting options for each of the nominations below then click S
 </form>
 	<button onclick="Joomla.submitbutton('election.submit')" id="submit_button"
 		class="btn btn-small btn-success">
-		<span class="icon-mail"></span> Submit
+		<span class="icon-mail"></span> Submit Your Vote
 	</button>
 	

@@ -3,7 +3,7 @@
 	<fieldset name="main">
 
 		<field
-			name="id"
+			name="member_id"
 			type="hidden"
 		/>
 		<field
@@ -99,7 +99,7 @@
 			default="">
 				<option value="">Please Select</option>
 				<option value="1">Vote For</option>
-				<option value="2">Vote Against</option>
+				<option value="3">Abstain</option>
 		</field>			
     </fieldset>
 

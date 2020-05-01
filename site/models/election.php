@@ -40,6 +40,23 @@ class MemberDatabaseModelElection extends JModelAdmin
 			return false;
 		}
 
+		$jinput = JFactory::getApplication()->input;
+		$token = $jinput->get('token', null, 'ALNUM');
+
+                //JTable::addIncludePath ( JPATH_ADMINISTRATOR . '/components/com_memberdatabase/tables' );
+                $table = JTable::getInstance ( "Electiontoken", "MemberDatabaseTable", array() );
+
+		if (!$table->load($token) || !$table->member_id) {
+			error_log("Could not load electiontoken for token " . $token);
+			$this->setError("Could not locate your record!");
+			return false;
+		}
+		
+		error_log("getForm - table contents: " . json_encode((array) $table));
+
+		$form->setValue("member_id", null, $table->member_id);
+		error_log("getForm " . json_encode((array) $form));
+
 		return $form;
 	}
 
@@ -87,6 +104,13 @@ class MemberDatabaseModelElection extends JModelAdmin
 	protected function preprocessForm(JForm $form, $data, $group = 'user')
 	{
 		parent::preprocessForm($form, $data, $group);
+	}
+
+	public function store($data)
+	{
+		$table = $this->getTable();
+		$table->bind($data);
+		$table->store();
 	}
 
 }

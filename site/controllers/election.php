@@ -30,7 +30,7 @@ class MemberDatabaseControllerElection extends JControllerForm
 
 		$model = $this->getModel('Election');
 
-        	$app    = JFactory::getApplication();
+        $app    = JFactory::getApplication();
 		$data   = $app->input->post->get('jform', array(), 'array');
 		
 		$form = $model->getForm($data, false);
@@ -62,8 +62,30 @@ class MemberDatabaseControllerElection extends JControllerForm
 
 		}
 
-		$msg = $model->getError();
-		$this->setredirect('index.php?option=com_memberdatabase&view=election', $msg, $type);
+		$msg = $model->store($data);
+		
+				    // Push up to three validation messages out to the user.
+		for ($i = 0, $n = count($errors); $i < $n && $i < 3; $i++)
+		{
+		    if ($errors[$i] instanceof \Exception)
+		    {
+		        $msg = $errors[$i]->getMessage();
+		    }
+		    else
+		    {
+		        $msg = $errors[$i];
+		    }
+		}
+
+        if ($errors.length > 0) {
+    		$this->setredirect('index.php?option=com_memberdatabase&view=election&layout=error', $msg, 'failure');        
+    		return false;
+        }
+
+        $app->setUserState('com_memberdatabase.display.election.data', null);
+		$this->setredirect('index.php?option=com_memberdatabase&view=election&layout=success', $msg, 'success');
+		return true;
+		
 	}
 
 	/**

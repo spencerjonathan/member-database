@@ -34,10 +34,18 @@ class MemberDatabaseViewElection extends JViewLegacy
 	{
 
 		// Get data from the model
-		error_log("About to call get Form");
-		$this->form = $this->get('Form');
-		$this->item = $this->get('Item');
+		error_log("About to call get Form - layout is " . $this->getLayout());
+		
+		if ($this->getLayout() == "default") {
+		    $this->form = $this->get('Form');
+		    //$this->item = $this->get('Item');
 
+		    if (!$this->form) {
+		        $app = \JFactory::getApplication();
+		    	$app->redirect(JRoute::_('index.php?option=' . $this->option . '&view=election&layout=error', false));
+		    	return false;
+		    }
+        }
         //$document = JFactory::getDocument();
         //$document->addStyleSheet('media/jui/css/bootstrap.css');
 

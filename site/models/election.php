@@ -9,7 +9,7 @@
 
 defined('_JEXEC') or die;
 
-//JLoader::import('ElectionsHelper', JPATH_ADMINISTRATOR . '/path/to/test.php');
+JLoader::import('EmailHelper', JPATH_COMPONENT . "/helpers/");
 
 /**
  * Users mail model.
@@ -18,6 +18,83 @@ defined('_JEXEC') or die;
  */
 class MemberDatabaseModelElection extends JModelAdmin
 {
+
+
+    public function sendelectionemails() {
+        
+            $db = JFactory::getDbo ();
+            
+            $query = $db->getQuery ( true );
+
+            // Get the list of member ids.
+            $query->select ( 'm.id, m.email, m.forenames' );
+            $query->from ( $db->quoteName ( '#__md_member', 'm' ) );
+            $query->join ( 'LEFT', $db->quoteName ( '#__md_member_type', 'mt' ) . ' ON (' . $db->quoteName ( 'm.member_type_id' ) . ' = ' . $db->quoteName ( 'mt.id' ) . ')' );
+            $query->where ( 'mt.include_in_reports = 1');
+            $query->where ( 'm.email is not null');
+            $query->where ( 'trim(m.email) != ""');
+            
+            $db->setQuery($query);
+            $members = $db->loadObjectList ();
+            
+            foreach ($members as $member) {
+          
+                $token = JApplicationHelper::getHash(JUserHelper::genRandomPassword());
+
+                // Create a new query object.
+                $query = $db->getQuery(true);
+
+                // Insert columns.
+                $columns = array(
+                    'token',
+                    'member_id'
+                );
+
+                // Insert values.
+                $values = array(
+                    $db->quote($token),
+                    $member->id
+                );
+
+                // Prepare the insert query.
+                $query->insert($db->quoteName('#__md_election_token'))
+                ->columns($db->quoteName($columns))
+                ->values(implode(',', $values));
+
+                error_log("Query = " . $query->__toString());
+
+                // Set the query using our newly populated query object and execute it.
+                $db->setQuery($query);
+                $result = $db->execute();
+                
+                $this->sendEmail($member, $token);   
+            }
+            
+            return count($members);
+        
+    }
+    
+    public function sendEmail($member, $token) {
+        
+        $link = 'index.php?option=com_memberdatabase&view=election&token=' . $token;
+
+        $config = JFactory::getConfig();
+        $mode = $config->get('force_ssl', 0) == 2 ? 1 : (- 1);
+        $link_text = JRoute::_($link, false, $mode);
+        
+        $body = JText::sprintf('Dear %s,\n\n%s\n\n', $member->forenames, $link_text);
+
+        $subject = 'Link To Your Vote';
+
+        $send = EmailHelper::sendEmail($member->email, $subject, $body);
+        if ($send !== true) {
+            $this->setError(JText::sprintf('Could not send email to %s', $email), 500);
+            return false;
+        }
+        
+        return true;
+    }
+
 	/**
 	 * Method to get the row form.
 	 *

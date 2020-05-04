@@ -16,6 +16,43 @@ defined('_JEXEC') or die;
  */
 class MemberDatabaseControllerElection extends JControllerForm
 {
+
+
+
+
+    public function sendelectionemails() {
+        
+    	$model = $this->getModel('Election');
+    	
+    	$result = $model->sendelectionemails();
+    	
+		$errors = $model->getErrors();
+
+
+        if (count($errors) > 0) {		    
+		    // Push up to three validation messages out to the user.
+		    for ($i = 0, $n = count($errors); $i < $n && $i < 3; $i++)
+		    {
+		        if ($errors[$i] instanceof \Exception)
+		        {
+		            $msg = $errors[$i]->getMessage();
+		        }
+		        else
+		        {
+		            $msg = $errors[$i];
+		        }
+		    }
+		    
+		    $this->setMessage ( $this->getError (), 'error' );
+		} else {
+	    
+    	    $this->setMessage ( "$result emails sent", 'success' );
+        }
+    	return true;
+    	
+    }
+
+
 	/**
 	 * Save the vote
 	 *
@@ -23,6 +60,9 @@ class MemberDatabaseControllerElection extends JControllerForm
 	 *
 	 * @since 1.6
 	 */
+	 
+	 
+	 
 	public function submit()
 	{
 		// Check for request forgeries.

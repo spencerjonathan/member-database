@@ -17,17 +17,11 @@ defined('_JEXEC') or die;
 class MemberDatabaseControllerElection extends JControllerForm
 {
 
-
-
-
     public function sendelectionemails() {
         
     	$model = $this->getModel('Election');
-    	
     	$result = $model->sendelectionemails();
-    	
 		$errors = $model->getErrors();
-
 
         if (count($errors) > 0) {		    
 		    // Push up to three validation messages out to the user.
@@ -42,7 +36,6 @@ class MemberDatabaseControllerElection extends JControllerForm
 		            $msg = $errors[$i];
 		        }
 		    }
-		    
 		    $this->setMessage ( $this->getError (), 'error' );
 		} else {
 	    
@@ -61,8 +54,6 @@ class MemberDatabaseControllerElection extends JControllerForm
 	 * @since 1.6
 	 */
 	 
-	 
-	 
 	public function submit()
 	{
 		// Check for request forgeries.
@@ -72,6 +63,8 @@ class MemberDatabaseControllerElection extends JControllerForm
 
         $app    = JFactory::getApplication();
 		$data   = $app->input->post->get('jform', array(), 'array');
+		
+		error_log("In submit() - data = " . json_encode($data));
 		
 		$form = $model->getForm($data, false);
 		$validData = $model->validate($form, $data);
@@ -97,7 +90,7 @@ class MemberDatabaseControllerElection extends JControllerForm
 
             $app->setUserState('com_memberdatabase.display.election.data', $data);
 
-            $this->setredirect('index.php?option=com_memberdatabase&view=election', $msg, 'warning');
+            $this->setredirect('index.php?option=com_memberdatabase&view=election&token=' . $data['hash_token'], $msg, 'warning');
             return false;
 
 		}
@@ -135,7 +128,7 @@ class MemberDatabaseControllerElection extends JControllerForm
 	 *
 	 * @since 1.6
 	 */
-	public function cancel()
+	public function cancel($key = NULL)
 	{
 		// Check for request forgeries.
 		$this->checkToken('request');

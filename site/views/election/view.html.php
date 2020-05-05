@@ -38,13 +38,18 @@ class MemberDatabaseViewElection extends JViewLegacy
 		
 		if ($this->getLayout() == "default") {
 		    $this->form = $this->get('Form');
-		    //$this->item = $this->get('Item');
+		    $this->item = $this->get('Item');
+		    
+		    error_log("In display.  Item is " . $this->item);
 
-		    if (!$this->form) {
+		    if (!$this->item) {
 		        $app = \JFactory::getApplication();
 		    	$app->redirect(JRoute::_('index.php?option=' . $this->option . '&view=election&layout=error', false));
 		    	return false;
 		    }
+		    
+		    $this->form->setValue("member_id", null, $this->item->member_id);
+		    $this->form->setValue("hash_token", null, $this->item->token);
         }
         //$document = JFactory::getDocument();
         //$document->addStyleSheet('media/jui/css/bootstrap.css');

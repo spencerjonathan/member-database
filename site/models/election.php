@@ -20,6 +20,26 @@ class MemberDatabaseModelElection extends JModelAdmin
 {
 
 
+    public function getItem($pk = null) {
+        $item = parent::getItem($pk);
+        
+        $jinput = JFactory::getApplication()->input;
+		$token = $jinput->get('token', null, 'ALNUM');
+
+        $table = JTable::getInstance ( "Electiontoken", "MemberDatabaseTable", array() );
+
+		if (!$table->load($token) || !$table->member_id) {
+			error_log("Could not load electiontoken for token " . $token);
+			$this->setError("Could not locate your record!");
+			return false;
+		}
+		
+		error_log("getForm - table contents: " . json_encode((array) $table));
+
+		return $table;
+    }
+
+
     public function sendelectionemails() {
         
             $db = JFactory::getDbo ();
@@ -117,6 +137,7 @@ class MemberDatabaseModelElection extends JModelAdmin
 			return false;
 		}
 
+        /*
 		$jinput = JFactory::getApplication()->input;
 		$token = $jinput->get('token', null, 'ALNUM');
 
@@ -126,13 +147,14 @@ class MemberDatabaseModelElection extends JModelAdmin
 		if (!$table->load($token) || !$table->member_id) {
 			error_log("Could not load electiontoken for token " . $token);
 			$this->setError("Could not locate your record!");
-			return false;
+			//return false;
 		}
 		
 		error_log("getForm - table contents: " . json_encode((array) $table));
 
 		$form->setValue("member_id", null, $table->member_id);
 		error_log("getForm " . json_encode((array) $form));
+		*/
 
 		return $form;
 	}

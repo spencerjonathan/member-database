@@ -28,8 +28,9 @@ Please select your voting options for each of the nominations below then click S
 	<div class="row-fluid">
 		<div class="span12">
 			<fieldset class="adminform">
-				
-				<?php echo $this->form->getInput('member_id'); ?>
+
+				<?php echo $this->form->getInput('member_id'); ?>				
+				<?php echo $this->form->getInput('hash_token'); ?>
 
 				<table width="100%">
 				<tr>

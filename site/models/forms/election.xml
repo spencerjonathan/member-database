@@ -6,6 +6,10 @@
 			name="member_id"
 			type="hidden"
 		/>
+				<field
+			name="hash_token"
+			type="hidden"
+		/>
 		<field
 			name="master_response"
 			type="list"

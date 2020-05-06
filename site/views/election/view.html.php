@@ -37,16 +37,22 @@ class MemberDatabaseViewElection extends JViewLegacy
 		error_log("About to call get Form - layout is " . $this->getLayout());
 		
 		if ($this->getLayout() == "default") {
+		
+		    $app = \JFactory::getApplication();
+
 		    $this->form = $this->get('Form');
 		    $this->item = $this->get('Item');
 		    
 		    error_log("In display.  Item is " . $this->item);
 
 		    if (!$this->item) {
-		        $app = \JFactory::getApplication();
 		    	$app->redirect(JRoute::_('index.php?option=' . $this->option . '&view=election&layout=error', false));
 		    	return false;
 		    }
+		    
+		    if ($this->getModel()->hasVoteBeenSubmitted($this->item->member_id)) {
+                $app->redirect(JRoute::_('index.php?option=' . $this->option . '&view=election&layout=alreadysubmitted', false));
+            }
 		    
 		    $this->form->setValue("member_id", null, $this->item->member_id);
 		    $this->form->setValue("hash_token", null, $this->item->token);

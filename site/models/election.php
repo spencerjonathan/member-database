@@ -19,6 +19,25 @@ JLoader::import('EmailHelper', JPATH_COMPONENT . "/helpers/");
 class MemberDatabaseModelElection extends JModelAdmin
 {
 
+    public function hasVoteBeenSubmitted($member_id) {
+        $db = JFactory::getDbo ();
+            
+        $query = $db->getQuery ( true );
+
+        // Get the list of member ids.
+        $query->select ( 'count(*)' );
+        $query->from ( $db->quoteName ( '#__md_election', 'e' ) );
+        $query->where ( 'e.member_id = ' . $member_id);
+        
+        $db->setQuery($query);
+        
+        if ($db->loadResult() > 0) {
+            return true;
+        } 
+            
+        return false;
+
+    }
 
     public function getItem($pk = null) {
         $item = parent::getItem($pk);
@@ -53,6 +72,7 @@ class MemberDatabaseModelElection extends JModelAdmin
             $query->where ( 'mt.include_in_reports = 1');
             $query->where ( 'm.email is not null');
             $query->where ( 'trim(m.email) != ""');
+            $query->where ( 'm.id in (22, 78, 261, 324, 450, 541, 871, 1209 )');
             
             $db->setQuery($query);
             $members = $db->loadObjectList ();

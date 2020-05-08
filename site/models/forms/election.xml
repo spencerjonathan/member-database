@@ -98,12 +98,12 @@
 			name="hon_life_response"
 			type="list"
 			label="Honorary Life Member"
-			description="Your response to Honaray Life Member nomination"
+			description="Your response to Honorary Life Member nomination"
 			required="true"
 			default="">
 				<option value="">Please Select</option>
 				<option value="1">Vote For</option>
-				<option value="3">Abstain</option>
+				<option value="2">Vote Against</option>
 		</field>			
     </fieldset>
 

@@ -3,17 +3,30 @@
 abstract class EmailHelper
 {
 
-    public static function sendEmail($email, $subject, $body, $isHtml=false) {
+    public static function sendEmail($email, $subject, $body, $isHtml=false, $site=null, $mailfrom=null, $fromname=null) {
         $mailer = JFactory::getMailer();
         $config = JFactory::getConfig();
         //$fromname = $config->get('fromname');
         //$mailfrom = $config->get('mailfrom');
-        $site = $config->get('sitename');
+        
+        if (!$site) {
+            $site = $config->get('sitename');
+        }
+        
+        if (!$mailfrom) {
+            $mailfrom = $config->get( 'mailfrom' );
+        }
+        
+        if (!$fromname) {
+            $fromname = $config->get( 'fromname' );
+        }
         
         $sender = array(
-				$config->get( 'mailfrom' ),
-				$config->get( 'fromname' )
+				$mailfrom,
+				$fromname
 		);
+		
+		$mailer->addReplyTo($config->get( 'mailfrom' ));
 
 		$mailer->setSender($sender);
 		$mailer->addRecipient($email);

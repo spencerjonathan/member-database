@@ -15,14 +15,16 @@ JHtml::_('formbehavior.chosen', 'select');
 //JFactory::getDocument()->addScriptDeclaration($script);
 ?>
 
-<legend>Annual Elections</legend>
+<legend>AGM 2020 - Ratification of Officers</legend>
 
 	<button onclick="Joomla.submitbutton('election.cancel')"
 		class="btn btn-small">
 		<span class="icon-cancel"></span> Cancel
 	</button>
 <hr>
-Please select your voting options for each of the nominations below then click Submit at the bottom of the form to submit your vote.
+Please select your voting options for each of the nominations below then click Submit at the bottom of the form to submit your vote.<br><br>
+There has only been one nominee received for each post.<br><br>
+In case of difficulty voting, contact Jon Spencer at membership@scacr.org
 <br><br>
 <form action="<?php echo JRoute::_('index.php?option=com_memberdatabase&view=election'); ?>" name="adminForm" method="post" id="adminForm">
 	<div class="row-fluid">
@@ -60,7 +62,7 @@ Please select your voting options for each of the nominations below then click S
 				</tr>
 				<tr>
 					<td><div class="control-label"><?php echo $this->form->getLabel('trustee_response'); ?></div></td>
-					<td>Matt Dawkins</td>
+					<td>Mark Dawkins</td>
 					<td><div class="controls"><?php echo $this->form->getInput('trustee_response'); ?></div></td>
 				</tr>
 				<tr>
@@ -68,12 +70,13 @@ Please select your voting options for each of the nominations below then click S
 					<td>Alison Everett</td>
 					<td><div class="controls"><?php echo $this->form->getInput('eastern_cccbr_response'); ?></div></td>
 				</tr>
-				<tr><td><br><br>The following person is nominated for honarary life membership.  Please select your voting option.<br><br></td></tr>
+				<tr><td colspan=3><br><br>At the March 2020 General Committee Meeting a nomination for Alan Collings to receive Honorary Life Membership was made by Alison Everett. This was subsequently seconded by Sue Gadd. The General Committee Meeting voted to put this forward to the AGM.  Alison’s supporting statement is at the bottom of this page.<br><br></td></tr>
 				<tr>
 					<td><div class="control-label"><?php echo $this->form->getLabel('hon_life_response'); ?></div></td>
 					<td>Alan Collings</td>
 					<td><div class="controls"><?php echo $this->form->getInput('hon_life_response'); ?></div></td>
 				</tr>
+				<tr><td colspan=3><br>No Abstention:  The Association’s rules for electing an Honorary Life member make no distinction between an abstention and a vote against.  For this reason, you are given the options to vote for or against Alan's election.</td></tr>
 				</table>
                 <?php if ($this->form->getField('captcha')) : ?>
 				<div class="control-group">

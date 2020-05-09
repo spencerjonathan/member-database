@@ -69,10 +69,13 @@ class MemberDatabaseModelElection extends JModelAdmin
             $query->select ( 'm.id, m.email, m.forenames' );
             $query->from ( $db->quoteName ( '#__md_member', 'm' ) );
             $query->join ( 'LEFT', $db->quoteName ( '#__md_member_type', 'mt' ) . ' ON (' . $db->quoteName ( 'm.member_type_id' ) . ' = ' . $db->quoteName ( 'mt.id' ) . ')' );
+            $query->where ( 'm.id not in (select member_id from #__md_election_token)');
             $query->where ( 'mt.include_in_reports = 1');
             $query->where ( 'm.email is not null');
             $query->where ( 'trim(m.email) != ""');
-            $query->where ( 'm.id in (22, 78, 261, 324, 450, 541, 871, 1209, 1512 )');
+            //$query->where ( 'm.id in (22, 78, 261, 324, 450, 541, 871, 1209, 1512 )');
+            
+            $query->setLimit(200);
             
             $db->setQuery($query);
             $members = $db->loadObjectList ();
@@ -110,6 +113,8 @@ class MemberDatabaseModelElection extends JModelAdmin
                 $this->sendEmail($member, $token);   
             }
             
+            error_log("Sent " . count($members) . " election emails");
+            
             return count($members);
         
     }
@@ -122,7 +127,7 @@ class MemberDatabaseModelElection extends JModelAdmin
         $mode = $config->get('force_ssl', 0) == 2 ? 1 : (- 1);
         $link_text = JRoute::_($link, false, $mode);
         
-        $body = JText::sprintf("Dear %s,\n\nYou will have recently received an email from the Master inviting you to the 2020 SCACR AGM.  In his email he referred to the opportunity to vote in the elections of officers.  This email contains your a personal link to your voting form.\n\nPlease take this opportunity to vote in the 2020 SCACR AGM.  It's your opportunity to provide your view on the suitability of the nominated candates.  If you don't vote, you'll have had no say over who will be making decisions affecting the association.\n\n%s\n\nKind regards,\nHamish", $member->forenames, $link_text);
+        $body = JText::sprintf("Dear %s,\n\nYou will have recently received an email from the Master inviting you to the 2020 SCACR AGM.  In his email he referred to the opportunity to vote in the elections of officers.  This email contains your personal link to your voting form.\n\nPlease take this opportunity to vote in the 2020 SCACR AGM.  It's your opportunity to provide your view on the suitability of the nominated candates.  If you don't vote, you'll have had no say over who will be making decisions affecting the association.\n\n%s\n\nKind regards,\nHamish", $member->forenames, $link_text);
 
         $subject = 'Online Voting Link';
         

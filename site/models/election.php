@@ -19,6 +19,47 @@ JLoader::import('EmailHelper', JPATH_COMPONENT . "/helpers/");
 class MemberDatabaseModelElection extends JModelAdmin
 {
 
+    public function getResults() {
+        
+            $db = JFactory::getDbo ();
+            
+            $query = $db->getQuery ( true );
+
+            $query->select("*");
+            $query->from ( '(SELECT "Master" as office, sum(case when master_response= 1 then 1 else 0 end) as vote_for, sum(case when master_response =2 then 1 else 0 end) as vote_against, sum(case when master_response =3 then 1 else 0 end) as vote_abstain FROM `#__md_election` 
+
+union all
+SELECT "Secretary" as office, sum(case when secretary_response= 1 then 1 else 0 end) as vote_for, sum(case when secretary_response =2 then 1 else 0 end) as vote_against, sum(case when secretary_response =3 then 1 else 0 end) as vote_abstain FROM `#__md_election`
+ 
+union all
+SELECT "Treasurer" as office, sum(case when treasurer_response= 1 then 1 else 0 end) as vote_for, sum(case when treasurer_response =2 then 1 else 0 end) as vote_against, sum(case when treasurer_response =3 then 1 else 0 end) as vote_abstain FROM `#__md_election` 
+
+union all
+SELECT "BRF Secretary" as office, sum(case when brf_secretary_response= 1 then 1 else 0 end) as vote_for, sum(case when brf_secretary_response =2 then 1 else 0 end) as vote_against, sum(case when brf_secretary_response =3 then 1 else 0 end) as vote_abstain FROM `#__md_election` 
+
+union all
+SELECT "Trustee" as office, sum(case when trustee_response= 1 then 1 else 0 end) as vote_for, sum(case when trustee_response =2 then 1 else 0 end) as vote_against, sum(case when trustee_response =3 then 1 else 0 end) as vote_abstain FROM `#__md_election` 
+
+union all
+SELECT "Safeguarding" as office, sum(case when safeguarding_response= 1 then 1 else 0 end) as vote_for, sum(case when safeguarding_response =2 then 1 else 0 end) as vote_against, sum(case when safeguarding_response =3 then 1 else 0 end) as vote_abstain FROM `#__md_election`
+
+union all
+SELECT "Eastern CCCBR" as office, sum(case when eastern_cccbr_response= 1 then 1 else 0 end) as vote_for, sum(case when eastern_cccbr_response =2 then 1 else 0 end) as vote_against, sum(case when eastern_cccbr_response =3 then 1 else 0 end) as vote_abstain FROM `#__md_election` 
+
+union all
+SELECT "Alan Collings" as office, sum(case when hon_life_response= 1 then 1 else 0 end) as vote_for, sum(case when hon_life_response =2 then 1 else 0 end) as vote_against, sum(case when hon_life_response =3 then 1 else 0 end) as vote_abstain FROM `#__md_election` ) a 
+' );
+           
+            error_log($query->__toString());
+            $db->setQuery($query);
+            $results = $db->loadAssocList ();
+            
+            error_log("in getResults: results = " . json_encode($results));
+            
+            return $results;
+                    
+    }
+
     public function hasVoteBeenSubmitted($member_id) {
         $db = JFactory::getDbo ();
             

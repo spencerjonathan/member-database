@@ -497,7 +497,8 @@ class MemberDatabaseModelMembers extends JModelList {
 		$query->where ( 'im.id is null' );
 		$query->where ( 'mt.include_in_reports = 1' );
 		
-		$query->group('t.id, concat_ws(", ", t.place, t.designation)');
+		$query->group ('t.id, concat_ws(", ", t.place, t.designation)');
+		$query->order ('t.place');
 		
 		$db->setQuery ( $query );
 		

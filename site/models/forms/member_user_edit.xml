@@ -92,8 +92,10 @@
 				default="">
 				<option value="">Please Select</option>
 				<option value="Under 16">Under 16</option>
-				<option value="16-70">16-70</option>
-				<option value="Over 70">Over 70</option>
+				<option value="16-24">16-24</option>
+				<option value="25-69">25-69</option>
+				<option value="70-79">70-79</option>
+				<option value="80 and over">80 and over</option>
 		</field>
 		</fieldset>
 		<fieldset name="communication_preferences">
@@ -135,7 +137,7 @@
 		<field
 				name="district_newsletters"
 				type="list"
-				label="Receive Newsletters For"
+				label="Receive News for"
 				description="Which districts' communications to receive?"
 				required="true"
 				default="0">

@@ -85,6 +85,7 @@ class MemberDatabaseModelMemberDatabase extends JModelItem
 		$query->where ( 'mt.include_in_reports = 1' );
 		
 		$query->group('t.id, concat_ws(", ", t.place, t.designation), d.name');
+		$query->order('t.place');
 		
 		$db->setQuery ( $query );
 		

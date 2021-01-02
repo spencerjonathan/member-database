@@ -58,13 +58,17 @@ class MemberDatabaseModelAnnualreport extends JModelList {
 		count(*) as total,
 		sum(under16) as under16,
 		sum(over16) as over16,
+		sum(over25) as over25,
 		sum(over70) as over70,
+		sum(over80) as over80,
 		sum(unspecified) as unspecified
 		from(
 				select district_id, concat_ws(\', \', t.place, t.designation) as tower,
 					case(insurance_group) when \'Under 16\' then 1 else 0 END as under16,
-					case(insurance_group) when \'16-70\' then 1 else 0 END as over16,
-					case(insurance_group) when \'Over 70\' then 1 else 0 END as over70,
+					case(insurance_group) when \'16-24\' then 1 else 0 END as over16,
+					case(insurance_group) when \'25-69\' then 1 else 0 END as over25,
+					case(insurance_group) when \'70-79\' then 1 else 0 END as over70,
+					case(insurance_group) when \'80 and over\' then 1 else 0 END as over80,
 					case when insurance_group is null or insurance_group = "" then 1 else 0 END as unspecified
 				from #__md_tower t, #__md_member m, #__md_member_type mt ' . $query_from_addition . 
 				' where t.id = m.tower_id and m.member_type_id = mt.id and mt.include_in_reports = 1 ' . $query_where_addition . ') as data

@@ -89,10 +89,12 @@
 				label="Insurance Group"
 				description="The insurance group for the member"
 				default="">
-				<option value="">Please Select</option>
-				<option value="Under 16">Under 16</option>
-				<option value="16-70">16-70</option>
-				<option value="Over 70">Over 70</option>
+                                <option value="">Please Select</option>
+                                <option value="Under 16">Under 16</option>
+                                <option value="16-24">16-24</option>
+                                <option value="25-69">25-69</option>
+                                <option value="70-79">70-79</option>
+                                <option value="80 and over">80 and over</option>
 		</field>
 		<field
         	name="db_form_received"
@@ -112,8 +114,8 @@
 		<field
         	name="annual_report"
             type="radio"
-            label="Annual Report?"
-            description="Would you like to receive an annual report (usually published in April)?"
+            label="Printed Annual Report?"
+            description="Would you like to receive a printed annual report (usually published in April)?"
             class="btn-group btn-group-yesno"
             default="0"
             filter="integer">
@@ -121,7 +123,7 @@
             	<option value="0">JNO</option>
         </field>
         <field
-        	name="soudbow_subscriber"
+        	name="soundbow_subscriber"
             type="radio"
             label="Subscribe to Soundbow?"
             description="Would you like to subscribe to SoundBow (there is an additional charge for this)?"
@@ -146,7 +148,7 @@
 		<field
 				name="district_newsletters"
 				type="list"
-				label="Receive Newsletters For"
+				label="Receive News for"
 				description="Which districts' communications to receive?"
 				default="0">
 					<option value="0">Own District</option>

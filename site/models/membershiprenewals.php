@@ -43,6 +43,32 @@ class MemberDatabaseModelMembershipRenewals extends JModelItem
 
 		return $memberDatabaseModel->getTowerEmailAssoc();
     }
+    
+    public function getMissingEmailData($towerId) {
+
+		$memberDatabaseModel = JModelLegacy::getInstance("Members", "MemberDatabaseModel", array());
+
+		$missing_email_data = $memberDatabaseModel->getMissingEmailData($towerId);
+
+        error_log("Missing Email Data = " . serialize($missing_email_data) . "; towerid is $towerId");
+
+        $missing_emails = "We hold email addresses for each member so no action is required.";   
+
+        if (count($missing_email_data) > 0) {
+            
+            
+            $missing_emails = "We would like to hold email addresses for each member of the association so that we can contact them if we need to, however we don't currently hold email addresses for the following members at your tower.  Please can you ask them to get in touch with me at membership@scacr.org to provide an email address where we can contact them.<br><ul>";
+            
+            foreach ($missing_email_data as $member) {
+                $missing_emails .= "<li>" . $member->name . "</li>";                   
+            }
+            
+            $missing_emails .= "</ul>";
+        } 
+        
+        return $missing_emails;
+        
+    }
 
 	public function getTowerDetailData($towerId) {
 
@@ -163,6 +189,8 @@ class MemberDatabaseModelMembershipRenewals extends JModelItem
         $message = $this->getCoveringLetter() . "<br><br>" . $invoice . "<br><br>";
 
         $message .= "<h2>Tower Details</h2>" . $this->getTowerDetailData($towerId) . "<br><br>";
+
+        $message .= "<h2>Missing Email Addresses</h2>" . $this->getMissingEmailData($towerId) . "<br><br>";
 
         $message .= "Kind Regards,<br><br>Jonathan Spencer<br><i>SCACR Membership Coordinator | membership@scacr.org | 07597 781190</i>"; 
 

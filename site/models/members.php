@@ -505,6 +505,27 @@ class MemberDatabaseModelMembers extends JModelList {
 		return $db->loadObjectList ();
 
     }
+    
+    public function getMissingEmailData($towerId) {
+        $db    = JFactory::getDbo();
+
+		$query = $db->getQuery(true);
+		
+		$query->select('concat_ws(", ", m.surname, m.forenames) as name')
+		->join ( 'INNER', $db->quoteName ( '#__md_member_type', 'mt' ) . 'ON (m.member_type_id = mt.id)' )
+		->from($db->quoteName('#__md_member', 'm'))
+		->where ( 'm.tower_id = ' . $towerId )
+		->where ( 'mt.include_in_reports = 1' )
+		->where ( '(m.email is null or trim(m.email) = "")' )
+		->order ( 'm.surname, m.forenames' );
+		
+		$db->setQuery ( $query );
+		
+		error_log("In Members->getMissingEmailData().  Query is " . $query->__toString());
+		
+		return $db->loadObjectList ();
+		
+    }
 
 	
 }

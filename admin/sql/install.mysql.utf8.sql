@@ -376,3 +376,14 @@ CREATE TABLE `c1jr0_md_new_member` (
 
 ALTER TABLE `#__md_member_type` ADD `include_in_reports` BOOLEAN NOT NULL DEFAULT TRUE AFTER `fee`;
 update `#__md_member_type` set include_in_reports=false where id in (4, 7);
+CREATE TABLE `#__md_mail` (
+  `id` int(3) NOT NULL AUTO_INCREMENT,
+  `tower_id` int(3) NOT NULL,
+  `email` varchar(100) DEFAULT NULL,
+  `reply_to_email` varchar(100) DEFAULT NULL,
+  `reply_to_name` varchar(40) DEFAULT NULL,
+  `subject` varchar(100) DEFAULT NULL,
+  `message` text DEFAULT NULL,
+  `mod_date` TIMESTAMP NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;

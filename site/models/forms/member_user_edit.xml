@@ -257,7 +257,7 @@
             type="list"
             label="Accept Privacy Policy?"
             description="Does the member accept the terms of the association's Privacy Policy?"
-            required="true"
+            required="false"
             filter="integer">
             	<option value="">Not Specified</option>
             	<option value="1">JYES</option>

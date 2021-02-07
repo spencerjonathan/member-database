@@ -20,10 +20,14 @@ $jinput = JFactory::getApplication ()->input;
 $token = $jinput->get ( 'token', null, 'STRING' );
 $token_text = "";
 $user_editing = false;
+$onsubmit = "";
+$task = "member.save";
 
 if (isset ( $token )) {
 	$token_text = "&token=" . $token;
 	$user_editing = true;
+	$onsubmit = 'onsubmit="return confirm(\'Are you sure you want to verify that the information held about this member is correct?\')"';
+	$task = "member.saveandverify";
 }
 
 ?>
@@ -36,7 +40,7 @@ if (isset ( $token )) {
 
 <form class="form-validate"
 	action="<?php echo JRoute::_('index.php?option=com_memberdatabase&view=member&layout=edit&id=' . (int) $this->item->id . $list_view_parameter . $token_text); ?>"
-	method="post" name="adminForm" id="adminForm">
+	method="post" name="adminForm" id="adminForm" <?php echo $onsubmit; ?> >
 
 <div>
 	
@@ -112,9 +116,9 @@ if (isset ( $token )) {
                     ?>                
 	</div>
 
-	<input type="hidden" name="task" value="member.save" />
+	<input type="hidden" name="task" value="<?php echo $task; ?>" />
     <?php echo JHtml::_('form.token'); ?>
-</form>
+
 
 <?php if (JFactory::getUser ()->authorise ( 'core.admin', 'com_memberdatabase' ) ||
 		$user_editing) :?>
@@ -122,11 +126,13 @@ if (isset ( $token )) {
 <div class="span12">
 	<hr>
 	<button
-		onclick="if (confirm('Are you sure you want to verify that the information held about this member is correct?')) { Joomla.submitbutton('member.saveandverify'); }"
-		id="saveandverify_button" class="btn btn-small btn-success">
+		type="submit"
+		id="saveandverify_button" class="btn btn-small btn-success btn-save-and-verify">
 		<span class="icon-ok"></span> Everything Here Is Correct
 	</button>
 </div>
+
+</form>
 
 <?php endif; ?>
 

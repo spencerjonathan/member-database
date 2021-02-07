@@ -22,8 +22,8 @@ To view/modify your membership record enter your email address in the box below 
 			<input name="email" class="validate-email inputbox required"
 				id="email" value="" size="40" type="email">
 		</div>
-		<button onclick="Joomla.submitbutton('members.requestlink'); alert('A link has been sent to your email address which will grant you access to your membership record.');"
-			id="submit_button" class="btn btn-small btn-success">
+		<button type="submit" onclick="alert('A link has been sent to your email address which will grant you access to your membership record.');"
+			id="submit_button" class="btn btn-small btn-success btn-submit-request">
 			<span class="icon-mail"></span> Submit
 		</button>
 	</div>

@@ -10,11 +10,11 @@
 // No direct access
 defined ( '_JEXEC' ) or die ( 'Restricted access' );
 
-if ($this->item->id) {
-	$task = "member.edit";
-} else {
-	$task = "member.add";
-}
+//if ($this->item->id) {
+//	$task = "member.edit";
+//} else {
+//	$task = "member.add";
+//}
 
 $jinput = JFactory::getApplication ()->input;
 $token = $jinput->get ( 'token', null, 'STRING' );
@@ -32,11 +32,17 @@ if (isset ( $token )) {
 <?php echo JHtml::_('bootstrap.startTabSet', 'myTab', array('active' => 'details')); ?>
 <?php echo JHtml::_('bootstrap.addTab', 'myTab', 'details', 'Member Details'); ?>
 
+<?php $list_view_parameter = ""; if ($this->list_view != "") { $list_view_parameter = "&list_view=" . $this->list_view; }; ?>
+
+<form class="form-validate"
+	action="<?php echo JRoute::_('index.php?option=com_memberdatabase&view=member&layout=edit&id=' . (int) $this->item->id . $list_view_parameter . $token_text); ?>"
+	method="post" name="adminForm" id="adminForm">
+
 <div>
 	
 	<?php if (!$user_editing) : ?>
-	<button onclick="Joomla.submitbutton('member.save')" id="save_button"
-		class="btn btn-small">
+	<button type="submit" id="save_button"
+		class="btn btn-small btn-save-close">
 		<span class="icon-save"></span> Save & Close
 	</button>
 	<?php endif; ?>
@@ -62,11 +68,9 @@ if (isset ( $token )) {
 </div>
 <hr>
 
-<?php $list_view_parameter = ""; if ($this->list_view != "") { $list_view_parameter = "&list_view=" . $this->list_view; }; ?>
 
-<form class="form-validate"
-	action="<?php echo JRoute::_('index.php?option=com_memberdatabase&view=member&layout=edit&id=' . (int) $this->item->id . $list_view_parameter . $token_text); ?>"
-	method="post" name="adminForm" id="adminForm">
+
+
 	<div class="row-fluid">
 			
                     <?php
@@ -74,6 +78,7 @@ if (isset ( $token )) {
 							array("main", "Membership Details"),
 							array("contact_details", "Contact Details"),
 								array("communication_preferences", "Communication Preferences"),
+								array("notes", "Notes"),
 								array("safeguarding", "Safeguarding") #,
 								#array("privacy", "Privacy")
 							
@@ -107,7 +112,7 @@ if (isset ( $token )) {
                     ?>                
 	</div>
 
-	<input type="hidden" name="task" value="<?php echo $task?>" />
+	<input type="hidden" name="task" value="member.save" />
     <?php echo JHtml::_('form.token'); ?>
 </form>
 

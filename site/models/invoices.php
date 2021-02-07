@@ -44,7 +44,7 @@ class MemberDatabaseModelInvoices extends JModelList
 		$query = $this->getListQuery();
 
         $verification_required_since = JComponentHelper::getParams('com_memberdatabase')->get('verification_required_since');
-		if (!$this->verification_required_since) {
+		if (!$verification_required_since) {
 			error_log("verification_required_since global configuration option is not set for the MemberDatabase.");
 		}
 

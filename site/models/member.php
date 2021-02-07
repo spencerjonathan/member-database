@@ -149,13 +149,18 @@ class MemberDatabaseModelMember extends JModelAdmin {
 	}
 	
 	private function emailAddressUpdated($data) {
+
+		# Required for when tower correspondent edits a member's record	
+	    if (!array_key_exists ( 'email' , $data )) {
+	        return false;
+	    }
 		
 		$db = JFactory::getDbo ();
 		$query = $db->getQuery ( true );
 		
 		$query->select("count(*)");
 		$query->from("#__md_member");
-		$query->where("id = " . (INT) $data['id'] . " and email != " . $db->quote($data['email']) );
+		$query->where("id = " . (INT) $data['id'] . " and ifnull(email, '') != " . $db->quote($data['email']) );
 		
 		$db->setQuery ( $query );
 		error_log($query->__toString());
@@ -164,13 +169,18 @@ class MemberDatabaseModelMember extends JModelAdmin {
 	}
 	
 	private function commsPreferenceUpdated($data) {
+
+		# Required for when tower correspondent edits a member's record		
+		if (!array_key_exists ( 'newsletters' , $data )) {
+	        return false;
+	    }
 		
 		$db = JFactory::getDbo ();
 		$query = $db->getQuery ( true );
 		
 		$query->select("count(*)");
 		$query->from("#__md_member");
-		$query->where("id = " . (INT) $data['id'] . " and newsletters != " . $db->quote($data['newsletters']) );
+		$query->where("id = " . (INT) $data['id'] . " and ifnull(newsletters, '') != " . $db->quote($data['newsletters']) );
 		
 		$db->setQuery ( $query );
 		error_log($query->__toString());
@@ -179,6 +189,11 @@ class MemberDatabaseModelMember extends JModelAdmin {
 	}
 	
 	private function districtCommsUpdated($data) {
+		
+		# Required for when tower correspondent edits a member's record
+		if (!array_key_exists ( 'district_newsletters' , $data )) {
+	        return false;
+	    }
 		
 		$db = JFactory::getDbo ();
 		$query = $db->getQuery ( true );
@@ -216,6 +231,10 @@ class MemberDatabaseModelMember extends JModelAdmin {
 		$email_change_dist = JComponentHelper::getParams ( 'com_memberdatabase' )->get ( 'email_change_dist' );
 		$email = explode ( ";" , $email_change_dist);
 		
+		// Load the member record from the database in case full record is needed
+		$member = JTable::getInstance('Member', 'MemberDatabaseTable', array());
+        $member->load($data['id']);
+		
 		$site = $config->get('sitename');
 		
 		$body = JText::sprintf(
@@ -225,22 +244,45 @@ class MemberDatabaseModelMember extends JModelAdmin {
 				$this->getDistrictFromTowerID($data['tower_id'])
 				);
 		
+		
+	    $email = $data['email'];
+	    if (!array_key_exists ( 'email' , $data )) {
+            $email = $member->email;
+        }	    
+		
 		if ($emailAddressUpdated) {
-		$body = $body . JText::sprintf(
+		
+		    $body = $body . JText::sprintf(
 				"<li>Email address has been updated to <strong>%s</strong></li>",
-				$data['email']
+				$email
 				);
 		};
 		
-		if ($commsPreferenceUpdated) {
+		
+		error_log("data['newsletters'] = " . $data['newsletters']);
+		$newsletters = $data['newsletters'];
+		if (!array_key_exists ( 'newsletters' , $data )) {
+				error_log("In !array_key_exists.  Setting newsletters to be " . $member->newsletters);
+	        $newsletters = $member->newsletters;
+	    }
+	    if (!$newsletters) {
+	        $newsletters = "(Unspecified)";
+	    }
+		
+		if ($commsPreferenceUpdated) {	
 			$body = $body . JText::sprintf(
 					"<li>Communications method preference has been updated to <strong>%s</strong></li>",
-					$data['newsletters']
+					$newsletters
 					);
 		};
 		
 		$which_districts = "Own District";
-		if ($data['district_newsletters']) {
+		
+		if (!array_key_exists ( 'district_newsletters' , $data )) {
+	        if ($member->district_newsletters) {
+			    $which_districts = "All Districts";
+			}
+		} elseif ($data['district_newsletters']) {
 			$which_districts = "All Districts";
 		}
 		
@@ -262,8 +304,8 @@ class MemberDatabaseModelMember extends JModelAdmin {
 		$body = $body . JText::sprintf(
 				"</ul><br>Comms preference are now:<br><br>Membership Type: <strong>%s</strong><br>Email Address: <strong>%s</strong><br>Communication Method: <strong>%s</strong><br>Which Districts' comms: <strong>%s</strong>",
                 $memberType,      				
-                $data['email'],
-				$data['newsletters'],
+                $email,
+				$newsletters,
 				$which_districts
 				);
 		

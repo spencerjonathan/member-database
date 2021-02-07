@@ -70,6 +70,7 @@
 				type="list"
 				label="Long Service?"
 				description="Has this person been a member of the association for over 50 years?"
+				readonly="true"
 				default="No">
 				<option value="No">No</option>
 				<option value="50 Years">50 Years</option>
@@ -77,12 +78,13 @@
 				<option value="70 Years">70 Years</option>
 		</field>
 		<field
-                                name="date_elected"
-                                type="calendar"
-                                label="Association Member Since"
-                                description="The date that the member joined the association."
-                                class="inputbox"
-                                default="" 
+                name="date_elected"
+                type="calendar"
+                label="Association Member Since"
+                description="The date that the member joined the association."
+                class="inputbox"
+                readonly="true"
+                default="" 
 				/>
 		<field
 				name="insurance_group"

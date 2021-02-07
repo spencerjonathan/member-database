@@ -229,7 +229,7 @@ class MemberDatabaseModelMember extends JModelAdmin {
 		$config = JFactory::getConfig();
 		
 		$email_change_dist = JComponentHelper::getParams ( 'com_memberdatabase' )->get ( 'email_change_dist' );
-		$email = explode ( ";" , $email_change_dist);
+		$to_email = explode ( ";" , $email_change_dist);
 		
 		// Load the member record from the database in case full record is needed
 		$member = JTable::getInstance('Member', 'MemberDatabaseTable', array());
@@ -320,7 +320,7 @@ class MemberDatabaseModelMember extends JModelAdmin {
 		
 		$mailer->isHtml(true);
 		$mailer->setSender($sender);
-		$mailer->addRecipient($email);
+		$mailer->addRecipient($to_email);
 		$mailer->setSubject($subject);
 		$mailer->setBody($body);
 		

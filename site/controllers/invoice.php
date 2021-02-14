@@ -107,7 +107,7 @@ class MemberDatabaseControllerInvoice extends JControllerForm {
 		$year = $jinput->post->get ( 'year', null, 'int' );
 		$userid = JFactory::getUser ()->id;
 		
-		error_log ( serialize ( $jinput ) );
+		//error_log ( serialize ( $jinput ) );
 		
 		$members = $jinput->post->get ( 'cid', null, 'array' );
 		
@@ -117,7 +117,7 @@ class MemberDatabaseControllerInvoice extends JControllerForm {
 			return false;
 		}
 		
-		error_log ( json_encode ( $members ) );
+		//error_log ( json_encode ( $members ) );
 		
 		$this->setRedirect ( JRoute::_ ( 'index.php?option=' . $this->option . '&view=memberdatabase', false ) );
 		

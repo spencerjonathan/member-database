@@ -18,6 +18,7 @@ defined ( '_JEXEC' ) or die ( 'Restricted access' );
 
 $jinput = JFactory::getApplication ()->input;
 $token = $jinput->get ( 'token', null, 'STRING' );
+$tab = $jinput->get ( 'tab', "details", 'STRING' );
 $token_text = "";
 $user_editing = false;
 $onsubmit = "";
@@ -33,7 +34,7 @@ if (isset ( $token )) {
 ?>
 <legend><?php echo JText::_('Member Database - Member Details'); ?></legend>
 
-<?php echo JHtml::_('bootstrap.startTabSet', 'myTab', array('active' => 'details')); ?>
+<?php echo JHtml::_('bootstrap.startTabSet', 'myTab', array('active' => $tab)); ?>
 <?php echo JHtml::_('bootstrap.addTab', 'myTab', 'details', 'Member Details'); ?>
 
 <?php $list_view_parameter = ""; if ($this->list_view != "") { $list_view_parameter = "&list_view=" . $this->list_view; }; ?>
@@ -215,6 +216,18 @@ endif; ?>
 if ($this->item->id && !$user_editing ) :
 	echo JHtml::_ ( 'bootstrap.addTab', 'myTab', 'invoices', 'Invoices' );
 	?>
+	
+	<form class="adminform" name="adminForm" id="adminForm" method="post"
+				action="<?php echo JRoute::_('index.php?option=com_memberdatabase');?>">
+	<input type="hidden" name="task" value="member.createinvoice" /> 
+	<input type="hidden" name="member-id" value="<?php echo $this->item->id; ?>" /> 
+	<button type="submit" id="create_invoice_button" name="create_invoice_button"
+					class="btn btn-success btn-create-invoice">
+					<span class="icon-new icon-white"></span> Create Invoice for Current Year
+				</button>
+    </form>
+    
+    <hr>
 
 	<table class="table table-striped table-hover invoice-list">
 		<thead>

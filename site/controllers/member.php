@@ -392,6 +392,24 @@ class MemberDatabaseControllerMember extends JControllerForm {
 		}
 	}
 	
+			
+	public function createinvoice($key = null, $urlVar = null) {
+
+        error_log ( "member.createinvoice function called" );
+		$jinput = JFactory::getApplication ()->input;	
+	    $memberId = $jinput->post->get ( 'member-id', null, 'int' );
+	    
+	    error_log("In createinvoice - jinput = " . json_encode((array) $jinput));
+
+        $model = $this->getModel ( 'Invoice', 'MemberDatabaseModel', array () );
+	
+	    $this->setRedirect ( $_SERVER['HTTP_REFERER'] . '&tab=invoices' );
+	
+	    return $model->addInvoiceForMember($memberId);
+	    
+	    
+	}
+	
 	/**
 	 * Function that allows child controller access to model data
 	 * after the data has been saved.
@@ -406,11 +424,11 @@ class MemberDatabaseControllerMember extends JControllerForm {
 	 * @since 12.2
 	 */
 	protected function postSaveHook(JModelLegacy $model, $validData = array()) {
-		error_log ( "validData = " . json_encode ( $validData ) );
+		//error_log ( "validData = " . json_encode ( $validData ) );
 		
 		$jinput = JFactory::getApplication ()->input;
 		
-		error_log("Member - Controller - In postSaveHook");
+		//error_log("Member - Controller - In postSaveHook");
 
         ActionlogsHelper::logAction($validData['id'], $validData['surname'] . ", " . $validData['forenames'], "member", "saved");
 		

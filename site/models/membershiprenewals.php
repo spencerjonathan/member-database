@@ -147,13 +147,8 @@ class MemberDatabaseModelMembershipRenewals extends JModelItem
 
     }
 
-    public function sendinvoice($towerId) {
+    public function getInvoiceContent($towerId) {
 
-        if (! JFactory::getUser ()->authorise ( 'core.admin', 'com_memberdatabase' )) {
-            $this->setError("You are not authorised to perform this action!");
-            return "error";
-        } 
-        
         $invoiceModel = JModelLegacy::getInstance("Invoice", "MemberDatabaseModel", array());
 
         // Uses towerId URL parameter to return members that should be included in the invoice
@@ -193,6 +188,19 @@ class MemberDatabaseModelMembershipRenewals extends JModelItem
         $message .= "<h2>Missing Email Addresses</h2>" . $this->getMissingEmailData($towerId) . "<br><br>";
 
         $message .= "Kind Regards,<br><br>Jonathan Spencer<br><i>SCACR Membership Coordinator | membership@scacr.org | 07597 781190</i>"; 
+
+        return $message;
+
+    }
+    
+    public function sendinvoice($towerId) {
+
+        if (! JFactory::getUser ()->authorise ( 'core.admin', 'com_memberdatabase' )) {
+            $this->setError("You are not authorised to perform this action!");
+            return "error";
+        } 
+        
+        $message = $this->getInvoiceContent($towerId);
 
         $mailData = array();
         $mailData['tower_id'] = $towerId;

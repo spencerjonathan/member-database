@@ -236,6 +236,38 @@ class MemberDatabaseModelInvoice extends JModelAdmin {
 		return $results;
 	}
 	
+	public function addInvoiceForMember($memberId) {
+	
+	    $member = JTable::getInstance('Member', 'MemberDatabaseTable', array());
+        $member->load($memberId);
+        
+        $verification_required_since = JComponentHelper::getParams('com_memberdatabase')->get('verification_required_since');
+		$date = DateTime::createFromFormat("Y-m-d", $verification_required_since);
+		$year = $date->format("Y");
+	
+	    // Check that there isn't already an invoice for this member for the current year
+	
+	    $db = JFactory::getDbo ();
+		$query = $db->getQuery ( true );
+		
+		// Create the base select statement.
+		$query->select ( 'count(*)' )
+		->from ( $db->quoteName ( '#__md_invoicemember', 'im' ) );
+		$query->join ( 'INNER', $db->quoteName ( '#__md_invoice', 'i' ) . ' ON (' . $db->quoteName ( 'i.id' ) . ' = ' . $db->quoteName ( 'im.invoice_id' ) . ')' );
+		$query->where( 'i.year = ' . (int) $year );
+	    $query->where( 'im.member_id = ' . (int) $memberId );
+	    
+	    $db->setQuery ( $query );
+	    $count = (int) $db->loadResult ();
+	    
+	    if ($count > 0) {
+	        $this->setError ( 'Invoice already exists for this member!');
+	        return false;
+	    }
+	
+	    return $this->addInvoice($member->tower_id, $year, null, array( $memberId ) );
+	}
+	
 	public function addInvoice($towerId, $year, $userId, $members) {
 		$db = JFactory::getDbo ();
 		$userId = JFactory::getUser ()->id;

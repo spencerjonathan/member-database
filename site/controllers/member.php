@@ -405,9 +405,18 @@ class MemberDatabaseControllerMember extends JControllerForm {
 	
 	    $this->setRedirect ( $_SERVER['HTTP_REFERER'] . '&tab=invoices' );
 	
-	    return $model->addInvoiceForMember($memberId);
+	    $return = $model->addInvoiceForMember($memberId);
 	    
-	    
+	    $errors = $model->getErrors();
+
+        if (count($errors) > 0) {
+            $this->setMessage ( $errors[0], 'error' );
+        } else {
+            $this->setMessage ( "Invoice created!", 'success' );
+        }
+        
+        return $return;
+        
 	}
 	
 	/**

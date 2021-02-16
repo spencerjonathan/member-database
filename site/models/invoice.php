@@ -261,7 +261,7 @@ class MemberDatabaseModelInvoice extends JModelAdmin {
 	    $count = (int) $db->loadResult ();
 	    
 	    if ($count > 0) {
-	        $this->setError ( 'Invoice already exists for this member!');
+	        $this->setError ( "Invoice already exists for this member for $year!");
 	        return false;
 	    }
 	

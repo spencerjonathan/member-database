@@ -47,7 +47,7 @@ class MemberDatabaseControllerMembershipRenewals extends JControllerAdmin
         $type = $model->sendinvoice($towerId);
 
 		$msg = $model->getError();
-		$this->setredirect('index.php?option=com_memberdatabase&view=membershiprenewals', $msg, $type);
+		$this->setredirect($_SERVER['HTTP_REFERER'], $msg, $type);
 
     }
 }

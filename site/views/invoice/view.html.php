@@ -42,6 +42,10 @@ class MemberDatabaseViewInvoice extends JViewLegacy {
 		
 		$this->form = $this->get('Form');
 		$this->item = $this->get('Item');
+
+
+		$renewalModel = $this->createModel("MembershipRenewals", "MemberDatabaseModel");		
+		$this->towerEmailAssoc = $renewalModel->getTowerEmailAssoc();
 		
 		// Check for errors.
 		if (count($errors = $this->get('Errors')))
@@ -54,5 +58,14 @@ class MemberDatabaseViewInvoice extends JViewLegacy {
 		// Display the template
 		parent::display ( $tpl );
 		
+	}
+	
+	protected function createModel($name, $prefix = '', $config = array())
+	{
+		// Clean the model name
+		$modelName = preg_replace('/[^A-Z0-9_]/i', '', $name);
+		$classPrefix = preg_replace('/[^A-Z0-9_]/i', '', $prefix);
+		
+		return JModelLegacy::getInstance($modelName, $classPrefix, $config);
 	}
 }

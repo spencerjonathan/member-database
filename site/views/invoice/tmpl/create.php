@@ -120,6 +120,27 @@ $document->addScriptDeclaration ( '
 					<span class="icon-new icon-white"></span> Save Invoice & Close
 				</button>
 			</form>
+	
+	        <?php 
+	            $user = JFactory::getUser();
+		
+		        if ($user->authorise('core.admin', 'com_memberdatabase')) :
+
+    		        if ($this->towerEmailAssoc[$this->tower->id]) { $disabled = ""; } else {$disabled = " disabled";}
+		        
+	                $email_invoice_link = JRoute::_ ( 'index.php?option=com_memberdatabase&towerId=' . $this->tower->id ); 
+            ?>
+			<form action="<?php echo $email_invoice_link; ?>" method="post"
+			    onsubmit="return confirm('Are you sure you want to send an invoice email to the tower correspondent?')">
+			    <input type="hidden" name="task" value="membershiprenewals.sendinvoice" /> 
+			    <?php echo JHtml::_('form.token'); ?>
+			    
+	            <button type="submit" class="btn btn-success" <?php echo $disabled; ?> title="<?php echo $this->towerEmailAssoc[$this->tower->id]; ?>">
+				    
+				    <span class="icon-mail icon-white"></span> Email Invoice
+				</button>
+			</form>
+			<?php endif ?>
 		</div>
 	</div>
 </div>

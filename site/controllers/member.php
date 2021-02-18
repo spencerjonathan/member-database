@@ -395,6 +395,22 @@ class MemberDatabaseControllerMember extends JControllerForm {
 			
 	public function createinvoice($key = null, $urlVar = null) {
 
+	    $this->setRedirect ( $_SERVER['HTTP_REFERER'] . '&tab=invoices' );
+
+        if ($db_locked == true) {
+			$this->setError('Amending invoice details is not permitted because the database is currently locked.');
+			$this->setMessage($this->getError(), 'error');
+			return false;
+		}
+		
+		$user = JFactory::getUser();
+		
+		if (!$user->authorise('invoice.create', $this->option)) {
+			$this->setError('You do not have the required role to create an invoice');
+			$this->setMessage($this->getError(), 'error');
+			return false;
+		}
+
         error_log ( "member.createinvoice function called" );
 		$jinput = JFactory::getApplication ()->input;	
 	    $memberId = $jinput->post->get ( 'member-id', null, 'int' );
@@ -402,8 +418,6 @@ class MemberDatabaseControllerMember extends JControllerForm {
 	    error_log("In createinvoice - jinput = " . json_encode((array) $jinput));
 
         $model = $this->getModel ( 'Invoice', 'MemberDatabaseModel', array () );
-	
-	    $this->setRedirect ( $_SERVER['HTTP_REFERER'] . '&tab=invoices' );
 	
 	    $return = $model->addInvoiceForMember($memberId);
 	    

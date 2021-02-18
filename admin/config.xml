@@ -38,8 +38,9 @@
 			label="Email Body Suffix" description="The text that gets appended to the end of the message body for emails to tower correspondents sent from the mail form"
 			default="" />
 
-		<field name="covering_letter_alias" type="text"
+		<field name="covering_letter_alias" type="sql"
 			label="Covering Letter Alias" description="The alias of the article to include in the membership renewals email"
+			query="SELECT alias AS value, alias AS covering_letter_alias FROM #__content"
 	    />
 
 	</fieldset>

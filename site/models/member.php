@@ -75,7 +75,7 @@ class MemberDatabaseModelMember extends JModelAdmin {
 		error_log("Item loaded is " . json_encode($item));
 		
 		// If the user has privilages to edit any member then return the item.
-		if (JFactory::getUser ()->authorise ( 'member.edit', 'com_memberdatabase' )) {
+		if (JFactory::getUser ()->authorise ( 'member.view', 'com_memberdatabase' )) {
 			return $item;
 		}
 		

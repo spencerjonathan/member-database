@@ -359,6 +359,9 @@ class MemberDatabaseModelMember extends JModelAdmin {
 		} elseif ( $user_editing ) {
 			$form_name = 'com_memberdatabase.member_user_edit';
 			$form_file = 'member_user_edit';
+		} elseif (JFactory::getUser ()->authorise ( 'member.view', 'com_memberdatabase' )) {
+			$form_name = 'com_memberdatabase.member';
+			$form_file = 'member';
 		} else {
 			$form_name = 'com_memberdatabase.member_minimal';
 			$form_file = 'member_minimal';

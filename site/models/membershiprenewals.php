@@ -156,7 +156,7 @@ class MemberDatabaseModelMembershipRenewals extends JModelItem
 
         $tower_name = $this->getTowerName($towerId);
 
-        $invoice = "<h2>$tower_name Membership Subscription Invoice</h2><table style='border-collapse: collapse' border='1' width='100%'><tr><th style='text-align: left'>Member</th><th style='text-align: left'>Member Type</th><th style='text-align: left'>Insurance Group</th><th style='text-align: left'>Receive Annual Report</th><th style='text-align: right'>Fee £</th></tr>";
+        $invoice = "<h2>$tower_name Membership Subscription Invoice</h2><table style='border-collapse: collapse' border='1' width='100%'><tr><th style='text-align: left'>Member</th><th style='text-align: left'>Member Type</th><th style='text-align: left'>Active Ringer?</th><th style='text-align: left'>Insurance Group</th><th style='text-align: left'>Receive Annual Report</th><th style='text-align: right'>Fee £</th></tr>";
 
         $invoice_total = 0;
         
@@ -172,12 +172,12 @@ class MemberDatabaseModelMembershipRenewals extends JModelItem
                 $annual_report = "Yes";
             }
 
-            $invoice .= "<tr><td>$member->name</td><td>$member_type</td><td>$member->insurance_group</td><td>$annual_report</td><td style='text-align: right'>$member->fee</td></tr>";
+            $invoice .= "<tr><td>$member->name</td><td>$member_type</td><td>Yes</td><td>$member->insurance_group</td><td>$annual_report</td><td style='text-align: right'>$member->fee</td></tr>";
 
             $invoice_total += $member->fee;
         }
 
-        $invoice .= "<tr><td colspan='4'><strong>Total</strong></td><td style='text-align: right'><strong>$invoice_total</strong></td></tr>";
+        $invoice .= "<tr><td colspan='5'><strong>Total</strong></td><td style='text-align: right'><strong>$invoice_total</strong></td></tr>";
 
         $invoice .= "</table>";
 
